@@ -1,11 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import "./AddPolicy.css"
 
 function AddPolicy() {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
+  };
+
+  const handleCancel = () => {
+    console.log("Formulario cancelado");
   };
 
   const errorMessages = {
@@ -21,37 +26,39 @@ function AddPolicy() {
     },
     phone: {
       pattern: {
-        value: /^[0-9]{10}$/i,
+        value: /^[0-9]{8}$/i,
         message: "Debes introducir un número de teléfono válido",
       },
     },
   };
 
   return (
-    <div>
+    <div className="formulario">
+        <h1 className="titulo">Agregar Política</h1>
+
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="name">Nombre: </label>
-        <input
+        <label className="etiqueta" htmlFor="name">Nombre: </label>
+        <input className={`campo ${errors.name ? "campoError" : ""}`}
           {...register("name", {
             required: errorMessages.required,
           })}
           name="name"
           type="text"
         />
-        {errors.name && <span>{errors.name.message}</span>}
+        {errors.name && <span className="mensjError">{errors.name.message}</span>}
 
-        <label htmlFor="startDate">Fecha de Inicio: </label>
-        <input
+        <label className="etiqueta" htmlFor="startDate">Fecha de Inicio: </label>
+        <input className={`campo ${errors.startDate ? "campoError" : ""}`}
           {...register("startDate", {
             required: errorMessages.required,
           })}
           name="startDate"
           type="date"
         />
-        {errors.startDate && <span>{errors.startDate.message}</span>}
+        {errors.startDate && <span className="mensjError">{errors.startDate.message}</span>}
 
-        <label htmlFor="email">Correo Electrónico: </label>
-        <input
+        <label className="etiqueta" htmlFor="email">Correo Electrónico: </label>
+        <input className={`campo ${errors.email ? "campoError" : ""}`}
           {...register("email", {
             required: errorMessages.required,
             ...validationPatterns.email,
@@ -59,10 +66,10 @@ function AddPolicy() {
           name="email"
           type="email"
         />
-        {errors.email && <span>{errors.email.message}</span>}
+        {errors.email && <span className="mensjError">{errors.email.message}</span>}
 
-        <label htmlFor="phone">Número de Teléfono: </label>
-        <input
+        <label className="etiqueta" htmlFor="phone">Número de Teléfono: </label>
+        <input className={`campo ${errors.phone ? "campoError" : ""}`}
           {...register("phone", {
             required: errorMessages.required,
             ...validationPatterns.phone,
@@ -70,9 +77,12 @@ function AddPolicy() {
           name="phone"
           type="tel"
         />
-        {errors.phone && <span>{errors.phone.message}</span>}
+        {errors.phone && <span className="mensjError">{errors.phone.message}</span>}
 
-        <input type="submit" />
+        <section className="botones">
+            <input className="cancelar" type="button" value="Cancelar" onClick={handleCancel}/>
+            <input className="agregar" type="submit" value="Agregar"/>
+        </section>
       </form>
     </div>
   );
