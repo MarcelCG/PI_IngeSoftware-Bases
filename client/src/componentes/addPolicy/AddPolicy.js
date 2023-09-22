@@ -8,13 +8,27 @@ function AddPolicy() {
     console.log(data);
   };
 
+  const errorMessages = {
+    required: "Este campo es obligatorio",
+  };
+
+
+  const validationPatterns = {
+    email: {
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        message: "Debes introducir una dirección de correo válida",
+      },
+    },
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="name">Nombre completo</label>
+        <label htmlFor="name">Nombre</label>
         <input
           {...register("name", {
-            required: "Este campo es obligatorio",
+            required: errorMessages.required,
           })}
           name="name"
           type="text"
@@ -24,21 +38,18 @@ function AddPolicy() {
         <label htmlFor="startDate">Fecha de Inicio</label>
         <input
           {...register("startDate", {
-            required: "Este campo es obligatorio",
+            required: errorMessages.required,
           })}
           name="startDate"
           type="date"
         />
         {errors.startDate && <span>{errors.startDate.message}</span>}
 
-        <label htmlFor="email">Correo electrónico</label>
+        <label htmlFor="email">Correo Electrónico</label>
         <input
           {...register("email", {
-            required: "Este campo es obligatorio",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "Debes introducir una dirección de correo válida",
-            },
+            required: errorMessages.required,
+            ...validationPatterns.email,
           })}
           name="email"
           type="email"
