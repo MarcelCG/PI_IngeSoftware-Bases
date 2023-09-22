@@ -1,2 +1,110 @@
 // Importa boostrap
 @import "../../../node_modules/bootstrap/scss/bootstrap";
+
+.formulario{
+    @include make-container();
+    @include make-col-ready();
+    @include make-col(12);
+
+    @include media-breakpoint-up(sm){
+        @include make-col(10);
+    }
+
+    @include media-breakpoint-up(md){
+        @include make-col(8);
+    }
+
+    @include media-breakpoint-up(lg){
+        @include make-col(6);
+    }
+
+    margin: auto;
+    text-align: center;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+
+
+    .titulo{
+        font-weight: lighter;
+        font-style: italic;
+    }
+
+    .etiqueta{
+        @include make-row();
+        @include make-col-ready();
+        @include make-col(12);
+
+        @include media-breakpoint-up(sm){
+            @include make-col(8);
+        }
+
+        @include media-breakpoint-up(lg){
+            @include make-col(6);
+        }
+        margin: auto;
+        padding: 2px;
+        margin-top: 1%;
+    }
+
+    .campo{
+        @include make-col-ready();
+        @include make-col(12);
+
+        @include media-breakpoint-up(sm){
+            @include make-col(8);
+        }
+
+        @include media-breakpoint-up(lg){
+            @include make-col(6);
+        }
+        margin: auto;
+    }
+
+    .campoError{
+        border: 1px solid red;
+    }
+
+    .mensjError{
+        @include make-row();
+        @include make-col-ready();
+        @include make-col(12);
+
+        @include media-breakpoint-up(sm){
+            @include make-col(8);
+        }
+
+        @include media-breakpoint-up(lg){
+            @include make-col(6);
+        }
+        margin: auto;
+        color: red;
+    }
+
+    .botones{
+        @include make-row();
+        @include make-col-ready();
+        @include make-col(12);
+
+        @include media-breakpoint-up(sm){
+            @include make-col(8);
+        }
+
+        @include media-breakpoint-up(lg){
+            @include make-col(6);
+        }
+        margin: auto;
+        margin-top: 2%;
+
+        .cancelar, .agregar{
+            @include make-col-ready();
+            @include make-col(5);
+            text-align: center;
+            margin:auto;
+            background-color: #5c34ec;
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF;
+        }
+    }
+}

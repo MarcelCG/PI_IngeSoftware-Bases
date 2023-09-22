@@ -11975,4 +11975,184 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+.formulario {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+@media (min-width: 576px) {
+  .formulario {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+}
+@media (min-width: 768px) {
+  .formulario {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+.formulario .titulo {
+  font-weight: lighter;
+  font-style: italic;
+}
+.formulario .etiqueta {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 100%;
+  margin: auto;
+  padding: 2px;
+  margin-top: 1%;
+}
+@media (min-width: 576px) {
+  .formulario .etiqueta {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario .etiqueta {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+.formulario .campo {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 100%;
+  margin: auto;
+}
+@media (min-width: 576px) {
+  .formulario .campo {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario .campo {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+.formulario .campoError {
+  border: 1px solid red;
+}
+.formulario .mensjError {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 100%;
+  margin: auto;
+  color: red;
+}
+@media (min-width: 576px) {
+  .formulario .mensjError {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario .mensjError {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+.formulario .botones {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 100%;
+  margin: auto;
+  margin-top: 2%;
+}
+@media (min-width: 576px) {
+  .formulario .botones {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario .botones {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+.formulario .botones .cancelar, .formulario .botones .agregar {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 41.66666667%;
+  text-align: center;
+  margin: auto;
+  background-color: #5c34ec;
+  border: none;
+  border-radius: 5px;
+  color: #FFFFFF;
 }/*# sourceMappingURL=AddPolicy.css.map */
