@@ -35,6 +35,10 @@ function AddPolicy() {
         <input
           {...register("email", {
             required: "Este campo es obligatorio",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Debes introducir una dirección de correo válida",
+            },
           })}
           name="email"
           type="email"
