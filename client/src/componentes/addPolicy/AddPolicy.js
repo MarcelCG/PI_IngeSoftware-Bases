@@ -12,7 +12,6 @@ function AddPolicy() {
     required: "Este campo es obligatorio",
   };
 
-
   const validationPatterns = {
     email: {
       pattern: {
@@ -20,12 +19,18 @@ function AddPolicy() {
         message: "Debes introducir una dirección de correo válida",
       },
     },
+    phone: {
+      pattern: {
+        value: /^[0-9]{10}$/i,
+        message: "Debes introducir un número de teléfono válido",
+      },
+    },
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="name">Nombre</label>
+        <label htmlFor="name">Nombre: </label>
         <input
           {...register("name", {
             required: errorMessages.required,
@@ -35,7 +40,7 @@ function AddPolicy() {
         />
         {errors.name && <span>{errors.name.message}</span>}
 
-        <label htmlFor="startDate">Fecha de Inicio</label>
+        <label htmlFor="startDate">Fecha de Inicio: </label>
         <input
           {...register("startDate", {
             required: errorMessages.required,
@@ -45,7 +50,7 @@ function AddPolicy() {
         />
         {errors.startDate && <span>{errors.startDate.message}</span>}
 
-        <label htmlFor="email">Correo Electrónico</label>
+        <label htmlFor="email">Correo Electrónico: </label>
         <input
           {...register("email", {
             required: errorMessages.required,
@@ -55,6 +60,17 @@ function AddPolicy() {
           type="email"
         />
         {errors.email && <span>{errors.email.message}</span>}
+
+        <label htmlFor="phone">Número de Teléfono: </label>
+        <input
+          {...register("phone", {
+            required: errorMessages.required,
+            ...validationPatterns.phone,
+          })}
+          name="phone"
+          type="tel"
+        />
+        {errors.phone && <span>{errors.phone.message}</span>}
 
         <input type="submit" />
       </form>
