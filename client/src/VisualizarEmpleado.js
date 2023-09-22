@@ -13,14 +13,14 @@ function VisualizarEmpleado() {
     rol: ""
   });
 
-  // Función para cargar los datos del empleado (debes obtener estos datos de alguna fuente)
+  // Función para cargar los datos del empleado (se debe obtener estos datos de la BD)
   const cargarDatosDelEmpleado = () => {
     // Simulación de carga de datos del empleado
     const datosEmpleado = {
       nombreCompleto: "Nombre del Empleado Apellido1 Apellido2",
-      cedula: "1234567890",
+      cedula: "1-04790-1672",
       correo: "empleado@ejemplo.com",
-      telefono: "9876-5432",
+      telefono: "82726383",
       fechaContratacion: "20/09/2023",
       jornadaLaboral: "Tiempo completo",
       rol: "Analista"
