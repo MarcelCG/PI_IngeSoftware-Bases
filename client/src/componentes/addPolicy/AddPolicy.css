@@ -12096,6 +12096,7 @@ textarea.form-control-lg {
   width: 100%;
   text-align: left;
   margin: auto;
+  padding: 0;
 }
 @media (min-width: 576px) {
   .formulario .campoDrop {
@@ -12128,7 +12129,7 @@ textarea.form-control-lg {
 @media (min-width: 992px) {
   .formulario .campoDrop .campo {
     flex: 0 0 auto;
-    width: 16.66666667%;
+    width: 25%;
   }
 }
 .formulario .campoDrop .drop {
@@ -12140,6 +12141,7 @@ textarea.form-control-lg {
   margin-top: var(--bs-gutter-y);
   flex: 0 0 auto;
   width: 66.66666667%;
+  height: 30px;
 }
 @media (min-width: 576px) {
   .formulario .campoDrop .drop {
@@ -12180,6 +12182,31 @@ textarea.form-control-lg {
 }
 @media (min-width: 992px) {
   .formulario .mensjError {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+.formulario .checkbox {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 66.66666667%;
+  margin: auto;
+  text-align: left;
+  padding: 0;
+}
+@media (min-width: 576px) {
+  .formulario .checkbox {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario .checkbox {
     flex: 0 0 auto;
     width: 50%;
   }

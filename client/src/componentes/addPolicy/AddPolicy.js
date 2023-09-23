@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import "./AddPolicy.css"
 
@@ -9,6 +9,8 @@ function AddPolicy() {
     console.log(data);
   };
 
+  const [disableStartDate, setDisableStartDate] = useState(false); // Estado del checkbox
+
   const handleCancel = () => {
     console.log("Formulario cancelado");
   };
@@ -18,10 +20,10 @@ function AddPolicy() {
   };
 
   const validationPatterns = {
-    period: {
+    number: {
       pattern: {
         value:  /^[1-9]\d*$/,
-        message: "El periodo debe ser un valor númerico mayor a 0"
+        message: "Este campo debe ser un valor númerico mayor a 0"
       },
     },
     phone: {
@@ -50,29 +52,66 @@ function AddPolicy() {
         <label className="etiqueta" htmlFor="startDate">Fecha de Inicio: </label>
         <input className={`campo ${errors.startDate ? "campoError" : ""}`}
           {...register("startDate", {
-            required: errorMessages.required,
+            required: !disableStartDate ? errorMessages.required : false,
           })}
           name="startDate"
           type="date"
+          disabled={disableStartDate}
         />
         {errors.startDate && <span className="mensjError">{errors.startDate.message}</span>}
+
+        <section className="checkbox">
+          <input
+            {...register("startFromContract")}
+            type="checkbox" 
+            checked={disableStartDate} 
+            onChange={(e) => setDisableStartDate(e.target.checked)}
+          />
+
+          <label>Rige a partir del contrato</label>
+        </section>
+
 
 
         <label className="etiqueta" htmlFor="period">Periodo: </label>
         <section className="campoDrop">
-          <input className={`campo ${errors.period ? "campoError" : ""}`}
+          <input className={`campo ${errors.number ? "campoError" : ""}`}
             {...register("period", {
               required: errorMessages.required,
-              ...validationPatterns.period,
+              ...validationPatterns.number,
             })}
             name="period"
             type="number"
-            min={0}
+            min={1}
           />
-          {errors.period && <span className="mensjError">{errors.period.message}</span>}
+          {errors.number && <span className="mensjError">{errors.number.message}</span>}
 
           <select className="drop"
             {...register("periodUnit")}
+          >
+            <option value="horas">Horas</option>
+            <option value="días">Días</option>
+            <option value="semanas">Semanas</option>
+            <option value="meses">Meses</option>
+            <option value="años">Años</option>
+          </select>
+        </section>
+
+        <label className="etiqueta" htmlFor="amount">Unidad: </label>
+        <section className="campoDrop">
+          <input className={`campo ${errors.number ? "campoError" : ""}`}
+            {...register("amount", {
+              required: errorMessages.required,
+              ...validationPatterns.number,
+            })}
+            name="amount"
+            type="number"
+            min={1}
+          />
+          {errors.number && <span className="mensjError">{errors.number.message}</span>}
+
+          <select className="drop"
+            {...register("amountUnit")}
           >
             <option value="horas">Horas</option>
             <option value="días">Días</option>
