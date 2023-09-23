@@ -58,7 +58,17 @@ function AddPolicy() {
           type="date"
           disabled={disableStartDate}
         />
-        {errors.startDate && <span className="mensjError">{errors.startDate.message}</span>}
+        {errors.startDate && <span className="mensjError">{errorMessages.required}</span>}
+
+        <label className="etiqueta" htmlFor="dueDate">Fecha de Vencimiento: </label>
+        <input className={`campo ${errors.startDate ? "campoError" : ""}`}
+          {...register("dueDate", {
+            required: errorMessages.required,
+          })}
+          name="dueDate"
+          type="date"
+        />
+        {errors.startDate && <span className="mensjError">{errorMessages.required}</span>}
 
         <section className="checkbox">
           <input
