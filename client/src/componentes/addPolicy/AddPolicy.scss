@@ -65,6 +65,49 @@
         border: 1px solid red;
     }
 
+    .campoDrop {
+        @include make-container();
+        @include make-col-ready();
+        @include make-col(12);
+
+        @include media-breakpoint-up(sm){
+            @include make-col(8);
+        }
+
+        @include media-breakpoint-up(lg){
+            @include make-col(6);
+        }
+        text-align: left;
+        margin: auto;
+    }
+
+    .campoDrop .campo {
+        @include make-col-ready();
+        @include make-col(4);
+
+        @include media-breakpoint-up(sm){
+            @include make-col(4);
+        }
+
+        @include media-breakpoint-up(lg){
+            @include make-col(2);
+        }
+    }
+
+    .campoDrop .drop {
+        @include make-col-ready();
+        @include make-col(8);
+
+        @include media-breakpoint-up(sm){
+            @include make-col(8);
+        }
+
+        @include media-breakpoint-up(lg){
+            @include make-col(6);
+        }
+
+    }
+
     .mensjError{
         @include make-row();
         @include make-col-ready();

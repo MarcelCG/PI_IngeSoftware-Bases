@@ -18,10 +18,10 @@ function AddPolicy() {
   };
 
   const validationPatterns = {
-    email: {
+    period: {
       pattern: {
-        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-        message: "Debes introducir una dirección de correo válida",
+        value:  /^[1-9]\d*$/,
+        message: "El periodo debe ser un valor númerico mayor a 0"
       },
     },
     phone: {
@@ -37,7 +37,7 @@ function AddPolicy() {
         <h1 className="titulo">Agregar Política</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label className="etiqueta" htmlFor="name">Nombre: </label>
+        <label className="etiqueta" htmlFor="name">Titulo: </label>
         <input className={`campo ${errors.name ? "campoError" : ""}`}
           {...register("name", {
             required: errorMessages.required,
@@ -57,16 +57,30 @@ function AddPolicy() {
         />
         {errors.startDate && <span className="mensjError">{errors.startDate.message}</span>}
 
-        <label className="etiqueta" htmlFor="email">Correo Electrónico: </label>
-        <input className={`campo ${errors.email ? "campoError" : ""}`}
-          {...register("email", {
-            required: errorMessages.required,
-            ...validationPatterns.email,
-          })}
-          name="email"
-          type="email"
-        />
-        {errors.email && <span className="mensjError">{errors.email.message}</span>}
+
+        <label className="etiqueta" htmlFor="period">Periodo: </label>
+        <section className="campoDrop">
+          <input className={`campo ${errors.period ? "campoError" : ""}`}
+            {...register("period", {
+              required: errorMessages.required,
+              ...validationPatterns.period,
+            })}
+            name="period"
+            type="number"
+            min={0}
+          />
+          {errors.period && <span className="mensjError">{errors.period.message}</span>}
+
+          <select className="drop"
+            {...register("periodUnit")}
+          >
+            <option value="horas">Horas</option>
+            <option value="días">Días</option>
+            <option value="semanas">Semanas</option>
+            <option value="meses">Meses</option>
+            <option value="años">Años</option>
+          </select>
+        </section>
 
         <label className="etiqueta" htmlFor="phone">Número de Teléfono: </label>
         <input className={`campo ${errors.phone ? "campoError" : ""}`}

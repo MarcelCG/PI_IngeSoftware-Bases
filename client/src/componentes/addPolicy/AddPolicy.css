@@ -12078,6 +12078,81 @@ textarea.form-control-lg {
 .formulario .campoError {
   border: 1px solid red;
 }
+.formulario .campoDrop {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 100%;
+  text-align: left;
+  margin: auto;
+}
+@media (min-width: 576px) {
+  .formulario .campoDrop {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario .campoDrop {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+.formulario .campoDrop .campo {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 33.33333333%;
+}
+@media (min-width: 576px) {
+  .formulario .campoDrop .campo {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario .campoDrop .campo {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+}
+.formulario .campoDrop .drop {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  flex: 0 0 auto;
+  width: 66.66666667%;
+}
+@media (min-width: 576px) {
+  .formulario .campoDrop .drop {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .formulario .campoDrop .drop {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
 .formulario .mensjError {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
