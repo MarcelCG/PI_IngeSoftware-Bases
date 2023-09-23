@@ -127,6 +127,46 @@ function AddPolicy() {
           {errors.period && <span className="mensjError">{errors.period.message}</span>}
         </section>
 
+        {/* Campo de incrementativo*/}
+        <label className="etiqueta" htmlFor="incrementalAmount">Incremento por Periodo: </label>
+        <section className="campoDrop">
+          <input className={`campo ${errors.incrementalAmount ? "campoError" : ""}`}
+            {...register("incrementalAmount", {
+              required: !disableIncremental ? errorMessages.required : false,
+              ...validationPatterns.incrementalAmount
+            })}
+            name="incrementalAmount"
+            type="number"
+            disabled={disableIncremental}
+            min={1}
+          />
+
+          <select className="drop" disabled={disableIncremental}
+            {...register("incrementalUnit", {
+              required: !disableIncremental ? errorMessages.required : false
+            })}
+          >
+            <option value="horas">Horas</option>
+            <option value="días">Días</option>
+            <option value="semanas">Semanas</option>
+            <option value="meses">Meses</option>
+            <option value="años">Años</option>
+          </select>
+          {errors.incrementalAmount && <span className="mensjError">{errors.incrementalAmount.message}</span>}
+        </section>
+
+        {/* Checkbox para "Incrementativo" */}
+        <section className="checkbox">
+          <input
+            {...register("notIncremental")}
+            type="checkbox" 
+            checked={disableIncremental} 
+            onChange={(e) => {setDisableIncremental(e.target.checked); clearErrors("incrementalAmount");}}
+          />
+
+          <label>No es incrementativo</label>
+        </section>
+
         {/*Campo para la unidad*/}
         <label className="etiqueta" htmlFor="amount">Unidad: </label>
         <section className="campoDrop">
@@ -153,56 +193,23 @@ function AddPolicy() {
           {errors.amount && <span className="mensjError">{errors.amount.message}</span>}
         </section>
 
-        {/* Campo de incrementativo*/}
-        <label className="etiqueta" htmlFor="incrementalAmount">Incremento por Periodo: </label>
-        <section className="campoDrop">
-          <input className={`campo ${errors.incrementalAmount ? "campoError" : ""}`}
-            {...register("incrementalAmount", {
-              required: errorMessages.required,
-              ...validationPatterns.incrementalAmount,
-              required: !disableIncremental ? errorMessages.required : false
-            })}
-            name="incrementalAmount"
-            type="number"
-            disabled={disableIncremental}
-            min={1}
-          />
-
-          <select className="drop" disabled={disableIncremental}
-            {...register("incrementalUnit", {
-              required: !disableIncremental ? errorMessages.required : false
-            })}
-          >
-            <option value="horas">Horas</option>
-            <option value="días">Días</option>
-            <option value="semanas">Semanas</option>
-            <option value="meses">Meses</option>
-            <option value="años">Años</option>
-          </select>
-          {errors.incrementalAmount && <span className="mensjError">{errors.incrementalAmount.message}</span>}
-        </section>
-
-        {/* Checkbox para "Incrementativo" */}
-        <section className="checkbox">
-          <input
-            {...register("incremental")}
-            type="checkbox" 
-            checked={disableIncremental} 
-            onChange={(e) => {setDisableIncremental(e.target.checked); clearErrors("incrementalAmount");}}
-          />
-
-          <label>No es incrementativo</label>
-        </section>
-
         {/* Checkbox para "Acumulativo" */}
         <section className="cumulative">
-          <label>Es acumulativo:</label>
-
           <input
             {...register("cumulative")}
             type="checkbox" 
           />
+
+          <label>Es acumulativo</label>
         </section>
+
+        {/*Campo para comentarios*/}
+        <label className="etiqueta">Comentarios:</label>
+        <textarea className="campo"
+          {...register("description")}
+          rows={5}
+          placeholder="Puedes describir la política aquí"
+        />
 
         {/* Botones de Cancelar y Agregar */}
         <section className="botones">
