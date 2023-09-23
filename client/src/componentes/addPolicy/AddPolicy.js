@@ -55,13 +55,14 @@ function AddPolicy() {
       <form onSubmit={handleSubmit(onSubmit)}>
 
         {/* Campo de entrada de texto para el título de la politica */}
-        <label className="etiqueta" htmlFor="name">Titulo: </label>
+        <label className="etiqueta" htmlFor="name">Título: </label>
         <input className={`campo ${errors.name ? "campoError" : ""}`}
           {...register("name", {
             required: errorMessages.required,
           })}
           name="name"
           type="text"
+          placeholder="Coloca el título de la política aquí"
         />
         {errors.name && <span className="mensjError">{errors.name.message}</span>}
 
@@ -205,7 +206,7 @@ function AddPolicy() {
         </section>
 
         {/*Campo para descripcion*/}
-        <label className="etiqueta">Descripcion:</label>
+        <label className="etiqueta">Descripción:</label>
         <textarea className="campo"
           {...register("description")}
           rows={5}
