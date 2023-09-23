@@ -3,12 +3,16 @@ import { useForm } from "react-hook-form";
 import "./AddPolicy.css"
 
 function AddPolicy() {
+
+  // Configuración del formulario usando react-hook-form
   const { register, handleSubmit, formState: { errors } } = useForm();
 
+  // Función que se ejecuta al enviar el formulario
   const onSubmit = (data) => {
     console.log(data);
   };
 
+  // Estado del checkbox
   const [disableStartDate, setDisableStartDate] = useState(false); // Estado del checkbox
 
   const handleCancel = () => {
@@ -26,12 +30,6 @@ function AddPolicy() {
         message: "Este campo debe ser un valor númerico mayor a 0"
       },
     },
-    phone: {
-      pattern: {
-        value: /^[0-9]{8}$/i,
-        message: "Debes introducir un número de teléfono válido",
-      },
-    },
   };
 
   return (
@@ -39,6 +37,8 @@ function AddPolicy() {
         <h1 className="titulo">Agregar Política</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+
+        {/* Campo de entrada de texto para el título de la politica */}
         <label className="etiqueta" htmlFor="name">Titulo: </label>
         <input className={`campo ${errors.name ? "campoError" : ""}`}
           {...register("name", {
@@ -49,6 +49,7 @@ function AddPolicy() {
         />
         {errors.name && <span className="mensjError">{errors.name.message}</span>}
 
+        {/* Campo de fecha de inicio */}
         <label className="etiqueta" htmlFor="startDate">Fecha de Inicio: </label>
         <input className={`campo ${errors.startDate ? "campoError" : ""}`}
           {...register("startDate", {
@@ -60,16 +61,18 @@ function AddPolicy() {
         />
         {errors.startDate && <span className="mensjError">{errorMessages.required}</span>}
 
+        {/* Campo de fecha de vencimiento */}
         <label className="etiqueta" htmlFor="dueDate">Fecha de Vencimiento: </label>
         <input className={`campo ${errors.startDate ? "campoError" : ""}`}
           {...register("dueDate", {
-            required: errorMessages.required,
+            required: errorMessages.re,
           })}
           name="dueDate"
           type="date"
         />
         {errors.startDate && <span className="mensjError">{errorMessages.required}</span>}
 
+        {/* Checkbox para "Rige a partir del contrato" */}
         <section className="checkbox">
           <input
             {...register("startFromContract")}
@@ -81,8 +84,7 @@ function AddPolicy() {
           <label>Rige a partir del contrato</label>
         </section>
 
-
-
+        {/* Campo de período*/}
         <label className="etiqueta" htmlFor="period">Periodo: </label>
         <section className="campoDrop">
           <input className={`campo ${errors.number ? "campoError" : ""}`}
@@ -107,6 +109,7 @@ function AddPolicy() {
           </select>
         </section>
 
+        {/*Campo para la unidad*/}
         <label className="etiqueta" htmlFor="amount">Unidad: </label>
         <section className="campoDrop">
           <input className={`campo ${errors.number ? "campoError" : ""}`}
@@ -131,17 +134,7 @@ function AddPolicy() {
           </select>
         </section>
 
-        <label className="etiqueta" htmlFor="phone">Número de Teléfono: </label>
-        <input className={`campo ${errors.phone ? "campoError" : ""}`}
-          {...register("phone", {
-            required: errorMessages.required,
-            ...validationPatterns.phone,
-          })}
-          name="phone"
-          type="tel"
-        />
-        {errors.phone && <span className="mensjError">{errors.phone.message}</span>}
-
+        {/* Botones de Cancelar y Agregar */}
         <section className="botones">
             <input className="cancelar" type="button" value="Cancelar" onClick={handleCancel}/>
             <input className="agregar" type="submit" value="Agregar"/>
