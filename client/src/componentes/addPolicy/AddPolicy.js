@@ -93,7 +93,7 @@ function AddPolicy() {
         <label className="etiqueta" htmlFor="dueDate">Fecha de Vencimiento: </label>
         <input className={`campo ${errors.dueDate ? "campoError" : ""}`}
           {...register("dueDate", {
-            required: errorMessages.re,
+            required: errorMessages.required,
           })}
           name="dueDate"
           type="date"
@@ -138,7 +138,8 @@ function AddPolicy() {
             name="incrementalAmount"
             type="number"
             disabled={disableIncremental}
-            min={1}
+            min={0}
+            defaultValue={0}
           />
 
           <select className="drop" disabled={disableIncremental}
