@@ -204,8 +204,8 @@ function AddPolicy() {
           <label>Es acumulativo</label>
         </section>
 
-        {/*Campo para comentarios*/}
-        <label className="etiqueta">Comentarios:</label>
+        {/*Campo para descripcion*/}
+        <label className="etiqueta">Descripcion:</label>
         <textarea className="campo"
           {...register("description")}
           rows={5}
