@@ -128,9 +128,14 @@
         }
         margin: auto;
         color: red;
+        padding: 0;
     }
 
-    .checkbox{
+    .campoDrop .mensjError{
+        @include make-col(12);
+    }
+
+    .checkbox, .cumulative{
         @include make-col-ready();
         @include make-col(8);
 
@@ -144,6 +149,12 @@
         margin: auto;
         text-align: left;
         padding: 0;
+    }
+
+    .cumulative {
+        margin-top: 2%;
+        label{padding-right: 20px;}
+        input{vertical-align: middle;}
     }
 
     .botones{
