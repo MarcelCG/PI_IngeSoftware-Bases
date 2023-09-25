@@ -27,7 +27,7 @@ async function createPolitica(req, res) {
     } = req.body;
 
     // Llama a la función createPolitica que inserta en la tabla "Politica"
-    const success = await createPolitica(
+    const success = await Politica.createPolitica(
       titulo,
       cedula_empresa,
       periodo,
