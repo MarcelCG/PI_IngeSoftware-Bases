@@ -11,3 +11,7 @@ async function getAll() {
       throw error;
     }
 }
+
+module.exports = {
+  getAll,
+};
