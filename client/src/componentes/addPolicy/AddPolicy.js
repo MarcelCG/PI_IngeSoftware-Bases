@@ -27,19 +27,19 @@ function AddPolicy() {
   };
 
   const validationPatterns = {
-    period: {
+    periodo: {
       pattern: {
         value: /^[1-9]\d*$/,
         message: "Este campo debe ser mayor a 0"
       },
     },
-    amount: {
+    horas_a_dar: {
       pattern: {
         value: /^[1-9]\d*$/,
         message: "Este campo debe ser mayor a 0"
       },
     },
-    incrementalAmount: {
+    monto_a_incrementar: {
       pattern: {
         value: /^[1-9]\d*$/,
         message: "Este campo debe ser mayor a 0"
@@ -55,61 +55,61 @@ function AddPolicy() {
       <form onSubmit={handleSubmit(onSubmit)}>
 
         {/* Campo de entrada de texto para el título de la politica */}
-        <label className="etiqueta" htmlFor="name">Título: </label>
+        <label className="etiqueta" htmlFor="titulo">Título: </label>
         <input className={`campo ${errors.name ? "campoError" : ""}`}
-          {...register("name", {
+          {...register("titulo", {
             required: errorMessages.required,
           })}
-          name="name"
+          name="titulo"
           type="text"
           placeholder="Coloca el título de la política aquí"
         />
-        {errors.name && <span className="mensjError">{errors.name.message}</span>}
+        {errors.titulo && <span className="mensjError">{errors.titulo.message}</span>}
 
         {/* Campo de fecha de inicio */}
-        <label className="etiqueta" htmlFor="startDate">Fecha de Inicio: </label>
-        <input className={`campo ${errors.startDate ? "campoError" : ""}`}
-          {...register("startDate", {
+        <label className="etiqueta" htmlFor="fecha_inicio">Fecha de Inicio: </label>
+        <input className={`campo ${errors.fecha_inicio ? "campoError" : ""}`}
+          {...register("fecha_inicio", {
             required: !disableStartDate ? errorMessages.required : false,
           })}
-          name="startDate"
+          name="fecha_inicio"
           type="date"
           disabled={disableStartDate}
         />
-        {errors.startDate && <span className="mensjError">{errorMessages.required}</span>}
+        {errors.fecha_inicio && <span className="mensjError">{errorMessages.required}</span>}
 
         {/* Checkbox para "Rige a partir del contrato" */}
         <section className="checkbox">
           <input
-            {...register("startFromContract")}
+            {...register("inicia_desde_contrato")}
             type="checkbox" 
             checked={disableStartDate} 
-            onChange={(e) => {setDisableStartDate(e.target.checked); clearErrors("startDate")}}
+            onChange={(e) => {setDisableStartDate(e.target.checked); clearErrors("fecha_inicio")}}
           />
 
           <label>Rige a partir del contrato</label>
         </section>
 
         {/* Campo de fecha de vencimiento */}
-        <label className="etiqueta" htmlFor="dueDate">Fecha de Vencimiento: </label>
-        <input className={`campo ${errors.dueDate ? "campoError" : ""}`}
-          {...register("dueDate", {
+        <label className="etiqueta" htmlFor="fecha_final">Fecha de Vencimiento: </label>
+        <input className={`campo ${errors.fecha_final ? "campoError" : ""}`}
+          {...register("fecha_final", {
             required: errorMessages.required,
           })}
-          name="dueDate"
+          name="fecha_final"
           type="date"
         />
-        {errors.dueDate && <span className="mensjError">{errorMessages.required}</span>}
+        {errors.fecha_final && <span className="mensjError">{errorMessages.required}</span>}
 
         {/* Campo de período*/}
-        <label className="etiqueta" htmlFor="period">Periodo: </label>
+        <label className="etiqueta" htmlFor="periodo">Periodo: </label>
         <section className="campoDrop">
-          <input className={`campo ${errors.period ? "campoError" : ""}`}
-            {...register("period", {
+          <input className={`campo ${errors.periodo ? "campoError" : ""}`}
+            {...register("periodo", {
               required: errorMessages.required,
-              ...validationPatterns.period,
+              ...validationPatterns.periodo,
             })}
-            name="period"
+            name="periodo"
             type="number"
             min={0}
             defaultValue={0}
@@ -125,18 +125,18 @@ function AddPolicy() {
             <option value="años">Años</option>
           </select>
 
-          {errors.period && <span className="mensjError">{errors.period.message}</span>}
+          {errors.periodo && <span className="mensjError">{errors.periodo.message}</span>}
         </section>
 
         {/* Campo de incrementativo*/}
-        <label className="etiqueta" htmlFor="incrementalAmount">Incremento por Periodo: </label>
+        <label className="etiqueta" htmlFor="monto_a_incrementar">Incremento por Periodo: </label>
         <section className="campoDrop">
-          <input className={`campo ${errors.incrementalAmount ? "campoError" : ""}`}
-            {...register("incrementalAmount", {
+          <input className={`campo ${errors.monto_a_incrementar ? "campoError" : ""}`}
+            {...register("monto_a_incrementar", {
               required: !disableIncremental ? errorMessages.required : false,
-              ...validationPatterns.incrementalAmount
+              ...validationPatterns.monto_a_incrementar
             })}
-            name="incrementalAmount"
+            name="monto_a_incrementar"
             type="number"
             disabled={disableIncremental}
             min={0}
@@ -154,37 +154,37 @@ function AddPolicy() {
             <option value="meses">Meses</option>
             <option value="años">Años</option>
           </select>
-          {errors.incrementalAmount && <span className="mensjError">{errors.incrementalAmount.message}</span>}
+          {errors.monto_a_incrementar && <span className="mensjError">{errors.monto_a_incrementar.message}</span>}
         </section>
 
         {/* Checkbox para "Incrementativo" */}
         <section className="checkbox">
           <input
-            {...register("notIncremental")}
+            {...register("incrementativo")}
             type="checkbox" 
             checked={disableIncremental} 
-            onChange={(e) => {setDisableIncremental(e.target.checked); clearErrors("incrementalAmount");}}
+            onChange={(e) => {setDisableIncremental(e.target.checked); clearErrors("monto_a_incrementar");}}
           />
 
           <label>No es incrementativo</label>
         </section>
 
         {/*Campo para la unidad*/}
-        <label className="etiqueta" htmlFor="amount">Unidad: </label>
+        <label className="etiqueta" htmlFor="horas_a_dar">Unidad: </label>
         <section className="campoDrop">
-          <input className={`campo ${errors.amount ? "campoError" : ""}`}
-            {...register("amount", {
+          <input className={`campo ${errors.horas_a_dar ? "campoError" : ""}`}
+            {...register("horas_a_dar", {
               required: errorMessages.required,
-              ...validationPatterns.amount,
+              ...validationPatterns.horas_a_dar,
             })}
-            name="amount"
+            name="horas_a_dar"
             type="number"
             min={0}
             defaultValue={0}
           />
 
           <select className="drop"
-            {...register("amountUnit")}
+            {...register("horas_a_darUnit")}
           >
             <option value="horas">Horas</option>
             <option value="días">Días</option>
@@ -192,13 +192,13 @@ function AddPolicy() {
             <option value="meses">Meses</option>
             <option value="años">Años</option>
           </select>
-          {errors.amount && <span className="mensjError">{errors.amount.message}</span>}
+          {errors.horas_a_dar && <span className="mensjError">{errors.horas_a_dar.message}</span>}
         </section>
 
         {/* Checkbox para "Acumulativo" */}
         <section className="cumulative">
           <input
-            {...register("cumulative")}
+            {...register("acumulativo")}
             type="checkbox" 
           />
 
@@ -208,7 +208,7 @@ function AddPolicy() {
         {/*Campo para descripcion*/}
         <label className="etiqueta">Descripción:</label>
         <textarea className="campo"
-          {...register("description")}
+          {...register("descripcion")}
           rows={5}
           placeholder="Puedes describir la política aquí"
         />
