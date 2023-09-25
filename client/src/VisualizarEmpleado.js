@@ -3,7 +3,7 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function VisualizarEmpleado() {
-  const [employeeData, setDatosDelEmpleado] = useState( {
+  const [datosEmpleado, setDatosDelEmpleado] = useState( {
     nombreCompleto: "",
     cedula: "",
     correo: "",
@@ -36,23 +36,37 @@ function VisualizarEmpleado() {
 
   return (
     <div className="container mt-4">
-      <h2>Información del Empleado</h2>
-      <button onClick={cargarDatosDelEmpleado} className="btn btn-primary">
-      Cargar Datos del Empleado
-      </button>
-      <div className="row">
+      <h2 className="text-center mb-4">Información del Empleado</h2>
+      <div className="row justify-content-center">
         <div className="col-md-6">
-          <p><strong>Nombre:</strong> {employeeData.nombreCompleto}</p>
-          <p><strong>Cédula:</strong> {employeeData.cedula}</p>
-          <p><strong>Correo:</strong> {employeeData.correo}</p>
+          <div className="card mb-3">
+            <div className="card-header" style={{ backgroundColor: '#4f709c', color: '#ffffff' }}>
+              <h5 className="mb-0">Datos Personales</h5>
+            </div>
+            <div className="card-body">
+              <p><strong>Nombre:</strong> {datosEmpleado.nombreCompleto}</p>
+              <p><strong>Cédula:</strong> {datosEmpleado.cedula}</p>
+              <p><strong>Correo:</strong> {datosEmpleado.correo}</p>
+            </div>
+          </div>
         </div>
         <div className="col-md-6">
-          <p><strong>Teléfono:</strong> {employeeData.telefono}</p>
-          <p><strong>Fecha de Contratación:</strong> {employeeData.fechaContratacion}</p>
-          <p><strong>Jornada Laboral:</strong> {employeeData.jornadaLaboral}</p>
-          <p><strong>Rol:</strong> {employeeData.rol}</p>
+          <div className="card mb-3">
+            <div className="card-header" style={{ backgroundColor: '#4f709c', color: '#ffffff' }}>
+              <h5 className="mb-0">Detalles de Empleo</h5>
+            </div>
+            <div className="card-body">
+              <p><strong>Teléfono:</strong> {datosEmpleado.telefono}</p>
+              <p><strong>Fecha de Contratación:</strong> {datosEmpleado.fechaContratacion}</p>
+              <p><strong>Jornada Laboral:</strong> {datosEmpleado.jornadaLaboral}</p>
+              <p><strong>Rol:</strong> {datosEmpleado.rol}</p>
+            </div>
+          </div>
         </div>
       </div>
+      <button onClick={cargarDatosDelEmpleado} className="btn btn-primary mb-3">
+      Cargar Datos del Empleado
+      </button>
     </div>
   );
 }
