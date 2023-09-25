@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 import "./AddPolicy.css"
 
 function AddPolicy() {
@@ -7,10 +8,73 @@ function AddPolicy() {
   // Configuración del formulario usando react-hook-form
   const { register, handleSubmit, formState: { errors }, clearErrors } = useForm();
 
+  const [shouldFetchData, setShouldFetchData] = useState(false);
+
+  useEffect(() => {
+    if (shouldFetchData) {
+      // Realiza una solicitud GET al servidor Express
+      axios.get('http://localhost:4223/api/politicas')
+        .then((response) => {
+          console.log(response.data);
+          setShouldFetchData(false); // Establece shouldFetchData nuevamente en false
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [shouldFetchData]);
+
   // Función que se ejecuta al enviar el formulario
   const onSubmit = (data) => {
     console.log(data);
+
+    setShouldFetchData(true);
+
+    const {
+      titulo,
+      periodo,
+      fecha_inicio,
+      fecha_final,
+      inicia_desde_contrato,
+      horas_a_dar,
+      incrementativo,
+      acumulativo,
+    } = data;
+
+    console.log('Valores extraídos de data:');
+        console.log('Titulo:', titulo);
+        console.log('Periodo:', periodo);
+        console.log('Fecha de inicio:', fecha_inicio);
+        console.log('Fecha final:', fecha_final);
+        console.log('Inicia desde contrato:', inicia_desde_contrato);
+        console.log('Horas a dar:', horas_a_dar);
+        console.log('Incrementativo:', incrementativo);
+        console.log('Acumulativo:', acumulativo);
+  
+    axios
+      .post('http://localhost:4223/api/politicas', {
+        titulo,
+        cedula_empresa: '33346390',
+        periodo,
+        fecha_inicio,
+        fecha_final,
+        inicia_desde_contrato,
+        horas_a_dar,
+        incrementativo,
+        acumulativo,
+        activo:true,
+      })
+      .then((response) => {
+        console.log('Solicitud POST exitosa:', response.data);
+      })
+      .catch((error) => {
+        console.error('Error en la solicitud POST:', error);
+      });
+
+
+
   };
+  
 
   // Estado del checkbox de "Rige a partir del contrato"
   const [disableStartDate, setDisableStartDate] = useState(false);
