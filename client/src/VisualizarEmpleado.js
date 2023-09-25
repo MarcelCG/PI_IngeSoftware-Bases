@@ -30,13 +30,16 @@ function VisualizarEmpleado() {
   };
 
   // Llama a la función para cargar los datos del empleado cuando se carga el componente (Base de datos)
-  useEffect(() => {
-    cargarDatosDelEmpleado();
-  }, []);
+  //useEffect(() => {
+   // cargarDatosDelEmpleado();
+  //}, []);
 
   return (
     <div className="container mt-4">
       <h2>Información del Empleado</h2>
+      <button onClick={cargarDatosDelEmpleado} className="btn btn-primary">
+      Cargar Datos del Empleado
+      </button>
       <div className="row">
         <div className="col-md-6">
           <p><strong>Nombre:</strong> {employeeData.nombreCompleto}</p>
