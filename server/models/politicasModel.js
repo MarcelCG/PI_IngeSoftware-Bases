@@ -54,8 +54,64 @@ async function createPolitica(
   }
 }
 
+// Función para obtener una política por su título
+async function getByTitulo(titulo) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('titulo', sql.NVarChar, titulo)
+      .query('SELECT * FROM Politica WHERE titulo = @titulo');
+    if (result.recordset.length > 0) {
+      // Si se encontró una política con ese título, la retornamos
+      return result.recordset[0];
+    } else {
+      // Si no se encontró ninguna política con ese título, retornamos null
+      return null;
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getByCedulaEmpresa(cedula_empresa) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('cedula_empresa', sql.NVarChar, cedula_empresa)
+      .query('SELECT * FROM Politica WHERE cedula_empresa = @cedula_empresa');
+
+    return result.recordset;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getByTituloAndCedula(titulo, cedula_empresa) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('titulo', sql.NVarChar, titulo)
+      .input('cedula_empresa', sql.NVarChar, cedula_empresa)
+      .query('SELECT * FROM Politica WHERE titulo = @titulo AND cedula_empresa = @cedula_empresa');
+    if (result.recordset.length > 0) {
+      return result.recordset[0];
+    } else {
+      return null;
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 
 module.exports = {
   getAll,
   createPolitica,
+  getByTitulo,
+  getByCedulaEmpresa,
+  getByTituloAndCedula,
 };
