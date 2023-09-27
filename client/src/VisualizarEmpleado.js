@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function VisualizarEmpleado() {
