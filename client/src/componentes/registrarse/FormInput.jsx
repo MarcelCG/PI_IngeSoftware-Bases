@@ -1,18 +1,23 @@
-import { useState } from "react";
+import React, {useState} from 'react';
 
 const FormInput = (props) => {
-  const {errorMessage, onChange, id, boolError, ...inputProps } = props;
+  const {errorMessage, onChange, id, boolError, isPassword, toggle, style, ...inputProps } = props;
+  
+  const togglePasswordVisibility = () => {
+      toggle(); 
+  };
 
- return (
-    <div className="mb-3 row">
-      <input
-        className={`form-control form-control-lg${boolError ? ' is-invalid' : ''}`}
-        {...inputProps}
-        onChange={onChange}
-      />
-      {boolError && <div className="invalid-feedback">{errorMessage}</div>}
-    </div>
-  );
+  return (
+      <div className="mb-3 p-1 row">
+        <input
+          className={`form-control col form-control-lg${boolError ? ' is-invalid': ''} ${style}`}
+          {...inputProps}
+          onChange={onChange}
+        />
+        {props.isPassword && <div onClick={togglePasswordVisibility} className="btn col-2 m-1 btn-dark">SHOW</div>}
+        {boolError && <div className="invalid-feedback">{errorMessage}</div>}
+      </div>
+    );
 };
 
 const handleSubmit = (inputs, formData, setErrForm, errForm) => {
@@ -30,15 +35,27 @@ const handleSubmit = (inputs, formData, setErrForm, errForm) => {
       errForm[input.name] = true;
     }
   });
-  
+
   const hasError = Object.values(updatedErrForm).some((value) => value === true);
   return hasError;
-};
+};  
 
 const CheckRegex = (value, pattern) => {
   return pattern.test(value);
-}
+};
+
+const TogglePassword = () => {
+  const [visibility, setVisibility] = useState(false);
+
+  const toggle = () => {
+    setVisibility((prevVisibility) => !prevVisibility);
+  };
+  const type = visibility ? 'text' : 'password';
+ 
+  return [type, toggle];
+};
 
 export default FormInput;
 export { CheckRegex };
 export { handleSubmit };
+export { TogglePassword };

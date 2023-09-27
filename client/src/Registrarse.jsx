@@ -13,6 +13,8 @@ const defaultData = {
   empresaCedu:"",
   empleadorName:"",
   empleadorCorreo:"",
+  empleadorApe1:"",
+  empleadorApe2:"",
   empleadorCorreo2:"",
   empleadorTel:"",
   empleadorTel2:"",
@@ -27,6 +29,8 @@ const errData = {
   empresaTel2:false,
   empresaCedu:false,
   empleadorName:false,
+  empleadorApe1:false,
+  empleadorApe2:false,
   empleadorCorreo:false,
   empleadorCorreo2:false,
   empleadorTel:false,
@@ -37,6 +41,7 @@ const errData = {
 const steps = [
   {id: "formEmpresa"},
   {id: "formEmpleador"},
+  {id: "submited"},
 ];
 
 export const RegistroForm = () => {
