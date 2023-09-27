@@ -1,24 +1,47 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+
+// import Inicio from './Inicio';
+// import Empleados from './Empleados';
+// import Politicas from './Politicas';
 
 function App() {
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header>
+          <button onClick={toggleMenu}>Mostrar/ocultar menú</button>
+        </header>
+        <main>
+          <div className={`menu ${menuVisible ? 'visible' : ''}`}>
+            <ul>
+              <li>
+                <Link to="/">Inicio</Link>
+              </li>
+              <li>
+                <Link to="/empleados">Empleados</Link>
+              </li>
+              <li>
+                <Link to="/politicas">Políticas</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="content">
+            {/* Rutas correspondientes a los componentes */}
+            {/* <Route path="/" exact component={Inicio} /> */}
+            {/* <Route path="/empleados" component={Empleados} /> */}
+            {/* <Route path="/politicas" component={Politicas} /> */}
+          </div>
+        </main>
+      </div>
+    </Router>
   );
 }
 
