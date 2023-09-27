@@ -1,5 +1,15 @@
 const Empleado = require('../models/empleadoModel');
 
+// Obtener todos los empleados
+async function getAllEmpleados(req, res) {
+    try {
+      const empleados = await Empleado.getAll();
+      res.status(200).json(empleados);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+}
+
 // Crear un nuevo empleado
 async function createEmpleado(req, res) {
   try {
@@ -31,6 +41,6 @@ async function createEmpleado(req, res) {
 // Otros controladores para operaciones adicionales con Empleados pueden ser agregados aquí
 
 module.exports = {
+  getAllEmpleados,
   createEmpleado,
-  // Agrega aquí otros controladores relacionados con Empleados según sea necesario
 };

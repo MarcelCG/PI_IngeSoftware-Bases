@@ -1,6 +1,17 @@
 const sql = require('mssql');
 const dbConfig = require('../config/dbconfig'); // Importa la configuración de la base de datos
 
+// Obtener todos los empleados
+async function getAll() {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const result = await pool.request().query('SELECT * FROM Empleado');
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+}
+
 // Definir el modelo para la tabla Empleado
 async function createEmpleado(
   cedula_empleado,
@@ -32,5 +43,6 @@ async function createEmpleado(
 
 // Exportar el modelo
 module.exports = {
+  getAll,
   createEmpleado,
 };
