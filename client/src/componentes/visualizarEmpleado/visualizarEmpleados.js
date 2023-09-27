@@ -1,13 +1,26 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 // Bootstrap Bundle JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import 'bootstrap/dist/css/bootstrap.css';
 import "../styles/visualizarEmpleados.css"
-import {useState, useEffect} from 'react'
 import 'font-awesome/css/font-awesome.min.css';
 
+const URI = 'http://localhost:3000/empleados/'
+
 const ListOfEmployees = () => {
+
+    const [empleados, setEmpleado] = useState([])
+    useEffect(() => {
+        getAllEmpleados()
+    },[])
+
+    const getAllEmpleados = async () => {
+        const res = await axios.get(URI)
+        setEmpleado(res.data)
+    }
+    console.log(empleados)
 
     return(
         <div className="main-content">
@@ -50,36 +63,18 @@ const ListOfEmployees = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td className="col--5">Hola</td>
-                                                        <td className="col--5">Mark</td>
-                                                        <td className="col--5">Otto</td>
-                                                        <td className="col--5">@mdo</td>
-                                                        <td className="col--5">
-                                                            <button className="btn btn-primary">Ver/Editar</button>
-                                                            <button className="btn btn-danger">Eliminar</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="col--5">Hola</td>
-                                                        <td className="col--5">Mark</td>
-                                                        <td className="col--5">Otto</td>
-                                                        <td className="col--5">@mdo</td>
-                                                        <td className="col--5">
-                                                            <button className="btn btn-primary">Ver/Editar</button>
-                                                            <button className="btn btn-danger">Eliminar</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="col--5">Hola</td>
-                                                        <td className="col--5">Mark</td>
-                                                        <td className="col--5">Otto</td>
-                                                        <td className="col--5">@mdo</td>
-                                                        <td className="col--5">
-                                                            <button className="btn btn-primary">Ver/Editar</button>
-                                                            <button className="btn btn-danger">Eliminar</button>
-                                                        </td>
-                                                    </tr>
+                                                    { empleados.map ( (empleado) => (
+                                                        <tr>
+                                                            <td className="col--5">{ empleado.cedula }</td>
+                                                            <td className="col--5">{ empleado.nombre_completo }</td>
+                                                            <td className="col--5">{ empleado.correo }</td>
+                                                            <td className="col--5">{ empleado.rol }</td>
+                                                            <td className="col--5">
+                                                                <button className="btn btn-primary btn-sm">Ver/Editar</button>
+                                                                <button className="btn btn-danger btn-sm">Eliminar</button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
                                                 </tbody>
                                             </table>
                                         </div>
