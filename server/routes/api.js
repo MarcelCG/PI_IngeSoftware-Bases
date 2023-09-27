@@ -9,6 +9,7 @@ const jornadaRoutes = require('./jornadaRoutes')
 const libresRoutes = require('./libresRoutes')
 const telefonosEmpresaRoutes = require('./telefonosEmpresaRoutes')
 const correosEmpresaRoutes = require('./correosEmpresasRoutes')
+const EmpresasRoutes = require('./empresaRoutes')
 
 
 // Asocia las rutas
@@ -19,5 +20,6 @@ router.use('/jornadas', jornadaRoutes);
 router.use('/libres', libresRoutes);
 router.use('/telEmpresa', telefonosEmpresaRoutes);
 router.use('/correoEmpresa', correosEmpresaRoutes);
+router.use('/empresa', EmpresasRoutes);
 
 module.exports = router;
