@@ -108,5 +108,5 @@ module.exports = {
   createEmpleado,
   getByCedula,
   getByEmpresa,
-  getByCedulaAndEmpresa
+  getByCedulaAndEmpresa,
 };
