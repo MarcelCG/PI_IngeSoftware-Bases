@@ -20,10 +20,24 @@ const FormInput = (props) => {
     );
 };
 
+const FormReview = (props) => {
+ const {id, style, ...inputProps } = props;
+  return (
+    <div className="mb-2 row">
+      <div   
+        {...inputProps}
+      >
+        <h3>{inputProps.label}</h3>
+        {inputProps.value}
+      </div>
+    </div>
+  );
+};
+
 const handleSubmit = (inputs, formData, setErrForm, errForm) => {
   const updatedErrForm = {};
 
-  inputs.map((input) => {
+  inputs.forEach((input) => {
     if (input.required && CheckRegex(formData[input.name], input.patron)) {
       updatedErrForm[input.name] = false;
       errForm[input.name] = false;
@@ -59,3 +73,4 @@ export default FormInput;
 export { CheckRegex };
 export { handleSubmit };
 export { TogglePassword };
+export { FormReview };

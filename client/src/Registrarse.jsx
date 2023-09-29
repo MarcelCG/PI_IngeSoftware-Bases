@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useForm, useStep } from "react-hooks-helper";
 import 'bootstrap/dist/css/bootstrap.css';
 import {FormEmpresa}   from './componentes/registrarse/FormEmpresa.jsx';
 import {FormEmpleador} from './componentes/registrarse/FormEmpleador';
+import {FormSubmit} from './componentes/registrarse/FormSubmit';
 
 const defaultData = {
   empresaName:"",
@@ -12,9 +13,10 @@ const defaultData = {
   empresaTel2:"",
   empresaCedu:"",
   empleadorName:"",
-  empleadorCorreo:"",
   empleadorApe1:"",
   empleadorApe2:"",
+  empleadorCedu:"",
+  empleadorCorreo:"",
   empleadorCorreo2:"",
   empleadorTel:"",
   empleadorTel2:"",
@@ -31,6 +33,7 @@ const errData = {
   empleadorName:false,
   empleadorApe1:false,
   empleadorApe2:false,
+  empleadorCedu:false,
   empleadorCorreo:false,
   empleadorCorreo2:false,
   empleadorTel:false,
@@ -41,7 +44,7 @@ const errData = {
 const steps = [
   {id: "formEmpresa"},
   {id: "formEmpleador"},
-  {id: "submited"},
+  {id: "forSubmit"},
 ];
 
 export const RegistroForm = () => {
@@ -56,6 +59,9 @@ export const RegistroForm = () => {
       return <FormEmpresa {...props} />;
     case "formEmpleador":
       return <FormEmpleador {...props} />;
+    case "forSubmit":
+      return <FormSubmit {...props} />;
+    default:
   }
 
   return (<div></div>);
