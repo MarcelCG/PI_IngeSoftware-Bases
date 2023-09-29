@@ -95,12 +95,31 @@ async function getEmpleadoByCedulaAndEmpresa(req, res) {
     }
 }
 
-// Otros controladores para operaciones adicionales con Empleados pueden ser agregados aquí
+// Obtener un empleado por su cédula (para visualización)
+async function viewEmpleadoByCedula(req, res) {
+  const { cedula_empleado } = req.params;
+  try {
+    const empleado = await Empleado.viewByCedula(cedula_empleado);
+    if (empleado) {
+      res.status(200).json(empleado);
+    } else {
+      res.status(404).json({ message: 'Empleado no encontrado para visualización' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener el empleado para visualización', error: error.message });
+  }
+}
+
+module.exports = {
+  viewEmpleadoByCedula,
+};
+
 
 module.exports = {
   getAllEmpleados,
   createEmpleado,
   getEmpleadoByCedula,
   getEmpleadoByEmpresa,
-  getEmpleadoByCedulaAndEmpresa
+  getEmpleadoByCedulaAndEmpresa,
+  viewEmpleadoByCedula
 };

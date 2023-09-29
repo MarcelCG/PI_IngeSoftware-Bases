@@ -6,6 +6,7 @@ const EmpleadoController = require('../controllers/empleadoController');
 router.get('/', EmpleadoController.getAllEmpleados);
 router.post('/', EmpleadoController.createEmpleado);
 router.get('/byCedula/:cedula_empleado', EmpleadoController.getEmpleadoByCedula);
+router.get('/viewByCedula/:cedula_empleado', EmpleadoController.viewEmpleadoByCedula);
 router.get('/byEmpresa/:cedula_empresa', EmpleadoController.getEmpleadoByEmpresa);
 router.get('/searchEmpleado/:cedula_empleado/:cedula_empresa', EmpleadoController.getEmpleadoByCedulaAndEmpresa)
 
