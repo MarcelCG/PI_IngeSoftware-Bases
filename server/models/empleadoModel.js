@@ -102,34 +102,34 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
 
-// ...
-
-// Función para obtener un empleado por su cédula (VisualizarEmpleado)
-async function viewByCedula(cedula_empleado) {
-  try {
-    const pool = await sql.connect(dbConfig);
-    const result = await pool
-      .request()
-      .input('cedula_empleado', sql.NVarChar, cedula_empleado)
-      .query(`
-        SELECT U.nombre, U.primer_apellido, U.segundo_apellido, EU.telefono, E.fecha_contratacion, E.rol
-        FROM Empleado E
-        INNER JOIN Usuario U ON E.cedula_empleado = U.cedula
-        LEFT JOIN TelefonosUsuarios EU ON U.cedula = EU.cedula_usuario
-        WHERE E.cedula_empleado = @cedula_empleado
-      `);
-      
-    if (result.recordset.length > 0) {
-      // Si se encontró un empleado, se retorna
-      return result.recordset[0];
-    } else {
-      // Si no se encontró ningún empleado, retornamos null
-      return null;
+  async function getEmpleadoByCedulaYEmpresa(cedulaEmpleado, cedulaEmpresa) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const result = await pool
+        .request()
+        .input('cedulaEmpleado', sql.NVarChar, cedulaEmpleado)
+        .input('cedulaEmpresa', sql.NVarChar, cedulaEmpresa)
+        .query(`
+          SELECT U.nombre, U.primer_apellido, U.segundo_apellido, EU.telefono, E.fecha_contratacion, E.rol
+          FROM Empleado E
+          INNER JOIN Usuario U ON E.cedula_empleado = U.cedula
+          LEFT JOIN TelefonosUsuarios EU ON U.cedula = EU.cedula_usuario
+          WHERE E.cedula_empleado = @cedulaEmpleado
+            AND E.cedula_empresa = @cedulaEmpresa
+        `);
+        
+      if (result.recordset.length > 0) {
+        // Si se encontró un empleado, se retorna
+        return result.recordset[0];
+      } else {
+        // Si no se encontró ningún empleado, retornamos null
+        return null;
+      }
+    } catch (error) {
+      throw error;
     }
-  } catch (error) {
-    throw error;
   }
-}
+  
 
 // Exportar el modelo
 module.exports = {
@@ -138,6 +138,6 @@ module.exports = {
   getByCedula,
   getByEmpresa,
   getByCedulaAndEmpresa,
-  viewByCedula,
+  getEmpleadoByCedulaYEmpresa,
 };
 
