@@ -1,7 +1,9 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import AddPolicyForm from "./AddPolicyForm";
+import 'react-toastify/dist/ReactToastify.css';
 import "./AddPolicy.css"
 
 // URL para el Api
@@ -57,15 +59,21 @@ function AddPolicy() {
   
     axios.post(politicas, formData).then((response) => {
         console.log('Solicitud POST exitosa:', response.data);
+        // Muestra una notificación de éxito
+        toast.success('Política agregada con éxito');
 
         /*Aquí debería volver a la pantalla visualizar políticas*/
       }).catch((error) => {
         if (error.response && error.response.status === 400
           && error.response.data 
           && error.response.data.error === 'El título ya existe') {
-            console.error(error.response.data.error, error);
+          console.error(error.response.data.error, error);
+          // Muestra una notificación de error
+          toast.error('Ya existe una política con ese título');
         } else {
           console.error('Error en la solicitud POST:', error);
+          // Muestra una notificación de error
+        toast.error('Hubo un error inesperado al agregar la política, trate de nuevo');
         }
       });
   };
@@ -114,6 +122,7 @@ function AddPolicy() {
           validationPatterns={validationPatterns}
         />
 
+        <ToastContainer />
     </div>
   );
 }
