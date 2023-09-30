@@ -12271,4 +12271,8 @@ textarea.form-control-lg {
   border: none;
   border-radius: 5px;
   color: #FFFFFF;
+}
+.formulario .botones .cancelar:hover, .formulario .botones .agregar:hover {
+  background: #18055e;
+  transform: scale(1, 1.1);
 }/*# sourceMappingURL=AddPolicy.css.map */
