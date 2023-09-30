@@ -1,42 +1,42 @@
 import React from 'react';
 import { useForm, useStep } from "react-hooks-helper";
 import 'bootstrap/dist/css/bootstrap.css';
-import {FormEmpresa}   from './componentes/registrarse/FormEmpresa.jsx';
-import {FormEmpleador} from './componentes/registrarse/FormEmpleador';
-import {FormSubmit} from './componentes/registrarse/FormSubmit';
+import {FormEmpresa}   from './FormEmpresa';
+import {FormEmpleador} from './FormEmpleador';
+import {FormSubmit} from './FormSubmit';
 
 const defaultData = {
   empresaName:"",
-  empresaCorreo:"",
+  empresaCorreo1:"",
   empresaCorreo2:"",
-  empresaTel:"",
+  empresaTel1:"",
   empresaTel2:"",
   empresaCedu:"",
   empleadorName:"",
   empleadorApe1:"",
   empleadorApe2:"",
   empleadorCedu:"",
-  empleadorCorreo:"",
+  empleadorCorreo1:"",
   empleadorCorreo2:"",
-  empleadorTel:"",
+  empleadorTel1:"",
   empleadorTel2:"",
   empleadorPass:"",
 };
 
 const errData = {
   empresaName:false,
-  empresaCorreo:false,
+  empresaCorreo1:false,
   empresaCorreo2:false,
-  empresaTel:false,
+  empresaTel1:false,
   empresaTel2:false,
   empresaCedu:false,
   empleadorName:false,
   empleadorApe1:false,
   empleadorApe2:false,
   empleadorCedu:false,
-  empleadorCorreo:false,
+  empleadorCorreo1:false,
   empleadorCorreo2:false,
-  empleadorTel:false,
+  empleadorTel1:false,
   empleadorTel2:false,
   empleadorPass:false,
 };

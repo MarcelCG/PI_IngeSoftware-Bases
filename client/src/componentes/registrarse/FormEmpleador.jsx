@@ -48,7 +48,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		},
 		{
 		  id:5,
-		  name:"empleadorCorreo",
+		  name:"empleadorCorreo1",
 			type:"text",
 			placeholder:"Email personal",
 			errorMessage: "ejemplo@dominio.com",
@@ -66,7 +66,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		},
 		{
 		  id:7,
-		  name:"empleadorTel",
+		  name:"empleadorTel1",
 			type:"tel",
 			placeholder:"telefono",
 			errorMessage:"1234-5678",
@@ -124,8 +124,10 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 			        	<td>al menos un signo especial [ ! , @ , # , $ , % , & , _ , \ , -]</td>
 			        </small>
 	      	  </form>
-		      <button onClick={() => navigation.previous()} className="btn col-3 btn-secondary ">Atras</button>
-		      <button onClick={nextClick} className="btn col-4 btn-primary ">Submit	</button>
+	      	  <div className="row px-4 justify-content-between">
+		      	<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary ">atras</button>
+		      	<button onClick={nextClick} className="btn col-3 btn-primary ">siguiente</button>
+		     </div>
 			  </div>
 			</div>
 		</div>

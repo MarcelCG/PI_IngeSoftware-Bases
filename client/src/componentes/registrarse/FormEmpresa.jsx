@@ -15,7 +15,7 @@ export const FormEmpresa = ({ formData, setForm, errForm, setErrForm, navigation
 		{
 		  id:2,
 			type:"text",
-			name:"empresaCorreo",
+			name:"empresaCorreo1",
 			placeholder:"Email empresarial",
 			errorMessage: "ejemplo@dominio.com",
 			required: true,
@@ -31,7 +31,7 @@ export const FormEmpresa = ({ formData, setForm, errForm, setErrForm, navigation
 		{
 		  id:4,
 			type:"text",
-			name:"empresaTel",
+			name:"empresaTel1",
 			placeholder:"Numero de telefono",
 			errorMessage:"1234-5678",
 			required: true,
@@ -76,7 +76,9 @@ export const FormEmpresa = ({ formData, setForm, errForm, setErrForm, navigation
 						    onChange={setForm}
 						  />))}
 				    </form>
-			    <button onClick={nextClick} className="text-right btn col-3 btn-primary">next</button>
+				<div className="row px-4 justify-content-between">
+			    	<button onClick={nextClick} className="text-right btn col-3 btn-primary">next</button>
+			    </div>
 			  </div>
 			</div>
 		</div>

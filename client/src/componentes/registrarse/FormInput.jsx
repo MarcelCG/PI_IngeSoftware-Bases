@@ -14,7 +14,7 @@ const FormInput = (props) => {
           {...inputProps}
           onChange={onChange}
         />
-        {props.isPassword && <div onClick={togglePasswordVisibility} className="btn col-2 m-1 btn-dark">SHOW</div>}
+        {props.isPassword && <div onClick={togglePasswordVisibility} className="btn col-2 m-1 btn-outline-dark">SHOW</div>}
         {boolError && <div className="invalid-feedback">{errorMessage}</div>}
       </div>
     );
@@ -27,7 +27,7 @@ const FormReview = (props) => {
       <div   
         {...inputProps}
       >
-        <h3>{inputProps.label}</h3>
+        <h4>{inputProps.label}</h4>
         {inputProps.value}
       </div>
     </div>
