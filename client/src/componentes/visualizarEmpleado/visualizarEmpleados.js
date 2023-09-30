@@ -5,9 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import 'bootstrap/dist/css/bootstrap.css';
 import "../styles/visualizarEmpleados.css"
-import 'font-awesome/css/font-awesome.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-const URI = 'http://localhost:3000/empleados/'
+const URI = 'http://localhost:4223/api/empleados/'
 
 const ListOfEmployees = () => {
 
@@ -15,12 +16,19 @@ const ListOfEmployees = () => {
     useEffect(() => {
         getAllEmpleados()
     },[])
-
+    
     const getAllEmpleados = async () => {
         const res = await axios.get(URI)
         setEmpleado(res.data)
     }
-    console.log(empleados)
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 7;
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    const records = empleados.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(empleados.length/recordsPerPage);
+    const numbers = [...Array(npage +1).keys()].slice(1)
 
     return(
         <div className="main-content">
@@ -36,7 +44,7 @@ const ListOfEmployees = () => {
                                     <div className="row mb-2">
                                         <div className="col-md-6">
                                             <div className="mb-3">
-                                                <a href="" className="btn btn-success">Agregar</a>
+                                                <a href="" className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</a>
                                             </div>
                                         </div>
                                         <div className="col-md-6">
@@ -63,20 +71,40 @@ const ListOfEmployees = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    { empleados.map ( (empleado) => (
-                                                        <tr>
+                                                    { records.map ( (empleado, i) => (
+                                                        <tr key={i}>
                                                             <td className="col--5">{ empleado.cedula }</td>
                                                             <td className="col--5">{ empleado.nombre_completo }</td>
                                                             <td className="col--5">{ empleado.correo }</td>
                                                             <td className="col--5">{ empleado.rol }</td>
                                                             <td className="col--5">
-                                                                <button className="btn btn-primary btn-sm">Ver/Editar</button>
-                                                                <button className="btn btn-danger btn-sm">Eliminar</button>
+                                                                <button className="btn btn-primary me-2"><FontAwesomeIcon icon={faPenToSquare} /></button>
+                                                                <button className="btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
                                                             </td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
                                             </table>
+                                            <nav>
+                                                <ul className="pagination">
+                                                    <li className="page-item">
+                                                        <a href="#" className="page-link"
+                                                         onClick={prePage}>Prev</a>
+                                                    </li>
+                                                    {
+                                                        numbers.map((n, i) => (
+                                                            <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
+                                                                <a href="#" className='page-link'
+                                                                onClick={()=> changeCPage(n)}>{n}</a>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                    <li className="page-item">
+                                                        <a href="#" className="page-link"
+                                                         onClick={nextPage}>Next</a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>
@@ -87,6 +115,19 @@ const ListOfEmployees = () => {
             </div>
         </div>
     )
+    function prePage() {
+        if(currentPage !== 1) {
+            setCurrentPage(currentPage-1)
+        }
+    }
+    function changeCPage(id) {
+        setCurrentPage(id)
+    }
+    function nextPage() {
+        if(currentPage !== npage) {
+            setCurrentPage(currentPage+1)
+        }
+    }
 }
 
 export default ListOfEmployees;
