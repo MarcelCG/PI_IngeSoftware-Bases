@@ -60,7 +60,13 @@ function AddPolicy() {
 
         /*Aquí debería volver a la pantalla visualizar políticas*/
       }).catch((error) => {
-        console.error('Error en la solicitud POST:', error);
+        if (error.response && error.response.status === 400
+          && error.response.data 
+          && error.response.data.error === 'El título ya existe') {
+            console.error(error.response.data.error, error);
+        } else {
+          console.error('Error en la solicitud POST:', error);
+        }
       });
   };
 
