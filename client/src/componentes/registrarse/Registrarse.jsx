@@ -1,5 +1,5 @@
-import React from 'react';
-import { useForm, useStep } from "react-hooks-helper";
+import React, {useState} from 'react';
+import { useStep } from "react-hooks-helper";
 import 'bootstrap/dist/css/bootstrap.css';
 import {FormEmpresa}   from './FormEmpresa';
 import {FormEmpleador} from './FormEmpleador';
@@ -48,8 +48,8 @@ const steps = [
 ];
 
 export const RegistroForm = () => {
-  const [formData, setForm] = useForm(defaultData);
-  const [errForm, setErrForm] = useForm(errData);
+  const [formData, setForm] = useState(defaultData);
+  const [errForm, setErrForm] = useState(errData);
   const {step, navigation} = useStep({steps, initialStep: 0});
 
   const props = {formData, setForm, errForm, setErrForm, navigation};

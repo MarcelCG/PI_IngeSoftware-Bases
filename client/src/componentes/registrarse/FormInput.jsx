@@ -10,11 +10,13 @@ const FormInput = (props) => {
   return (
       <div className="mb-3 p-1 row">
         <input
-          className={`form-control col form-control-lg${boolError ? ' is-invalid': ''} ${style}`}
+          className={`form-control  col form-control-lg${boolError ? ' is-invalid': ''} ${style}`}
           {...inputProps}
           onChange={onChange}
         />
-        {props.isPassword && <div onClick={togglePasswordVisibility} className="btn col-2 m-1 btn-outline-dark">SHOW</div>}
+        {(props.isPassword && <div onClick={togglePasswordVisibility} className="btn col-2 m-1 btn-outline-dark">
+          <img src="/password.png" alt="eye"  style={{ height: '40px', width: '40px' }} />
+        </div>)}
         {boolError && <div className="invalid-feedback">{errorMessage}</div>}
       </div>
     );
@@ -36,20 +38,18 @@ const FormReview = (props) => {
 
 const handleSubmit = (inputs, formData, setErrForm, errForm) => {
   const updatedErrForm = {};
-
   inputs.forEach((input) => {
+    console.log(formData[input.name]);
     if (input.required && CheckRegex(formData[input.name], input.patron)) {
       updatedErrForm[input.name] = false;
-      errForm[input.name] = false;
     } else if (!input.required && (formData[input.name] === '' || CheckRegex(formData[input.name], input.patron))) {
       updatedErrForm[input.name] = false;
-      errForm[input.name] = false;
     } else {
+      console.log("failed regex", formData[input.name]);
       updatedErrForm[input.name] = true;
-      errForm[input.name] = true;
     }
   });
-
+  setErrForm(updatedErrForm);
   const hasError = Object.values(updatedErrForm).some((value) => value === true);
   return hasError;
 };  

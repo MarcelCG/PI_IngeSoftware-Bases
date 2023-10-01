@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import {FormReview} from './FormInput'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 
 export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation }) => {
-	
-	const [error, setError] = useState(false);
+	const buttonRef = useRef(null);
 	const [errorDescr, setErrorDescr] = useState("");
 
 	const empresaValues = [
@@ -97,6 +98,12 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 		},
 	]
 
+	const openModal = (buttonRef) => {
+	    if (buttonRef.current) {
+	      buttonRef.current.click();
+	    }
+	  };
+
 	const sendDataDB = async (e) => {
 	  try {
 	    const response = await axios.post('http://localhost:5000/api/registro', {
@@ -115,31 +122,33 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 	    		break;
 	    	    default:
 	   		}
-	   		setError(true);
+	   		openModal(buttonRef);
 	    }
 	    else {
 	    	console.log('POST exitoso:', response.data);
-	    	setError(false);
 	    }
 	  }
 	  catch (error) {
 	  		console.log("E R R O R: ", error);
-	    	setError(true);
+	  		openModal(buttonRef);
 	    	setErrorDescr("Ha ocurrido un error, vuelva a intentar mas tarde");
 	  }
 	};
 
 	return (
 		<div className="container col-5 position-static">
+		<button hidden="true" data-bs-toggle="modal" data-bs-target="#errorModal" ref={buttonRef} />
+	    <div className="modal fade" id="errorModal">
+	      <div className="modal-dialog modal-dialog-centered">
+	        <div class="alert alert-danger" role="alert">
+			  		{errorDescr}
+			  	</div>
+	      </div>
+	    </div>
 			<div className="card border-dark shadow m-3">
 				<div className="card-header">
-					<h2>Formulario | Review </h2>
+					<h2>Registro | Review </h2>
 				</div>
-				{(error && 
-					<div class="alert alert-danger" role="alert">
-					  {errorDescr}
-					</div>
-				)}
 				<div className="card-body">
 					<h4 className="px-3">Empresa</h4>
 				 	<div className="row alert alert-light m-3">

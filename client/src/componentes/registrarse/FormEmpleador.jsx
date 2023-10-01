@@ -7,60 +7,62 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 
 	const inputs = [
 		{
-		  id:1,
-		  name:"empleadorName",
+		 	id:1,
+		 	name:"empleadorName",
 			type:"text",
-			style:"col",
+			style:"col-4",
 			placeholder:"Nombre",
-			errorMessage: "solo letras",
+			errorMessage: "Solo se permiten letras",
 			required: true,
-			patron: /^([a-zA-Z ÁáÉéÍíÓóÚú]+)$/
+			patron: /^([a-zA-ZÁáÉéÍíÓóÚú]+[a-zA-ZÁáÉéÍíÓóÚú ]*)$/
 		},
 
 		{
 		  id:2,
 		  name:"empleadorApe1",
 			type:"text",
-			style:"col",
-			placeholder:"Apellido 1",
-			errorMessage: "solo letras",
+			style:"col-4",
+			placeholder:"Primer apellido",
+			errorMessage: "Solo se permiten letras",
 			required: true,
-			patron: /^([a-zA-Z ÁáÉéÍíÓóÚú]+)$/
+			patron: /^([a-zA-ZÁáÉéÍíÓóÚú]+[a-zA-ZÁáÉéÍíÓóÚú ]*)$/
 		},
 		{
 		  id:3,
 		  name:"empleadorApe2",
 			type:"text",
-			style:"col",
-			placeholder:"Apellido 2",
-			errorMessage: "solo letras",
+			style:"col-4",
+			placeholder:"Segundo pellido",
+			errorMessage: "Solo se permiten letras",
 			required: true,
-			patron: /^([a-zA-Z ÁáÉéÍíÓóÚú]+)$/
+			patron: /^([a-zA-ZÁáÉéÍíÓóÚú]+[a-zA-ZÁáÉéÍíÓóÚú ]*)$/
 		},
 		{
 		  id:4,
 		  name:"empleadorCedu",
 			type:"text",
-			placeholder:"Cedula",
-			errorMessage: "0123456789",
+			placeholder:"Cedula de identidad",
+			errorMessage: "Ejemplo: 1-2345-6789",
 			required: true,
-			patron: /^([0-9]{10})$/
+			patron: /^([1-9]-[0-9]{4}-[0-9]{4})$/
 		},
 		{
 		  id:5,
 		  name:"empleadorCorreo1",
 			type:"text",
+			style:"col-6",
 			placeholder:"Email personal",
-			errorMessage: "ejemplo@dominio.com",
+			errorMessage: "Ejemplo: 1-2345-6789",
 			required: true,
-			patron: /^([a-zA-Z0-9&\-_.]+@[a-zA-Z.]+.[a-zA-Z]{2,})$/
+			patron: /^([a-zA-Z0-9&-_.]+@[a-zA-Z.]+.[a-zA-Z]{2,})$/
 		},
 		{
 		  id:6,
 		  name:"empleadorCorreo2",
 			type:"text",
-			placeholder:"email-opcional",
-			errorMessage: "ejemplo@dominio.com",
+			style:"col-6",
+			placeholder:"Email personal *",
+			errorMessage: "Ejemplo: 1-2345-6789",
 			required: false,
 			patron: /^([a-zA-Z0-9&\-_.]+@[a-zA-Z.]+.[a-zA-Z]{2,})$/
 		},
@@ -68,8 +70,9 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:7,
 		  name:"empleadorTel1",
 			type:"tel",
-			placeholder:"telefono",
-			errorMessage:"1234-5678",
+			style:"col-6",
+			placeholder:"Telefono personal",
+			errorMessage:"Formato 1234-5678",
 			required: true,
 			patron: /^([87624][0-9]{3}-[0-9]{4})$/
 		},
@@ -77,7 +80,8 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:8,
 		  name:"empleadorTel2",
 			type:"tel",
-			placeholder:"telefono-opcional",
+			style:"col-6",
+			placeholder:"Telefono personal *",
 			errorMessage:"1234-5678",
 			required: false,
 			patron: /^([87624][0-9]{3}-[0-9]{4})$/
@@ -86,7 +90,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:9,
 		  name:"empleadorPass",
 			type: inputType,
-			placeholder:"password",
+			placeholder:"Contaseña",
 			errorMessage:"No cumple con los requisitos",
 			required: true,
 			isPassword:true,
@@ -112,17 +116,17 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 			            {...input}
 			            value={formData[input.name]}
 			            boolError={errForm[input.name]}
-			            onChange={setForm}
+			            onChange={(e) => setForm({ ...formData, [input.name]: e.target.value })}
 			            toggle={toggle}
 			          />
 			        </div>
 			        ))}
 			        <small id="passReq" className="row form-text text-muted">
-			        	contasenha requisitos:
-			        	<td>8 - 20 caracteres</td>
-			        	<td>al menos 1 mayuscula, 1 minuscula y 1 numero</td>
-			        	<td>al menos un signo especial [ ! , @ , # , $ , % , & , _ , \ , -]</td>
-			        </small>
+					  contraseña requisitos:
+					  <div>8 - 20 caracteres</div>
+					  <div>Al menos 1 mayúscula, 1 minúscula y 1 número</div>
+					  <div>Al menos 1 signo especial [ ! , @ , # , $ , % , & , _ , \ , - ]</div>
+					</small>
 	      	  </form>
 	      	  <div className="row px-4 justify-content-between">
 		      	<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary ">atras</button>
