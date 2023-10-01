@@ -175,9 +175,9 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 				 		))}
 				 	</div>
 				 	<div className="row px-4 justify-content-between">
-				 		<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary ">atras</button>
-				 		<button onClick={sendDataDB} className="btn col-3 btn-primary ">
-				 			{loading ? (<div className="spinner-border" role="status" />) : ("Submit")}
+				 		<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary" disabled={loading}>atras</button>
+				 		<button onClick={sendDataDB} className="btn col-3 btn-primary" disabled={loading}>
+				 			{loading ? (<div className="spinner-border spinner-border-sm" role="status" />) : ("Submit")}
 				 		</button>
 				 	</div>
 		        </div>
