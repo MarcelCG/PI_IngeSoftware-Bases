@@ -15,45 +15,41 @@ async function createPolitica(req, res) {
   try {
     const {
       titulo,
-      cedula_empresa,
-      periodo,
-      fecha_inicio,
-      fecha_final,
-      inicia_desde_contrato,
-      horas_a_dar,
-      incrementativo,
-      acumulativo,
-      activo,
+    cedula_empresa,
+    periodo,
+    fecha_inicio,
+    fecha_final,
+    inicia_desde_contrato,
+    dias_a_dar,
+    incrementativo,
+    dias_a_incrementar,
+    acumulativo,
+    activo,
+    descripcion,
     } = req.body;
 
     // Verifica si ya existe un título
-    const tituloExists = await checkTituloExistence(titulo);
+    const tituloExists = await Politica.getByTitulo(titulo);
 
     if (tituloExists) {
       res.status(400).json({ error: 'El título ya existe' });
       return;
     }
 
-    // Verifica si la empresa existe
-    const empresaExists = await checkEmpresaExistence(cedula_empresa);
-
-    if (!empresaExists) {
-      res.status(400).json({ error: 'La empresa no existe' });
-      return;
-    }
-
     // Llama a la función createPolitica que inserta en la tabla "Politica"
     const success = await Politica.createPolitica(
       titulo,
-      cedula_empresa,
-      periodo,
-      fecha_inicio,
-      fecha_final,
-      inicia_desde_contrato,
-      horas_a_dar,
-      incrementativo,
-      acumulativo,
-      activo
+    cedula_empresa,
+    periodo,
+    fecha_inicio,
+    fecha_final,
+    inicia_desde_contrato,
+    dias_a_dar,
+    incrementativo,
+    dias_a_incrementar,
+    acumulativo,
+    activo,
+    descripcion,
     );
 
     if (success) {
