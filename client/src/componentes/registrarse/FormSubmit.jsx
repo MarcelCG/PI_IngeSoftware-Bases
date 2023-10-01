@@ -7,6 +7,7 @@ import axios from 'axios';
 export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation }) => {
 	const buttonRef = useRef(null);
 	const [errorDescr, setErrorDescr] = useState("");
+	const [loading, setloading] = useState(false);
 
 	const empresaValues = [
 		{
@@ -106,6 +107,7 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 
 	const sendDataDB = async (e) => {
 	  try {
+	  	setloading(true);
 	    const response = await axios.post('http://localhost:5000/api/registro', {
 	      formData
 	    });
@@ -122,6 +124,7 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 	    		break;
 	    	    default:
 	   		}
+	   		setloading(false);
 	   		openModal(buttonRef);
 	    }
 	    else {
@@ -130,6 +133,7 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 	  }
 	  catch (error) {
 	  		console.log("E R R O R: ", error);
+	  		setloading(false);
 	  		openModal(buttonRef);
 	    	setErrorDescr("Ha ocurrido un error, vuelva a intentar mas tarde");
 	  }
@@ -172,7 +176,9 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 				 	</div>
 				 	<div className="row px-4 justify-content-between">
 				 		<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary ">atras</button>
-				 		<button onClick={sendDataDB} className="btn col-3 btn-primary ">submit</button>
+				 		<button onClick={sendDataDB} className="btn col-3 btn-primary ">
+				 			{loading ? (<div className="spinner-border" role="status" />) : ("Submit")}
+				 		</button>
 				 	</div>
 		        </div>
 		  	</div>

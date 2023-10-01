@@ -8,12 +8,15 @@ const EmpresaModel = require('../models/empresasModel');
 const EmpresaCorreoModel = require('../models/correosEmpresasModel');
 const EmpresaTelModel = require('../models/telefonosEmpresasModel');
 
-function RegistrarEmpleador(req, res) {
+async function RegistrarEmpleador(req, res) {
     try {
         const data = req;
 
-        success = UsuarioModel.createUsuario(
-            data["empleadorCedu"],
+        const empleadorCedu = data["empleadorCedu"];
+        empleadorCedu = empleadorCedu.replace(/-/g, '');
+
+        success = await UsuarioModel.createUsuario(
+            empleadorCedu,
             data["empleadorPass"],
             data["empleadorName"],
             data["empleadorApe1"],
@@ -21,19 +24,21 @@ function RegistrarEmpleador(req, res) {
             true
         );
 
-        success += EmpleadorModel.create(
-            data["empleadorCedu"],
+        success += await EmpleadorModel.create(
+            empleadorCedu,
         );
 
         for (let i = 1; i <= 2; ++i) {
-            success += UsuarioCorreoModel.createCorreoUsuario(
-                data["empleadorCedu"],
+            success += await UsuarioCorreoModel.createCorreoUsuario(
+                empleadorCedu,
                 data["empleadorCorre"+i]
             );
+            const empresaTel = data["empresaTel"+i];
+            empresaTel = empresaTel.replace(/-/g, '');
 
-            success += UsuarioTelModel.createTelefonoUsuario(
-                data["empleadorCedu"],
-                data["empleadorTel"+i]
+            success += await UsuarioTelModel.createTelefonoUsuario(
+                empleadorCedu,
+                empresaTel
             );
         }
         return success;
@@ -44,25 +49,29 @@ function RegistrarEmpleador(req, res) {
     }
 }
 
-function RegistrarEmpresa(req, res) {
+async function RegistrarEmpresa(req, res) {
     try {
         const data = req;
 
-        success = EmpresaModel.createEmpresa(
+        const empleadorCedu = data["empleadorCedu"];
+        empleadorCedu = empleadorCedu.replace(/-/g, '');
+
+        success = await EmpresaModel.createEmpresa(
             data["empresaCedu"],
             data["empresaName"],
-            data["empleadorCedu"],
+            empleadorCedu,
         );
 
         for (let i = 1; i <= 2; ++i) {
-            success += EmpresaCorreoModel.create(
+            success += await EmpresaCorreoModel.create(
                 data["empresaCedu"],
                 data["empresaCorre"+i]
             );
-
-            success += EmpresaTelModel.create(
+            const empresaTel = data["empresaTel"+i];
+            empresaTel = empresaTel.replace(/-/g, '');
+            success += await EmpresaTelModel.create(
                 data["empresaCedu"],
-                data["empresaTel"+i]
+                empresaTel
             );
         }
         return success; 
@@ -78,8 +87,8 @@ async function Registrarse(req, res) {
         const data = req.body.formData
         const success = 200;
 
-        const existen = UsuarioModel.getByCedula(data["empleadorCedu"]);
-        existen += EmpresaModel.getEmpresaByCedula(data["empresaCedu"]);
+        const existen = await UsuarioModel.getByCedula(data["empleadorCedu"]);
+        existen += await EmpresaModel.getEmpresaByCedula(data["empresaCedu"]);
 
         if (!existen) {
             return existen;
