@@ -14,7 +14,7 @@ async function RegistrarUsuario(req, res) {
             data["primer_apellido"],
             data["segundo_apellido"]
         );
-        
+
         success += await EmpleadoModel.createEmpleado(
             data["cedula"],
             '3-101-291924',
@@ -47,7 +47,6 @@ async function RegistrarUsuario(req, res) {
         return success;
     }
     catch (error) {
-        console.log("error en registrarusuarioempleado");
         res.status(500).json({ error: error.message });
         return error;
     }

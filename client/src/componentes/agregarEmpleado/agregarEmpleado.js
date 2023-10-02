@@ -10,7 +10,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const URI = 'http://localhost:4223/api/registrarEmpleado/';
-const empresa = 'http://localhost:4223/api//'
 
 const AddEmployee = () => {
 
@@ -188,7 +187,7 @@ const AddEmployee = () => {
                                             message: "El numero de telefono es requerido"
                                         },
                                         pattern: {
-                                            value: /^[24678][0-9]{7}$/,
+                                            value: /^[24678][0-9]{3}-[0-9]{4}$/,
                                             message: "El numero de telefono no es valido"
                                         }
                                     })}
@@ -200,7 +199,7 @@ const AddEmployee = () => {
                                     <input type="text"
                                     {...register("telefono2", {
                                         pattern: {
-                                            value: /^[24678][0-9]{7}$/,
+                                            value: /^[24678][0-9]{3}-[0-9]{4}$/,
                                             message: "El numero de telefono no es valido"
                                         },
                                         validate: (value) => {
