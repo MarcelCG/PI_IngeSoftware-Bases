@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Registrarse from './Registrarse';
+import VisualizarEmpleado from './VisualizarEmpleado';
 
 import reportWebVitals from './reportWebVitals';
 

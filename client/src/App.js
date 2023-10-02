@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import VisualizarEmpleado from './VisualizarEmpleado'; 
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 // import Inicio from './Inicio';
@@ -14,6 +15,7 @@ function App() {
   };
 
   return (
+      // <VisualizarEmpleado /> {}
     <Router>
       <div className="App">
         <header>
