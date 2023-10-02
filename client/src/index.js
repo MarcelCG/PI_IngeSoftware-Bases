@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import Registrarse from './Registrarse';
-import VisualizarEmpleado from './VisualizarEmpleado';
-
+import DiasLibresUsuario from './DiasLibresUsuario';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Registrarse />
+    <DiasLibresUsuario cedulaUsuario="123456789"/>
   </React.StrictMode>
 );
 
