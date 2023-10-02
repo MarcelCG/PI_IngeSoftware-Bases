@@ -2,10 +2,10 @@ const sql = require('mssql');
 const dbConfig = require('../config/dbconfig'); // Importa la configuración de la base de datos
 
 // Obtener todas las Politicas
-async function getAll() {
+async function getAll(cedula_empresa) {
     try {
       const pool = await sql.connect(dbConfig);
-      const result = await pool.request().query('SELECT * FROM Politica');
+      const result = await pool.request().query('SELECT * FROM Politica WHERE cedula_empresa = @cedula_empresa');
       return result.recordset;
     } catch (error) {
       throw error;
@@ -19,10 +19,12 @@ async function createPolitica(
   fecha_inicio,
   fecha_final,
   inicia_desde_contrato,
-  horas_a_dar,
+  dias_a_dar,
   incrementativo,
+  dias_a_incrementar,
   acumulativo,
-  activo
+  activo,
+  descripcion
 ) {
   try {
     const pool = await sql.connect(dbConfig);
@@ -34,18 +36,22 @@ async function createPolitica(
       .input('fecha_inicio', sql.Date, fecha_inicio)
       .input('fecha_final', sql.Date, fecha_final)
       .input('inicia_desde_contrato', sql.Bit, inicia_desde_contrato)
-      .input('horas_a_dar', sql.Decimal(5, 2), horas_a_dar)
+      .input('dias_a_dar', sql.Decimal(5, 2), dias_a_dar)
       .input('incrementativo', sql.Bit, incrementativo)
+      .input('dias_a_incrementar', sql.Decimal(5,2), dias_a_incrementar)
       .input('acumulativo', sql.Bit, acumulativo)
       .input('activo', sql.Bit, activo)
+      .input('descripcion', sql.NVarChar, descripcion)
       .query(
         `INSERT INTO Politica (
           titulo, cedula_empresa, periodo, fecha_inicio, fecha_final,
-          inicia_desde_contrato, horas_a_dar, incrementativo, acumulativo, activo
+          inicia_desde_contrato, dias_a_dar, incrementativo, dias_a_incrementar, 
+          acumulativo, activo, descripcion
         )
         VALUES (
           @titulo, @cedula_empresa, @periodo, @fecha_inicio, @fecha_final,
-          @inicia_desde_contrato, @horas_a_dar, @incrementativo, @acumulativo, @activo
+          @inicia_desde_contrato, @dias_a_dar, @incrementativo, @dias_a_incrementar,
+          @acumulativo, @activo, @descripcion
         )`
       );
     return result.rowsAffected > 0;
