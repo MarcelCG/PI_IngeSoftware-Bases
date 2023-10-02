@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,14 +16,37 @@ function Login() {
     setPassword(password.target.value);
   }
 
-  const handleLogin = () => {
-    // Aca iria el codigo para la logica del login 
-    console.log('Iniciando sesión con:', username, password);
-  }
+  const handleLogin = async () => {
+    console.log('Botón de inicio de sesión presionado');
+    try {
+        const response = await fetch('http://localhost:4223/api/usuario/login', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
+
+        if (response.status === 200) {
+            // Inicio de sesión exitoso, muestra un mensaje de éxito
+            alert('Inicio de sesión exitoso');
+        } else if (response.status === 401) {
+            // Credenciales incorrectas, muestra un mensaje de error
+            alert('Credenciales incorrectas');
+            // Borra los valores ingresados en el formulario
+            setUsername('');
+            setPassword('');
+        } else {
+            // Otra respuesta del servidor, maneja según corresponda
+            alert('Hubo un problema al iniciar sesión');
+        }
+    } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+    }
+};
 
   const handleRegister = () => {
-    // Aca iria el codigo para la logica para pasar al registro
-    console.log('Registrando usuario:', username);
+    navigate('/registrarse');
   }
 
   return (

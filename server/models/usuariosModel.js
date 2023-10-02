@@ -57,8 +57,26 @@ async function getByCedula(cedula) {
     }
 }
 
+async function getByUsername(username) {
+    try {
+        const pool = await sql.connect(dbConfig);
+        const result = await pool
+            .request()
+            .input('username', sql.NVarChar, username)
+            .query('SELECT * FROM Usuario WHERE cedula = @username');
+        if (result.recordset.length > 0) {
+            return result.recordset[0];
+        } else {
+            return null;
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getAll,
+    getByUsername,
     createUsuario,
     getByCedula
 };
