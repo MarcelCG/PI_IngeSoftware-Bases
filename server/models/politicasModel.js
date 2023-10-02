@@ -2,10 +2,10 @@ const sql = require('mssql');
 const dbConfig = require('../config/dbconfig'); // Importa la configuración de la base de datos
 
 // Obtener todas las Politicas
-async function getAll() {
+async function getAll(cedula_empresa) {
     try {
       const pool = await sql.connect(dbConfig);
-      const result = await pool.request().query('SELECT * FROM Politica');
+      const result = await pool.request().query('SELECT * FROM Politica WHERE cedula_empresa = @cedula_empresa');
       return result.recordset;
     } catch (error) {
       throw error;

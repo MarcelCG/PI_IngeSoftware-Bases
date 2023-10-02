@@ -1,12 +1,33 @@
 import React, {useState, useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import axios from 'axios';
 
-export const ViewPoliticas = ({items}) => {
+export const ViewPoliticas = ({cedulaJuridica}) => {
+
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+  
+    async function cargarDatos() {
+      try {
+        const response = await axios.get('http://localhost:5000/api/politicas',{
+          cedulaJuridica
+        });
+        setItems(response.data);
+        setLoading(true);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(true);
+      }
+    }
+    cargarDatos();
+  }, []);
 
   return (
-    <div className="container bg-light shadow">
-      <div className="row p-3">
+    <div className="container bg-white rounded shadow" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
+      {loading? (<div className="row p-3">
         {items.map((item, index) => (
           <div className="col-4 p-3 " key={index}>
             <div className="accordion" id={`accordion-${index}`}>
@@ -55,7 +76,10 @@ export const ViewPoliticas = ({items}) => {
             </div>
           </div>
         ))}
-      </div>
+      </div>):
+      (<div className="container d-flex align-items-center justify-content-center">
+        <div class="spinner-grow" style={{ width: '5rem', height: '5rem' }} role="status" /> 
+      </div>)}
     </div>
   );
 };
