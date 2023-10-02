@@ -46,7 +46,7 @@ async function getEmpresaByCedula(cedula_juridica){
     const result = await pool
     .request()
     .input('cedula_juridica', sql.NVarChar, cedula_juridica)
-    .query('SELECT * FROM Empresa WHERE cedula_juridica = @cedula_juridica');
+    .query('SELECT E.nombre AS nombre_empresa,E.cedula_juridica,(SELECT TOP 1 T.telefono FROM TelefonosEmpresas T WHERE T.cedula_empresa = E.cedula_juridica) AS telefono,(SELECT TOP 1 C.correo FROM CorreosEmpresas C WHERE C.cedula_empresa = E.cedula_juridica) AS correo FROM Empresa E WHERE E.cedula_juridica = @cedula_juridica');
 
     if(result.recordset.length > 0) {
       return result.recordset[0];
