@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <DiasLibresUsuario cedulaUsuario="123456789"/>
+    <Registrarse />
   </React.StrictMode>
 );
 

@@ -36,25 +36,27 @@ async function createEmpresa(req, res) {
   }
 }
 
-async function getEmpresaByCedula(req, res){
-  const {cedula_juridica} = req.params;
-
+async function getEmpresaByCedula(req, res) {
+  console.log("hola");
   try {
-    const success = await Empresa.getEmpresaByCedula(cedula_juridica);
+    const { cedula_juridica } = req.params;
+    console.log("cedula juridica: ");
+    console.log(cedula_juridica);
+    const empresa = await Empresa.getEmpresaByCedula(cedula_juridica);
 
-    if(success != null){
-      res.status(200).json(success);
+    if (empresa !== null) {
+      res.status(200).json(empresa);
     } else {
-      res.status(404).json({error: "Empresa no encontrada"});
+      res.status(404).json({ error: 'Empresa no encontrada' });
     }
   } catch (error) {
-    res.status(500).json({error: error.message});
+    res.status(500).json({ error: error.message });
   }
 }
-
 
 module.exports = {
   getAllEmpresas,
   createEmpresa,
   getEmpresaByCedula,
 };
+
