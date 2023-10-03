@@ -57,12 +57,11 @@ function VisualizarEmpresa({ cedulaEmpresa }) {
   
   return (
     <div className="container mt-4">
-      <h2 className="text-center mb-4">Información de la Empresa</h2>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card mb-3">
             <div className="card-header" style={{ backgroundColor: '#4f709c', color: '#ffffff' }}>
-              <h5 className="mb-0">Datos Personales</h5>
+              <h5 className="text-center mb-0">Información de la empresa</h5>
             </div>
             <div className="card-body">
               <p><strong>Nombre:</strong> {datosEmpresa.nombre}</p>
