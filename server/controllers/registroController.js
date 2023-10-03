@@ -94,7 +94,7 @@ async function Registrarse(req, res) {
             EmpresaModel.getEmpresaByCedula(data["empresaCedu"])
         ]);
 
-        // Verifica si existen registros en Usuario y Empresa
+        // Verifica si existen registros en Usuarios y Empresa
         const existen = (existenUsuario ? 1 : 0) + (existenEmpresa ? 2 : 0);
 
         if (existen) {
