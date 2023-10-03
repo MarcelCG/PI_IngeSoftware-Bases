@@ -39,13 +39,11 @@ const FormReview = (props) => {
 const handleSubmit = (inputs, formData, setErrForm, errForm) => {
   const updatedErrForm = {};
   inputs.forEach((input) => {
-    console.log(formData[input.name]);
     if (input.required && CheckRegex(formData[input.name], input.patron)) {
       updatedErrForm[input.name] = false;
     } else if (!input.required && (formData[input.name] === '' || CheckRegex(formData[input.name], input.patron))) {
       updatedErrForm[input.name] = false;
     } else {
-      console.log("failed regex", formData[input.name]);
       updatedErrForm[input.name] = true;
     }
   });

@@ -3,14 +3,44 @@ import './App.css';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-// import {ViewPoliticas} from './componentes/viewPoliticas'
+import {ViewPoliticas} from './componentes/viewPoliticas'
 import AddPolicy from './componentes/addPolicy/AddPolicy'
+import RegistroForm from './componentes/registrarse/Registrarse'
 
 // import Inicio from './Inicio';
 // import Empleados from './Empleados';
 // import Politicas from './Politicas';
 
 function App({cedula}) {
+    const items = [
+    {
+      titulo: "Política 1",
+      inicio: "01/01/2023",
+      final: "31/12/2023",
+      periodo: "Anual",
+      acumulativo: "Sí",
+      horas: "40",
+      descripcion: "Esta es la descripción de la Política 1.",
+    },
+    {
+      titulo: "Política 2",
+      inicio: "15/02/2023",
+      final: "14/02/2024",
+      periodo: "Anual",
+      acumulativo: "No",
+      horas: "30",
+      descripcion: "Esta es la descripción de la Política 2.",
+    },
+    {
+      titulo: "Política 3",
+      inicio: "01/03/2023",
+      final: "28/02/2024",
+      periodo: "Anual",
+      acumulativo: "Sí",
+      horas: "50",
+      descripcion: "Esta es la descripción de la Política 3.",
+    },
+  ];
 
   const [menuVisible, setMenuVisible] = useState(false);
 
@@ -31,7 +61,7 @@ function App({cedula}) {
                   <Link to="/">Inicio</Link>
                 </li>
                 <li>
-                  <Link to="/empleados">Empleados</Link>
+                  <Link to="/RegistroForm">Empleados</Link>
                 </li>
                 <li>
                   <Link to="/politicas">Políticas</Link>
@@ -47,13 +77,14 @@ function App({cedula}) {
         </main>
         <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
           <Routes>
-               {/*<Route path="/politicas" element={<ViewPoliticas items={items}/>} />*/}
-               {/*<Route path="/AddPoliticas" element={<AddPolicy />} />*/}
+                <Route path="/RegistroForm" element={<RegistroForm />} />
+               <Route path="/politicas" element={<ViewPoliticas items={items}/>} />
+               <Route path="/AddPoliticas" element={<AddPolicy />} />
           </Routes>
         </div>
         <footer style={{ backgroundColor: '#20212a', color: '#ffffff'    }}  >
         <div className="container">
-          <p class="text-center">&copy; Oraculo.com</p>
+          <p className="text-center">&copy; Oraculo.com</p>
         </div>
       </footer>
       </div>

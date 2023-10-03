@@ -13,7 +13,7 @@ async function getAll() {
 }
 
 // Crear un nuevo usuario
-async function createUsuario(cedula, contrasena, nombre, primer_apellido, segundo_apellido, empleador, activo) {
+async function createUsuario(cedula, contrasena, nombre, primer_apellido, segundo_apellido, activo) {
     try {
         const pool = await sql.connect(dbConfig);
         const result = await pool
@@ -23,14 +23,13 @@ async function createUsuario(cedula, contrasena, nombre, primer_apellido, segund
             .input('nombre', sql.NVarChar, nombre)
             .input('primer_apellido', sql.NVarChar, primer_apellido)
             .input('segundo_apellido', sql.NVarChar, segundo_apellido)
-            .input('empleador', sql.Bit, empleador)
             .input('activo', sql.Bit, activo)
             .query(
                 `INSERT INTO Usuario (
-                    cedula, contrasena, nombre, primer_apellido, segundo_apellido, empleador, activo
+                    cedula, contrasena, nombre, primer_apellido, segundo_apellido, activo
                 )
                 VALUES (
-                    @cedula, @contrasena, @nombre, @primer_apellido, @segundo_apellido, @empleador, @activo
+                    @cedula, @contrasena, @nombre, @primer_apellido, @segundo_apellido, @activo
                 )`
             );
         return result.rowsAffected > 0;

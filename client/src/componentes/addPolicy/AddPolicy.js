@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import "./AddPolicy.css"
 
 // URL para el Api
-const api = 'http://localhost:4223/api';
+const api = 'http://localhost:5000/api';
 
 // URL para el manejo de politicas
 const politicas = api + '/politicas';
@@ -105,7 +105,7 @@ function AddPolicy() {
   
 
   return (
-    <div className="formulario">
+    <div className="formulario bg-white" >
         <h1 className="titulo">Agregar Política</h1>
 
         <AddPolicyForm

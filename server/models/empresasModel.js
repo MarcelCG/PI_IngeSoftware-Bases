@@ -11,27 +11,20 @@ async function getAll() {
       throw error;
     }
 }
-
-async function createEmpresa(
-  cedula_juridica,
-  nombre,
-  cedula_empleador,
-) {
+async function createEmpresa(cedula_juridica,nombre,cedula_empleador) {
   try {
     const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
-      .input('cedula_juridica', sql.NVarChar, titulo)
-      .input('nombre', sql.NVarChar, cedula_empresa)
-      .input('cedula_empleador', sql.NVarChar, periodo)
+      .input('cedula_juridica', sql.NVarChar, cedula_juridica)
+      .input('nombre', sql.NVarChar, nombre)
+      .input('cedula_empleador', sql.NVarChar, cedula_empleador)
       .query(
         `INSERT INTO Empresa (
-          titulo, cedula_empresa, periodo, fecha_inicio, fecha_final,
-          inicia_desde_contrato, horas_a_dar, incrementativo, acumulativo, activo
+          cedula_juridica, nombre, cedula_empleador
         )
         VALUES (
-          @titulo, @cedula_empresa, @periodo, @fecha_inicio, @fecha_final,
-          @inicia_desde_contrato, @horas_a_dar, @incrementativo, @acumulativo, @activo
+          @cedula_juridica, @nombre, @cedula_empleador
         )`
       );
     return result.rowsAffected > 0;
