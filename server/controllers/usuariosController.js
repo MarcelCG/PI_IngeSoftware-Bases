@@ -19,7 +19,6 @@ async function createUsuario(req, res) {
             nombre,
             primer_apellido,
             segundo_apellido,
-            empleador,
             activo
         } = req.body;
 
@@ -29,7 +28,6 @@ async function createUsuario(req, res) {
             nombre,
             primer_apellido,
             segundo_apellido,
-            empleador,
             activo
         );
 
