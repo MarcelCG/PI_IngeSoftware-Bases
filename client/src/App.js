@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import VisualizarEmpleador from './VisualizarEmpleador'; 
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -43,6 +44,9 @@ function App({cedula}) {
   };
 
   return (
+    // <div className="App">
+    // <VisualizarEmpleador /> {}
+    // </div>
     <Router>
       <div className="bg-fondo p-3" >
        <div className="App bg-fondo" >

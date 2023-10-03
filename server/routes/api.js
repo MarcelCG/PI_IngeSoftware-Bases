@@ -14,7 +14,7 @@ const EmpresasRoutes = require('./empresaRoutes')
 const TelefonosUsuarioRoutes = require('./telefonosUsuarioRoutes')
 const CorreosUsuarioRoutes = require('./correosUsuarioRoutes')
 const UsuariosRoutes = require('./usuariosRoutes')
-
+const EmpleadorRoutes = require('./empleadorRoutes');
 
 // Asocia las rutas
 router.use('/registro', registroRoutes);
@@ -29,5 +29,6 @@ router.use('/empresa', EmpresasRoutes);
 router.use('/telUsuario', TelefonosUsuarioRoutes);
 router.use('/correoUsuario', CorreosUsuarioRoutes);
 router.use('/usuario', UsuariosRoutes);
+router.use('/empleador', EmpleadorRoutes);
 
 module.exports = router;
