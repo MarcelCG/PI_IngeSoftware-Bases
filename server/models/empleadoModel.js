@@ -5,11 +5,44 @@ const dbConfig = require('../config/dbconfig'); // Importa la configuración de 
 async function getAll() {
     try {
       const pool = await sql.connect(dbConfig);
-      const result = await pool.request().query('SELECT * FROM Empleado');
+      const result = await pool.request()
+                    .query('SELECT u.cedula,'
+                        + ' CONCAT(u.nombre, \' \', u.primer_apellido, \' \', u.segundo_apellido)'
+                        + ' AS nombre_completo,'
+                        + ' c.correo,'
+                        + ' e.rol,'
+                        + ' e.fecha_contratacion'
+                        + ' FROM Usuario u, Empleado e, CorreosUsuarios c '
+                        + ' WHERE u.cedula=e.cedula_empleado'
+                        + ' AND u.activo=1'
+                        + ' AND c.cedula_usuario=u.cedula');
       return result.recordset;
     } catch (error) {
       throw error;
     }
+}
+
+// Obtener todos los empleados por empresa
+async function getAllByEmpresa(cedula_empresa) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool.request()
+                  .input('cedula_empresa', sql.NVarChar, cedula_empresa)
+                  .query('SELECT u.cedula,'
+                      + ' CONCAT(u.nombre, \' \', u.primer_apellido, \' \', u.segundo_apellido)'
+                      + ' AS nombre_completo,'
+                      + ' c.correo,'
+                      + ' e.rol,'
+                      + ' e.fecha_contratacion'
+                      + ' FROM Usuario u, Empleado e, CorreosUsuarios c '
+                      + ' WHERE u.cedula=e.cedula_empleado'
+                      + ' AND u.activo=1'
+                      + ' AND c.cedula_usuario=u.cedula'
+                      + ' AND cedula_empresa = @cedula_empresa');
+    return result.recordset;
+  } catch (error) {
+    throw error;
+  }
 }
 
 // Definir el modelo para la tabla Empleado
@@ -134,10 +167,10 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
 // Exportar el modelo
 module.exports = {
   getAll,
+  getAllByEmpresa,
   createEmpleado,
   getByCedula,
   getByEmpresa,
   getByCedulaAndEmpresa,
   getEmpleadoByCedulaYEmpresa,
 };
-

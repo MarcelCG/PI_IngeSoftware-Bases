@@ -10,6 +10,17 @@ async function getAllEmpleados(req, res) {
     }
 }
 
+// Obtener todos los empleados
+async function getAllEmpleadosByEmpresa(req, res) {
+  try {
+    const { cedula_empresa } = req.params; // Obtiene la cedula de los parámetros de la URL
+    const empleados = await Empleado.getAllByEmpresa(cedula_empresa);
+    res.status(200).json(empleados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 // Crear un nuevo empleado
 async function createEmpleado(req, res) {
   try {
@@ -118,6 +129,7 @@ async function getEmpleadoConCedulaYEmpresa(req, res) {
 
 module.exports = {
   getAllEmpleados,
+  getAllEmpleadosByEmpresa,
   createEmpleado,
   getEmpleadoByCedula,
   getEmpleadoByEmpresa,

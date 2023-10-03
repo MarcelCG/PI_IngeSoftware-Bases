@@ -1,29 +1,47 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
-// Bootstrap Bundle JS
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import 'bootstrap/dist/css/bootstrap.css';
 import "../styles/visualizarEmpleados.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-const URI = 'http://localhost:4223/api/empleados/'
+const URI = 'http://localhost:4223/api/'
+const empresaURI = URI + 'empresa/byCedulaEmpleador/'
+const empleadoURI = URI + 'empleados/allByEmpresa/';
 
 const ListOfEmployees = () => {
 
-    const [empleados, setEmpleado] = useState([])
+    const cedulaEmpleador = '8-0061-0075';
+    const empresaURIParam = empresaURI + cedulaEmpleador;
+
+    const [empresa, setEmpresa] = useState([])
+
     useEffect(() => {
-        getAllEmpleados()
+        getEmpresaByCedulaEmpleador()
     },[])
-    
-    const getAllEmpleados = async () => {
-        const res = await axios.get(URI)
-        setEmpleado(res.data)
+
+    const getEmpresaByCedulaEmpleador = async () => {
+        const res = await axios.get(empresaURIParam)
+        setEmpresa(res.data)
     }
 
+    const empleadosURIParam = empleadoURI + empresa.cedula_juridica;
+    const [empleados, setEmpleado] = useState([])
+
+    useEffect(() => {
+        getEmpleadoByEmpresa()
+    },[])
+
+    const getEmpleadoByEmpresa = async () => {
+        const res = await axios.get(empleadosURIParam)
+        setEmpleado(res.data)
+    }
+    console.log(empleados)
+
     const [currentPage, setCurrentPage] = useState(1);
-    const recordsPerPage = 7;
+    const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
     const records = empleados.slice(firstIndex, lastIndex);
@@ -35,7 +53,6 @@ const ListOfEmployees = () => {
             <div className="page-content">
                 <div className="container-fluid">
                     <div className="row">
-                        <h3>Lista de Empleados</h3>
                     </div>
                     <div className="row">
                         <div className="col-lg-12">
@@ -43,15 +60,14 @@ const ListOfEmployees = () => {
                                 <div className="card-body">
                                     <div className="row mb-2">
                                         <div className="col-md-6">
-                                            <div className="mb-3">
-                                                <a href="" className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</a>
-                                            </div>
+                                            <h3>Lista de Empleados</h3>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-inline float-md-right mb-3">
                                                 <div className="search-box ml-2">
                                                     <div className="position-relative">
-                                                        <input></input>
+                                                        <input className="me-3"></input>
+                                                        <a href="#" className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</a>
                                                     </div>
                                                 </div>
                                             </div>
