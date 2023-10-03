@@ -47,42 +47,40 @@ function App({cedula}) {
     // <div className="App">
     // <VisualizarEmpleador /> {}
     // </div>
-    <Router>
-      <div className="bg-fondo p-3" >
-       <div className="App bg-fondo" >
-        <button onClick={toggleMenu}>Mostrar/ocultar menú</button>
-        <main>
-          <div>
-            <div className={`menu ${menuVisible ? 'visible' : ''}`}>
-              <ul>
-                <li>
-                  <Link to="/">Inicio</Link>
-                </li>
-                <li>
-                  <Link to="/empleador">Empleados</Link>
-                </li>
-                <li>
-                  <Link to="/politicas">Políticas</Link>
-                </li>
-              </ul>
-            </div>
-            <div className="content">
-            </div>
+    <div className="bg-fondo p-3" >
+      <div className="App bg-fondo" >
+      <button onClick={toggleMenu}>Mostrar/ocultar menú</button>
+      <main>
+        <div>
+          <div className={`menu ${menuVisible ? 'visible' : ''}`}>
+            <ul>
+              <li>
+                <Link to="/app">Inicio</Link>
+              </li>
+              <li>
+                <Link to="/empleador">Empleados</Link>
+              </li>
+              <li>
+                <Link to="/politicas">Políticas</Link>
+              </li>
+            </ul>
           </div>
-        </main>
-        <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
-          <Routes>
-               <Route path="/politicas" element={<ViewPoliticas items={items}/>} />
-          </Routes>
+          <div className="content">
+          </div>
         </div>
-        <footer style={{ backgroundColor: '#20212a', color: '#ffffff'    }}  >
-        <div className="container">
-          <p className="text-center">&copy; Oraculo.com</p>
-        </div>
-      </footer>
+      </main>
+      <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
+        <Routes>
+              <Route path="/politicas" element={<ViewPoliticas items={items}/>} />
+        </Routes>
       </div>
+      <footer style={{ backgroundColor: '#20212a', color: '#ffffff'    }}  >
+      <div className="container">
+        <p className="text-center">&copy; Oraculo.com</p>
       </div>
-    </Router>
+    </footer>
+    </div>
+    </div>
   );
 }
 

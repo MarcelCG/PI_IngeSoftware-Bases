@@ -1,15 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import AppRouter from './AppRouter';
-import DiasLibresUsuario from './DiasLibresUsuario';
-
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Importa Routes
+import Login from './Login';
+import Registrarse from './componentes/registrarse/Registrarse';
+import App from './App'
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AppRouter />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login/>}/>
+        <Route path="/registrarse" element={<Registrarse/>}/>
+        <Route path="/app" element={<App/>}/>
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 
