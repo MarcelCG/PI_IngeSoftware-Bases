@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import AppRouter from './AppRouter';
+import DiasLibresUsuario from './DiasLibresUsuario';
 
 import reportWebVitals from './reportWebVitals';
 
