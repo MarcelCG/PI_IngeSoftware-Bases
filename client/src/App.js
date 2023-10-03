@@ -3,13 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import {ViewPoliticas} from './componentes/viewPoliticas'
-import AddPolicy from './componentes/addPolicy/AddPolicy'
-import RegistroForm from './componentes/registrarse/Registrarse'
-
-// import Inicio from './Inicio';
-// import Empleados from './Empleados';
-// import Politicas from './Politicas';
+import {ViewPoliticas} from './componentes/Politicas/viewPoliticas'
 
 function App({cedula}) {
     const items = [
@@ -61,13 +55,10 @@ function App({cedula}) {
                   <Link to="/">Inicio</Link>
                 </li>
                 <li>
-                  <Link to="/RegistroForm">Empleados</Link>
+                  <Link to="/empleador">Empleados</Link>
                 </li>
                 <li>
                   <Link to="/politicas">Políticas</Link>
-                </li>
-                <li>
-                  <Link to="/AddPoliticas">Anhadir Politica</Link>
                 </li>
               </ul>
             </div>
@@ -77,9 +68,7 @@ function App({cedula}) {
         </main>
         <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
           <Routes>
-                <Route path="/RegistroForm" element={<RegistroForm />} />
                <Route path="/politicas" element={<ViewPoliticas items={items}/>} />
-               <Route path="/AddPoliticas" element={<AddPolicy />} />
           </Routes>
         </div>
         <footer style={{ backgroundColor: '#20212a', color: '#ffffff'    }}  >
