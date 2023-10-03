@@ -1,8 +1,8 @@
 const config = {
-    user: "B91839",
+    user: "B84032",
     password: "msSqlLab003!",
     server: "172.16.202.64",
-    database: "B91839",
+    database: "B84032",
     options: {
         encrypt: false,
         trustedConnection: false,
@@ -11,6 +11,7 @@ const config = {
     }, 
 
     port: 1433
+    
 };
 
 module.exports = config;
