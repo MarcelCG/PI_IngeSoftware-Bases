@@ -23,7 +23,7 @@ app.use((err, req, res, next) => {
 });
 
 // Inicia el servidor
-const port = process.env.PORT || 4223;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Servidor en ejecución en el puerto ${port}`);
 }); 

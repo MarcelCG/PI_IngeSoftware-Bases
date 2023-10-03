@@ -1,22 +1,19 @@
 /* Estilos generales para la aplicación */
 .App {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff; /* Fondo blanco */
-  color: #000000; /* Texto negro */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 header {
-  background-color: #4f709c; /* Fondo azul */
+  background-color: #FFFFFF; /* Fondo azul */
   color: #ffffff; /* Texto blanco */
   padding: 16px;
   text-align: center;
 }
 
 button {
-  background-color: #4f709c; /* Fondo azul */
+  background-color: #2d3645; /* Fondo azul */
   color: #ffffff; /* Texto blanco */
   border: none;
   padding: 8px 16px;
@@ -24,23 +21,25 @@ button {
 }
 
 button:hover {
-  background-color: #213555; /* Fondo azul oscuro al pasar el mouse */
+  background-color: #4f709c; /* Fondo azul oscuro al pasar el mouse */
 }
 
 /* Estilos para el menú lateral */
 .menu {
-  background-color: #4f709c; /* Fondo azul */
+  background-color: #2d3645; /* Fondo azul */
   color: #ffffff; /* Texto blanco */
   width: 200px;
   position: fixed;
-  top: 0;
+  top: 20;
   left: -200px; /* Oculta el menú al inicio */
-  height: 100%;
+  height: 50%;
   transition: left 0.3s; /* Agrega una transición suave al abrir/cerrar el menú */
 }
 
 .menu.visible {
   left: 0; /* Muestra el menú cuando es visible */
+  left: 16px;
+
 }
 
 .menu ul {
@@ -64,8 +63,8 @@ button:hover {
   font-weight: bold;
 }
 
-.menu a:hover {
-  color: #213555; /* Texto azul oscuro al pasar el mouse */
+.menu li:hover {
+  background-color: #4f709c; /* Texto azul oscuro al pasar el mouse */
 }
 
 /* Estilos para el contenido principal */
@@ -73,3 +72,18 @@ button:hover {
   margin-left: 220px; /* Espacio para el menú lateral */
   padding: 16px;
 }
+
+/* App.css */
+.bg-fondo  {
+  background-color: #F1F6F9; /* Cambia 'blue' al color que prefieras */
+}
+
+
+.contenedor {
+  height: 80vh;
+  width: 70vw;
+  margin: auto auto auto auto; /* Margen en todos los lados */
+  margin-left: auto; /* Ajustar automáticamente el margen izquierdo */
+  display: flex;
+}
+

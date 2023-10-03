@@ -1,12 +1,13 @@
-import React, {useState, useRef} from "react";
+import React, {useState} from "react";
 import {FormReview} from './FormInput'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation }) => {
-	const buttonRef = useRef(null);
-	const [errorDescr, setErrorDescr] = useState("");
 	const [loading, setloading] = useState(false);
 
 	const empresaValues = [
@@ -99,56 +100,44 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 		},
 	]
 
-	const openModal = (buttonRef) => {
-	    if (buttonRef.current) {
-	      buttonRef.current.click();
-	    }
-	  };
-
 	const sendDataDB = async (e) => {
+		setloading(true);
+		let errorDesc = "", errorType;
 	  try {
-	  	setloading(true);
+	  	// eslint-disable-next-line no-unused-vars
 	    const response = await axios.post('http://localhost:5000/api/registro', {
 	      formData
 	    });
-	    if(response !== 200){
-	    	switch(response){
-	    		case 1:
-	    			setErrorDescr("La cedula del empleador ya existe");
-	    		break;
-	    		case 2:
-	    			setErrorDescr("La cedula de la empresa ya existe");
-	    		break;
-	    		case 3:
-	    			setErrorDescr("La cedula de la empresa y del empleador ya existe");
-	    		break;
-	    	    default:
-	   		}
-	   		setloading(false);
-	   		openModal(buttonRef);
-	    }
-	    else {
-	    	console.log('POST exitoso:', response.data);
-	    }
+	    errorDesc = "SUCCESS: Registro exitoso!";
+	    errorType = "success";
 	  }
 	  catch (error) {
-	  		console.log("E R R O R: ", error);
-	  		setloading(false);
-	  		openModal(buttonRef);
-	    	setErrorDescr("Ha ocurrido un error, vuelva a intentar mas tarde");
+	  	if(error.response){
+		  	switch(error.response.data.message){
+		    	case 1:
+	    			errorDesc = "ERROR: La cedula del empleador ya existe";
+	    		break;
+	    		case 2:
+	    			errorDesc = "ERROR: La cedula de la empresa ya existe";
+	    		break;
+	    		case 3:
+	    			errorDesc = "ERROR: La cedula de la empresa y del empleador ya existe";
+	    		break;
+	    	  default:
+		   	}
+			}
+			else {
+				errorDesc = "ERROR: Vuelva a intentar mas tarde";
+	  	}
+	  	errorType = "danger";
 	  }
+	  toast.error(errorDesc,{position: toast.POSITION.TOP_CENTER, className:`alert alert-${errorType}`});
+	  setloading(false);
 	};
 
 	return (
 		<div className="container col-5 position-static">
-		<button hidden="true" data-bs-toggle="modal" data-bs-target="#errorModal" ref={buttonRef} />
-	    <div className="modal fade" id="errorModal">
-	      <div className="modal-dialog modal-dialog-centered">
-	        <div class="alert alert-danger" role="alert">
-			  		{errorDescr}
-			  	</div>
-	      </div>
-	    </div>
+	    <ToastContainer />
 			<div className="card border-dark shadow m-3">
 				<div className="card-header">
 					<h2>Registro | Review </h2>
@@ -157,20 +146,16 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 					<h4 className="px-3">Empresa</h4>
 				 	<div className="row alert alert-light m-3">
 				 		{empresaValues.map((empresaV) => (
-				 			<div
-				 				className={empresaV.style} key={empresaV.id}>
-				 				<FormReview
-				 					{...empresaV} value={formData[empresaV.name]} />
+				 			<div className={empresaV.style} key={empresaV.id}>
+				 				<FormReview {...empresaV} value={formData[empresaV.name]} />
 				 			</div>
 				 		))}
 				 	</div>
 				 	<h4 className="px-3">Empleador</h4>
 				 	<div className="row alert alert-light m-3">
 				 		{empleadorValues.map((empresaV) => (
-				 			<div
-				 				className={empresaV.style} key={empresaV.id}>
-				 				<FormReview
-				 					{...empresaV} value={formData[empresaV.name]} />
+				 			<div className={empresaV.style} key={empresaV.id}>
+				 				<FormReview {...empresaV} value={formData[empresaV.name]} />
 				 			</div>
 				 		))}
 				 	</div>
