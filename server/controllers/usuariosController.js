@@ -59,8 +59,30 @@ async function getUsuarioByCedula(req, res) {
     }
 }
 
+async function loginUser(req, res) {
+    try {
+        const { username, password } = req.body;
+        const usuario = await Usuario.getByUsername(username);
+
+        if (!usuario) {
+            return res.status(401).json({ error: 'Usuario no encontrado' });
+        }
+
+        if (usuario.contrasena === password) {
+            res.status(200).json({ message: 'Inicio de sesión exitoso' });
+        } else {
+            res.status(401).json({ error: 'Credenciales incorrectas' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+
+
 module.exports = {
     getAllUsuarios,
     createUsuario,
+    loginUser,
     getUsuarioByCedula
 };
