@@ -104,9 +104,9 @@ async function Registrarse(req, res) {
         else{
             console.log("No existen: ", existen);
 
-            const promises = [RegistrarEmpleador(data, res), RegistrarEmpresa(data, res)];
-            const results = await Promise.all(promises);
-            const [successEmpleador, successEmpresa] = results;
+            //const promises = [RegistrarEmpleador(data, res), RegistrarEmpresa(data, res)];
+            let successEmpleador = await RegistrarEmpleador(data, res);
+            let successEmpresa = await RegistrarEmpresa(data, res);
 
             if (successEmpleador && successEmpresa) { 
                 res.status(201).json({ message: 'Creado nuevo usuario usuario' });
