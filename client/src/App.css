@@ -1,38 +1,88 @@
+/* Estilos generales para la aplicación */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+header {
+  background-color: #FFFFFF; /* Fondo azul */
+  color: #ffffff; /* Texto blanco */
+  padding: 16px;
+  text-align: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button {
+  background-color: #2d3645; /* Fondo azul */
+  color: #ffffff; /* Texto blanco */
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4f709c; /* Fondo azul oscuro al pasar el mouse */
+}
+
+/* Estilos para el menú lateral */
+.menu {
+  background-color: #2d3645; /* Fondo azul */
+  color: #ffffff; /* Texto blanco */
+  width: 200px;
+  position: fixed;
+  top: 20;
+  left: -200px; /* Oculta el menú al inicio */
+  height: 50%;
+  transition: left 0.3s; /* Agrega una transición suave al abrir/cerrar el menú */
+}
+
+.menu.visible {
+  left: 0; /* Muestra el menú cuando es visible */
+  left: 16px;
+
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  padding: 8px 16px;
+  border-bottom: 1px solid #ffffff; /* Línea separadora blanca */
+}
+
+.menu li:last-child {
+  border-bottom: none; /* Elimina la línea separadora en el último elemento */
+}
+
+/* Estilos para los enlaces del menú */
+.menu a {
+  text-decoration: none;
+  color: #ffffff; /* Texto blanco */
+  font-weight: bold;
+}
+
+.menu li:hover {
+  background-color: #4f709c; /* Texto azul oscuro al pasar el mouse */
+}
+
+/* Estilos para el contenido principal */
+.content {
+  margin-left: 220px; /* Espacio para el menú lateral */
+  padding: 16px;
+}
+
+/* App.css */
+.bg-fondo  {
+  background-color: #F1F6F9; /* Cambia 'blue' al color que prefieras */
+}
+
+
+.contenedor {
+  height: 80vh;
+  width: 70vw;
+  margin: auto auto auto auto; /* Margen en todos los lados */
+  margin-left: auto; /* Ajustar automáticamente el margen izquierdo */
+  display: flex;
 }
