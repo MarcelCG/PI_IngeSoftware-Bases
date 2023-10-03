@@ -83,4 +83,3 @@ export const ViewPoliticas = ({cedulaJuridica}) => {
     </div>
   );
 };
-

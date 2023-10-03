@@ -39,7 +39,7 @@ async function getEmpresaByCedula(cedula_juridica){
     const result = await pool
     .request()
     .input('cedula_juridica', sql.NVarChar, cedula_juridica)
-    .query('SELECT * FROM Empresa WHERE cedula_juridica = @cedula_juridica');
+    .query('SELECT E.nombre AS nombre_empresa,E.cedula_juridica,(SELECT TOP 1 T.telefono FROM TelefonosEmpresas T WHERE T.cedula_empresa = E.cedula_juridica) AS telefono,(SELECT TOP 1 C.correo FROM CorreosEmpresas C WHERE C.cedula_empresa = E.cedula_juridica) AS correo FROM Empresa E WHERE E.cedula_juridica = @cedula_juridica');
 
     if(result.recordset.length > 0) {
       return result.recordset[0];
@@ -52,9 +52,28 @@ async function getEmpresaByCedula(cedula_juridica){
   }
 }
 
+async function getEmpresaByCedulaEmpleador(cedula_empleador){
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+    .request()
+    .input('cedula_empleador', sql.NVarChar, cedula_empleador)
+    .query('SELECT * FROM Empresa WHERE cedula_empleador = @cedula_empleador');
+    
+    if(result.recordset.length > 0) {
+      return result.recordset[0];
+    } else {
+      return null;
+    }
+      
+  } catch (error) {
+    throw(error);
+  }
+}
 
 module.exports = {
   getAll,
   createEmpresa,
   getEmpresaByCedula,
+  getEmpresaByCedulaEmpleador
 };
