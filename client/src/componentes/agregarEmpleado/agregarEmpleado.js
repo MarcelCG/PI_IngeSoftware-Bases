@@ -1,6 +1,5 @@
 import {useForm} from 'react-hook-form'
 import React from "react";
-import { Alert, Toast } from 'react-bootstrap';
 import axios from 'axios';
 import "../styles/agregarEmpleado.css"
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -203,7 +202,7 @@ const AddEmployee = () => {
                                             message: "El numero de telefono no es valido"
                                         },
                                         validate: (value) => {
-                                            if (watch('telefono1') == '' || watch('telefono1') != value) {
+                                            if (watch('telefono1') === '' || watch('telefono1') !== value) {
                                                 return true
                                             } else {
                                                 return "Los telefonos no pueden ser iguales"
@@ -238,7 +237,7 @@ const AddEmployee = () => {
                                         message: "El correo no es valido"
                                     },
                                     validate: (value) => {
-                                        if (watch('correo1') == '' || watch('correo1') != value) {
+                                        if (watch('correo1') === '' || watch('correo1') !== value) {
                                             return true
                                         } else {
                                             return "Los correos no pueden ser iguales"
@@ -262,9 +261,11 @@ const AddEmployee = () => {
                                 <input type="text" disabled/>
                             </div>
                         </div>
-                        <div className='position-relative mt-3 '>
-                            <button className='btn btn-danger me-2 justify-content-end float-right'>Cancelar</button>
-                            <button className='btn btn-success' type='submit'>Agregar</button>
+                        <div className='d-flex justify-content-end mt-3'>
+                            <div className='align-items-right text-align-right float-right'>
+                                <button type='button' onClick={() => reset()} className='btn btn-danger me-2'>Cancelar</button>
+                                <button className='btn btn-success' type='submit'>Agregar</button>
+                            </div>
                         </div>
                     </form>
                 </div>
