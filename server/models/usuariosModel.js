@@ -38,7 +38,7 @@ async function createUsuario(cedula, contrasena, nombre, primer_apellido, segund
     }
 }
 
-// Obtener un usuario por su cedula
+// Obtener un usuario por su cedulaj
 async function getByCedula(cedula) {
     try {
         const pool = await sql.connect(dbConfig);
@@ -56,26 +56,8 @@ async function getByCedula(cedula) {
     }
 }
 
-async function getByUsername(username) {
-    try {
-        const pool = await sql.connect(dbConfig);
-        const result = await pool
-            .request()
-            .input('username', sql.NVarChar, username)
-            .query('SELECT * FROM Usuario WHERE cedula = @username');
-        if (result.recordset.length > 0) {
-            return result.recordset[0];
-        } else {
-            return null;
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-
 module.exports = {
     getAll,
-    getByUsername,
     createUsuario,
     getByCedula
 };

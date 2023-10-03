@@ -94,7 +94,7 @@ async function Registrarse(req, res) {
             EmpresaModel.getEmpresaByCedula(data["empresaCedu"])
         ]);
 
-        // Verifica si existen registros en Usuario y Empresa
+        // Verifica si existen registros en Usuarios y Empresa
         const existen = (existenUsuario ? 1 : 0) + (existenEmpresa ? 2 : 0);
 
         if (existen) {
@@ -104,9 +104,9 @@ async function Registrarse(req, res) {
         else{
             console.log("No existen: ", existen);
 
-            const promises = [RegistrarEmpleador(data, res), RegistrarEmpresa(data, res)];
-            const results = await Promise.all(promises);
-            const [successEmpleador, successEmpresa] = results;
+            //const promises = [RegistrarEmpleador(data, res), RegistrarEmpresa(data, res)];
+            let successEmpleador = await RegistrarEmpleador(data, res);
+            let successEmpresa = await RegistrarEmpresa(data, res);
 
             if (successEmpleador && successEmpresa) { 
                 res.status(201).json({ message: 'Creado nuevo usuario usuario' });

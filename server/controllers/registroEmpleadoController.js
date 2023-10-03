@@ -12,7 +12,8 @@ async function RegistrarUsuario(req, res) {
             data["contrasena"],
             data["nombre"],
             data["primer_apellido"],
-            data["segundo_apellido"]
+            data["segundo_apellido"],
+            true
         );
 
         success += await EmpleadoModel.createEmpleado(
