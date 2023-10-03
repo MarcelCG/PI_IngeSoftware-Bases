@@ -20,7 +20,7 @@ async function createEmpresa(req, res) {
     } = req.body;
 
     // Llama a la función createPolitica que inserta en la tabla "Politica"
-    const success = await Empresa.createPolitica(
+    const success = await Empresa.createEmpresa(
      cedula_juridica,
       nombre,
       cedula_empleador
@@ -52,9 +52,25 @@ async function getEmpresaByCedula(req, res){
   }
 }
 
+async function getEmpresaByCedulaEmpleador(req, res){
+  const {cedula_empleador} = req.params;
+
+    try {
+      const success = await Empresa.getEmpresaByCedulaEmpleador(cedula_empleador);
+      if(success != null){
+        res.status(200).json(success);
+      } else {
+        res.status(404).json({error: "Empresa no encontrada"});
+      }
+    } catch (error) {
+      res.status(500).json({error: error.message});
+    }
+  }
+
 
 module.exports = {
   getAllEmpresas,
   createEmpresa,
   getEmpresaByCedula,
+  getEmpresaByCedulaEmpleador,
 };
