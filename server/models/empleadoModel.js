@@ -22,7 +22,7 @@ async function getAll() {
     }
 }
 
-// Obtener todos los empleados
+// Obtener todos los empleados por empresa
 async function getAllByEmpresa(cedula_empresa) {
   try {
     const pool = await sql.connect(dbConfig);
@@ -135,6 +135,35 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
 
+  async function getEmpleadoByCedulaYEmpresa(cedulaEmpleado, cedulaEmpresa) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const result = await pool
+        .request()
+        .input('cedulaEmpleado', sql.NVarChar, cedulaEmpleado)
+        .input('cedulaEmpresa', sql.NVarChar, cedulaEmpresa)
+        .query(`
+          SELECT U.nombre, U.primer_apellido, U.segundo_apellido, EU.telefono, E.fecha_contratacion, E.rol
+          FROM Empleado E
+          INNER JOIN Usuario U ON E.cedula_empleado = U.cedula
+          LEFT JOIN TelefonosUsuarios EU ON U.cedula = EU.cedula_usuario
+          WHERE E.cedula_empleado = @cedulaEmpleado
+            AND E.cedula_empresa = @cedulaEmpresa
+        `);
+        
+      if (result.recordset.length > 0) {
+        // Si se encontró un empleado, se retorna
+        return result.recordset[0];
+      } else {
+        // Si no se encontró ningún empleado, retornamos null
+        return null;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+
 // Exportar el modelo
 module.exports = {
   getAll,
@@ -142,5 +171,6 @@ module.exports = {
   createEmpleado,
   getByCedula,
   getByEmpresa,
-  getByCedulaAndEmpresa
+  getByCedulaAndEmpresa,
+  getEmpleadoByCedulaYEmpresa,
 };

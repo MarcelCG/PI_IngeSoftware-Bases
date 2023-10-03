@@ -7,6 +7,7 @@ router.get('/', EmpleadoController.getAllEmpleados);
 router.get('/allByEmpresa/:cedula_empresa', EmpleadoController.getAllEmpleadosByEmpresa);
 router.post('/', EmpleadoController.createEmpleado);
 router.get('/byCedula/:cedula_empleado', EmpleadoController.getEmpleadoByCedula);
+router.get('/viewByCedula/:cedula_empleado', EmpleadoController.getEmpleadoConCedulaYEmpresa);
 router.get('/byEmpresa/:cedula_empresa', EmpleadoController.getEmpleadoByEmpresa);
 router.get('/searchEmpleado/:cedula_empleado/:cedula_empresa', EmpleadoController.getEmpleadoByCedulaAndEmpresa)
 

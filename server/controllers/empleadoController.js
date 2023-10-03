@@ -106,6 +106,25 @@ async function getEmpleadoByCedulaAndEmpresa(req, res) {
     }
 }
 
+// Controlador para obtener un empleado por su cédula y cédula de empresa
+async function getEmpleadoConCedulaYEmpresa(req, res) {
+  try {
+    const { cedula_empleado, cedula_empresa } = req.params; // Obtiene las cédulas de los parámetros de la URL
+    // Llama a la función getEmpleadoByCedulaYEmpresa en el modelo de Empleado
+    const empleado = await Empleado.getEmpleadoByCedulaYEmpresa(cedula_empleado, cedula_empresa);
+
+    if (empleado !== null) {
+      // Si se encontró un empleado, lo retornamos
+      res.status(200).json(empleado);
+    } else {
+      // Si no se encontró ningún empleado, respondemos con un mensaje de error
+      res.status(404).json({ error: 'Empleado no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 // Otros controladores para operaciones adicionales con Empleados pueden ser agregados aquí
 
 module.exports = {
@@ -114,5 +133,6 @@ module.exports = {
   createEmpleado,
   getEmpleadoByCedula,
   getEmpleadoByEmpresa,
-  getEmpleadoByCedulaAndEmpresa
+  getEmpleadoByCedulaAndEmpresa,
+  getEmpleadoConCedulaYEmpresa
 };
