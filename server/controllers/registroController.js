@@ -104,7 +104,6 @@ async function Registrarse(req, res) {
         else{
             console.log("No existen: ", existen);
 
-            //const promises = [RegistrarEmpleador(data, res), RegistrarEmpresa(data, res)];
             let successEmpleador = await RegistrarEmpleador(data, res);
             let successEmpresa = await RegistrarEmpresa(data, res);
 

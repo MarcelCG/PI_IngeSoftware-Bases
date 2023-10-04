@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Importa rutas
+const registroEmpleado = require('./registroEmpleadoRoutes')
 const registroRoutes = require('./registroRoutes')
 const politicasRoutes = require('./politicasRoutes')
 const empleadoRoutes = require('./empleadoRoutes')
@@ -17,6 +18,7 @@ const UsuariosRoutes = require('./usuariosRoutes')
 const EmpleadorRoutes = require('./empleadorRoutes');
 
 // Asocia las rutas
+router.use('/registrarEmpleado', registroEmpleado);
 router.use('/registro', registroRoutes);
 router.use('/politicas', politicasRoutes);
 router.use('/empleados', empleadoRoutes);

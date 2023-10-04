@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { useNavigate } from 'react-router-dom';
 
 
-function Login() {
+function Login({setLoggedIn, setCedula_Usuario}) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,7 +19,7 @@ function Login() {
   const handleLogin = async () => {
     console.log('Botón de inicio de sesión presionado');
     try {
-        const response = await fetch('http://localhost:4223/api/usuario/login', {
+        const response = await fetch('http://localhost:5000/api/usuario/login', {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -30,6 +30,9 @@ function Login() {
         if (response.status === 200) {
             // Inicio de sesión exitoso, muestra un mensaje de éxito
             alert('Inicio de sesión exitoso');
+            setLoggedIn(true);
+            setCedula_Usuario(username);
+            navigate("/app");
         } else if (response.status === 401) {
             // Credenciales incorrectas, muestra un mensaje de error
             alert('Credenciales incorrectas');

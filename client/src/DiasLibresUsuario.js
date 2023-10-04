@@ -13,7 +13,7 @@ function DiasLibresUsuario({ cedulaUsuario }) { // Recibe la cédula del usuario
   useEffect(() => {
     const cargarDiasLibres = async () => {
       try {
-        const response = await fetch(`http://localhost:4223/api/libres/byEmpleado/${cedulaUsuario}`, {
+        const response = await fetch(`http://localhost:5000/api/libres/byEmpleado/${cedulaUsuario}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

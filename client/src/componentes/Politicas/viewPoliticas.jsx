@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react";
+import { useParams } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 
-export const ViewPoliticas = ({cedulaJuridica}) => {
+export const ViewPoliticas = () => {
+  const {empresa} = useParams();
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -12,18 +14,26 @@ export const ViewPoliticas = ({cedulaJuridica}) => {
   
     async function cargarDatos() {
       try {
-        const response = await axios.get('http://localhost:5000/api/politicas',{
-          cedulaJuridica
-        });
+        const response = await axios.get(`http://localhost:5000/api/politicas/byCedula/${empresa}`);
         setItems(response.data);
+        console.log(response.data);
         setLoading(true);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        //console.error("Error fetching data:", error);
         setLoading(true);
       }
     }
     cargarDatos();
-  }, [cedulaJuridica]);
+  }, [empresa]);
+
+  function formatFecha(fecha) {
+    const date = new Date(fecha);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
 
   return (
     <div className="container bg-white rounded shadow" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
@@ -53,19 +63,23 @@ export const ViewPoliticas = ({cedulaJuridica}) => {
                   <div className="accordion-body container">
                     <div className="row alert alert-primary">
                       <div className="row">
-                        <div className="col">Inicio: <strong>{item.inicio}</strong>
+                        <div className="col">Inicio: <strong>{formatFecha(item.fecha_inicio)}</strong>
                         </div>
-                        <div className="col">Final: <strong>{item.final}</strong>
+                        <div className="col">Final: <strong>{formatFecha(item.fecha_final)}</strong>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col">Periodo: <strong>{item.periodo}</strong>
                         </div>
-                        <div className="col">Acumulativo: <strong>{item.acumulativo}</strong>
+                        <div className="col">Acumulativo: <strong>{item.acumulativo? "Si":"No"}</strong>
                         </div>
                       </div>
                       <div className="row">
-                        <div className="col ">Horas a dar: <strong>{item.horas}</strong>
+                        <div className="col ">Tiempo a dar: <strong>{item.dias_a_dar}</strong>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col ">Desde contratacion: <strong>{item.inicia_desde_contrato? "Si":"No"}</strong>
                         </div>
                       </div>
                      </div>
@@ -78,7 +92,7 @@ export const ViewPoliticas = ({cedulaJuridica}) => {
         ))}
       </div>):
       (<div className="container d-flex align-items-center justify-content-center" style={{ height: '78vh' }}>
-        <div class="spinner-grow text-primary" style={{ width: '8rem', height: '8rem' }} role="status" /> 
+        <div className="spinner-grow text-primary" style={{ width: '8rem', height: '8rem' }} role="status" /> 
       </div>)}
     </div>
   );

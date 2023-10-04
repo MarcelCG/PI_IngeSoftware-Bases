@@ -7,8 +7,11 @@ const EmpresasModel = require('../models/empresasModel.js')
 async function RegistrarUsuario(req, res) {
     try {
         const data = req.body;
+        const cedula_empleado =  data["cedula"].replace(/-/g, '');
+        console.log("cedula del empleado", cedula_empleado);
+        console.log("empresa del empleado",data["empresa"]);
         var success = await UsuarioModel.createUsuario(
-            data["cedula"],
+            cedula_empleado,
             data["contrasena"],
             data["nombre"],
             data["primer_apellido"],
@@ -17,30 +20,30 @@ async function RegistrarUsuario(req, res) {
         );
 
         success += await EmpleadoModel.createEmpleado(
-            data["cedula"],
-            '3-101-291924',
+            cedula_empleado,
+            data["empresa"],
             data["rol"],
             data["fecha_contratacion"]
         )
 
         success += await UsuarioTelModel.createTelefonoUsuario(
-            data["cedula"],
+            cedula_empleado,
             data["telefono1"]
         )
         if (data["telefono2"] != "") {
             success += await UsuarioTelModel.createTelefonoUsuario(
-                data["cedula"],
+                cedula_empleado,
                 data["telefono2"]
             )
         }
 
         success += await UsuarioCorreoModel.createCorreoUsuario(
-            data["cedula"],
+            cedula_empleado,
             data["correo1"]
         )
         if (data["correo2"] != "") {
             success += await UsuarioCorreoModel.createCorreoUsuario(
-                data["cedula"],
+                cedula_empleado,
                 data["correo2"]
             )
         }
@@ -48,7 +51,7 @@ async function RegistrarUsuario(req, res) {
         return success;
     }
     catch (error) {
-        res.status(500).json({ error: error.message });
+        //res.status(500).json({ error: error.message });
         return error;
     }
 }
@@ -59,9 +62,11 @@ async function RegistrarEmpleado(req, res) {
         const data = req.body;
 
         const existeUsuario = await UsuarioModel.getByCedula(data["cedula"]);
+        console.log("voy por aqui");
         if (existeUsuario) {
-            res.status(400).json({ error: 'Ya existe un usuario con la cedula digitada'});
-            return
+            console.log("supuestamente ya existe");
+            //res.status(400).json({ error: 'Ya existe un usuario con la cedula digitada'});
+            //return
         }
 
         const success = await RegistrarUsuario(req, res);

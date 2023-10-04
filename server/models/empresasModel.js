@@ -40,7 +40,6 @@ async function getEmpresaByCedula(cedula_juridica){
     .request()
     .input('cedula_juridica', sql.NVarChar, cedula_juridica)
     .query('SELECT * FROM Empresa WHERE cedula_juridica = @cedula_juridica');
-
     if(result.recordset.length > 0) {
       return result.recordset[0];
     } else {

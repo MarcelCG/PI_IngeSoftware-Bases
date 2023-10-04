@@ -6,6 +6,7 @@ const UsuariosController = require('../controllers/usuariosController');
 router.get('/', UsuariosController.getAllUsuarios);
 router.post('/', UsuariosController.createUsuario);
 router.get('/byCedula/:cedula', UsuariosController.getUsuarioByCedula);
+router.get('/infoUser/:cedula', UsuariosController.infoUser);
 router.post('/login', UsuariosController.loginUser);
 router.get('/test', (req, res) => {
     res.status(200).send('Conexión exitosa');

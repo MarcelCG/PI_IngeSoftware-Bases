@@ -1,8 +1,8 @@
 const config = {
-    user: "B84032",
+    user: "C02768",
     password: "msSqlLab003!",
     server: "172.16.202.64",
-    database: "B84032",
+    database: "C02768",
     options: {
         encrypt: false,
         trustedConnection: false,

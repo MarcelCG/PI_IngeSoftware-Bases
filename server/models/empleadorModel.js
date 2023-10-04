@@ -34,28 +34,35 @@ async function createEmpleador(cedula_empleador) {
 }
 
 // Función para obtener un empleado por su cedula
-async function getByCedula(cedula_empleado) {
-    try {
-      const pool = await sql.connect(dbConfig);
-      const result = await pool
-        .request()
-        .input('cedula_empleado', sql.NVarChar, cedula_empleado)
-        .query('SELECT * FROM Empleado WHERE cedula_empleado = @cedula_empleado');
-      if (result.recordset.length > 0) {
-        // Si se encontró un empleado, se retorna
-        return result.recordset[0];
-      } else {
-        // Si no se encontró ningun empleado, retornamos null
-        return null;
-      }
-    } catch (error) {
-      throw error;
+async function getByCedula(cedula_empleador) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('cedula_empleador', sql.NVarChar, cedula_empleador)
+      .query('SELECT u.cedula,'
+        + ' u.nombre, u.primer_apellido, u.segundo_apellido,'
+        + ' c.correo'
+        + ' FROM Usuario u, Empleador e, CorreosUsuarios c '
+        + ' WHERE u.cedula=e.cedula_empleador'
+        + ' AND u.activo=1'
+        + ' AND c.cedula_usuario=u.cedula');
+    if (result.recordset.length > 0) {
+      // Si se encontró un empleado, se retorna
+      return result.recordset[0];
+    } else {
+      // Si no se encontró ningun empleado, retornamos null
+      return null;
     }
+  } catch (error) {
+    throw error;
   }
+}
 
   // Función para obtener un empleado por su empresa
 async function getByEmpresa(cedula_empresa) {
     try {
+      console.log("---------> ", cedula_empresa);
       const pool = await sql.connect(dbConfig);
       const result = await pool
         .request()

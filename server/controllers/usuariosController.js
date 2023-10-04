@@ -1,4 +1,12 @@
 const Usuario = require('../models/usuariosModel');
+const Empleador = require('../models/empleadorModel');
+const Empleado = require('../models/empleadoModel');
+const UserCorreo = require('../models/correosUsuarioModel');
+const UserTel = require('../models/telefonosUsuarioModel');
+
+
+
+
 
 // Obtener todos los usuarios
 async function getAllUsuarios(req, res) {
@@ -60,7 +68,7 @@ async function getUsuarioByCedula(req, res) {
 async function loginUser(req, res) {
     try {
         const { username, password } = req.body;
-        const usuario = await Usuario.getByUsername(username);
+        const usuario = await Usuario.getByCedula(username);
 
         if (!usuario) {
             return res.status(401).json({ error: 'Usuario no encontrado' });
@@ -76,11 +84,44 @@ async function loginUser(req, res) {
     }
 }
 
+async function infoUser(req, res) {
+  try {
+    const { cedula } = req.params;
+
+    const [userData, userCorreoData, userTelData, empleadorData] = await Promise.all([
+      Usuario.getByCedula(cedula),
+      UserCorreo.getByUsuario(cedula),
+      UserTel.getByUsuario(cedula),
+      Empleado.getByCedula(cedula), // This might return null if it's an empleador
+    ]);
+
+    const isEmpleado = !!empleadorData;
+
+    const usuario = {
+      ...userData,
+      correo: userCorreoData,
+      telefono: userTelData,
+      esEmpleado: isEmpleado,
+    };
+
+    //console.log(usuario);
+    if (usuario !== null) {
+      res.status(200).json({ data: usuario });
+    } else {
+      res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
 
 
 module.exports = {
     getAllUsuarios,
     createUsuario,
     loginUser,
-    getUsuarioByCedula
+    getUsuarioByCedula,
+    infoUser,
 };

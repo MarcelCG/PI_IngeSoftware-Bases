@@ -86,7 +86,7 @@ class AddPolicyForm extends Component {
               <select className="drop"
                 {...register("periodUnit")}
               >
-                <option value="1/24" selected>Horas</option>
+                <option value="1/24">Horas</option>
                 <option value="1">Días</option>
                 <option value="7">Semanas</option>
                 <option value="30">Meses</option>
@@ -116,7 +116,7 @@ class AddPolicyForm extends Component {
                   required: !disableIncremental ? errorMessages.required : false
                 })}
               >
-                <option value="1/24" selected>Horas</option>
+                <option value="1/24">Horas</option>
                 <option value="1">Días</option>
                 <option value="7">Semanas</option>
                 <option value="30">Meses</option>
@@ -154,7 +154,7 @@ class AddPolicyForm extends Component {
               <select className="drop"
                 {...register("dias_a_darUnit")}
               >
-                <option value='1/24' selected>Horas</option>
+                <option value='1/24'>Horas</option>
                 <option value="1">Días</option>
                 <option value="7">Semanas</option>
                 <option value="30">Meses</option>

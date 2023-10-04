@@ -53,6 +53,7 @@ async function createEmpleado(
   fecha_contratacion
 ) {
   try {
+    //console.log(cedula_empleado, cedula_empresa, rol, fecha_contratacion);
     const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
