@@ -1,3 +1,5 @@
+const Empleador = require('../models/empleadorModel');
+
 const sql = require('mssql');
 const dbConfig = require('../config/dbconfig'); // Importa la configuración de la base de datos
 
@@ -33,31 +35,23 @@ async function createEmpleador(cedula_empleador) {
   }
 }
 
-// Función para obtener un empleado por su cedula
-async function getByCedula(cedula_empleador) {
-    try {
-      const pool = await sql.connect(dbConfig);
-      const result = await pool
-        .request()
-        .input('cedula_empleador', sql.NVarChar, cedula_empleador)
-        .query('SELECT u.cedula,'
-          + ' u.nombre, u.primer_apellido, u.segundo_apellido,'
-          + ' c.correo'
-          + ' FROM Usuario u, Empleador e, CorreosUsuarios c '
-          + ' WHERE u.cedula=e.cedula_empleador'
-          + ' AND u.activo=1'
-          + ' AND c.cedula_usuario=u.cedula');
-      if (result.recordset.length > 0) {
-        // Si se encontró un empleado, se retorna
-        return result.recordset[0];
-      } else {
-        // Si no se encontró ningun empleado, retornamos null
-        return null;
-      }
-    } catch (error) {
-      throw error;
+async function getByCedula(req, res) {
+  try {
+    //console.log(req.params);
+    const { cedula_empleador } = req.params;
+
+    // Llama a la función que busca un empleador por cedula_empleador
+    const empleador = await Empleador.getByCedula(cedula_empleador);
+
+    if (empleador) {
+      res.status(200).json(empleador);
+    } else {
+      res.status(404).json({ message: 'No se encontró un empleador con esta cédula' });
     }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
+}
 
   // Función para obtener un empleado por su empresa
 async function getByEmpresa(cedula_empresa) {

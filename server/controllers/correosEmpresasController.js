@@ -47,5 +47,5 @@ async function getCorreosByEmpresa(req, res) {
 module.exports = {
     getAllCorreos,
     createCorreo,
-    getCorreosByEmpresa
+    getCorreosByEmpresa,
 };

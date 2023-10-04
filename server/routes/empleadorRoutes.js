@@ -4,6 +4,6 @@ const EmpleadorController = require('../controllers/empleadorController');
 
 // Rutas para empleadores
 router.get('/', EmpleadorController.getAll);
-router.get('/:cedula_empleador', EmpleadorController.getByCedula);
+router.get('/byCedula/:cedula_empleador', EmpleadorController.getByCedula);
 
 module.exports = router;

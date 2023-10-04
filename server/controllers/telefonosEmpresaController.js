@@ -28,7 +28,9 @@ async function createTelefonoEmpresa(req, res) {
 // Obtener todos los teléfonos de una empresa
 async function getTelefonosByEmpresa(req, res) {
     try {
+
         const { cedula_empresa } = req.params;
+        console.log("GET EMPRESA CORR: ", cedula_empresa);
         const telefonos = await TelefonosEmpresas.getByEmpresa(cedula_empresa);
         if (telefonos.length > 0) {
             res.status(200).json(telefonos);

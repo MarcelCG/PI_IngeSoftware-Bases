@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
+import axios from 'axios';
+
 
 function VisualizarEmpleadorPorCedula() {
   const {cedulaEmpleador} = useParams();
 
   const [datosEmpleador, setDatosEmpleador] = useState({
     nombre: "",
-    primerApellido: "",
-    segundoApellido: "",
+    primer_apellido: "",
+    segundo_apellido: "",
     correo: "",
     cedula: "",
     nombreEmpresa: ""
@@ -16,16 +18,19 @@ function VisualizarEmpleadorPorCedula() {
 
   const cargarDatosDelEmpleador = async () => {
     try {
+      console.log(cedulaEmpleador);
       // Realizar una solicitud al backend para obtener los datos del empleador por su cédula
-      const response = await fetch(`http://localhost:4223/api/empleador/${cedulaEmpleador}`);
-      if (response.ok) {
-        const data = await response.json();
+      const response = await axios.get(`http://localhost:5000/api/usuario/infoUser/${cedulaEmpleador}`);
+      
+      if (response.status === 200) {
+        const data = response.data.data;
+        console.log(data);
         setDatosEmpleador(data);
       } else {
         console.error("Error al obtener los datos del empleador");
       }
     } catch (error) {
-      console.error("Error en la solicitud al servidor:", error);
+        console.error("Error en la solicitud al servidor:", error);
     }
   };
 
@@ -44,10 +49,10 @@ function VisualizarEmpleadorPorCedula() {
               <h5 className="mb-0">Datos Personales</h5>
             </div>
             <div className="card-body">
-              <p><strong>Nombre:</strong> {datosEmpleador.nombre}</p>
-              <p><strong>Primer Apellido:</strong> {datosEmpleador.primerApellido}</p>
-              <p><strong>Segundo Apellido:</strong> {datosEmpleador.segundoApellido}</p>
-              <p><strong>Correo:</strong> {datosEmpleador.correo}</p>
+              <p><strong>Nombre:</strong>{datosEmpleador.nombre}</p>
+              <p><strong>Primer Apellido:</strong>{datosEmpleador.primer_apellido}</p>
+              <p><strong>Segundo Apellido:</strong>{datosEmpleador.segundo_apellido}</p>
+              <p><strong>Correo:</strong>{datosEmpleador.correo[1]?.correo}</p>
               <p><strong>Cédula:</strong> {datosEmpleador.cedula}</p>
             </div>
           </div>
@@ -58,7 +63,7 @@ function VisualizarEmpleadorPorCedula() {
               <h5 className="mb-0">Datos de la Empresa</h5>
             </div>
             <div className="card-body">
-              <p><strong>Nombre de la Empresa:</strong> {datosEmpleador.nombreEmpresa}</p>
+              <p><strong>Nombre de la Empresa:</strong> .</p>
             </div>
           </div>
         </div>

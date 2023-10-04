@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import "./AddPolicy.css"
 
 // URL para el Api
-const api = 'http://localhost:4223/api';
+const api = 'http://localhost:5000/api';
 
 // URL para el manejo de politicas
 const politicas = api + '/politicas';
@@ -57,6 +57,7 @@ function AddPolicy() {
 
   // Función que se ejecuta al enviar el formulario
   const onSubmit = (data) => {
+    console.log(data);
     const formData = transformDataBeforeSubmit(data);
   
     axios.post(politicas, formData).then((response) => {

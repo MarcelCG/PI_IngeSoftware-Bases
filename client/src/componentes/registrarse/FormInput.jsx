@@ -9,6 +9,7 @@ const FormInput = (props) => {
 
   return (
       <div className="mb-3 p-1 row">
+        <label className="text-secondary"><strong>{props.label}</strong></label>
         <input
           className={`form-control  col form-control-lg${boolError ? ' is-invalid': ''} ${style}`}
           {...inputProps}
@@ -29,7 +30,7 @@ const FormReview = (props) => {
       <div   
         {...inputProps}
       >
-        <h4>{inputProps.label}</h4>
+        <div className="text-secondary"><strong>{inputProps.label}</strong></div>
         {inputProps.value}
       </div>
     </div>

@@ -1,19 +1,20 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import './App.css';
-import VisualizarEmpleador from './VisualizarEmpleador'; 
-import { BrowserRouter as Router, Link, Route, Routes, Navigate } from 'react-router-dom';
+// import VisualizarEmpleador from './VisualizarEmpleador'; 
+import { BrowserRouter as Link, Route, Routes} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import {ViewPoliticas} from './componentes/Politicas/viewPoliticas';
 import AddPolicy from './componentes/addPolicy/AddPolicy';
 import ListOfEmployees from './componentes/visualizarEmpleado/visualizarEmpleados';
 import VisualizarEmpleadorPorCedula from './VisualizarEmpleador';
+import VisualizarEmpresa from './VisualizarEmpresa';
 import AddEmployee from './componentes/agregarEmpleado/agregarEmpleado';
 
 const getEmpresa = async (cedula_usuario) => {
   try {
-    const response = await axios.get(`http://localhost:4223/api/empresa/byCedulaEmpleador/${cedula_usuario}`);
+    const response = await axios.get(`http://localhost:5000/api/empresa/byCedulaEmpleador/${cedula_usuario}`);
     console.log('Empresa Encontrada');
     return response.data.cedula_juridica;
   } catch (error) {
@@ -42,9 +43,6 @@ function App(cedula_usuario) {
   };
 
   return (
-    // <div className="App">
-      // <VisualizarEmpleador /> {}
-      // </div>
       <div className="bg-fondo p-3" >
       <div className="App bg-fondo" >
       <button onClick={toggleMenu}>Mostrar/ocultar menú</button>
@@ -65,17 +63,14 @@ function App(cedula_usuario) {
                 <Link to={`/app/addPoliticas/${empresa}`}>Agregar Políticas</Link>
               </li>
               <li>
-                <Link to={`/app/addEmpleados`}>Agregar Empleados</Link>
+                <Link to={`/app/addEmpleados/${empresa}`}>Agregar Empleados</Link>
               </li>
-              {empresa!='' ? 
               <li>
-              <Link to={`/app/perfil/${cedula_usuario.cedula_usuario}`}>Perfil</Link>
+                <Link to={`/app/perfil/${cedula_usuario.cedula_usuario}`}>Perfil</Link>
               </li>
-              :
-              <li>
-              <Link to={`/app/perfil/${cedula_usuario.cedula_usuario}`}>Perfil</Link>
+               <li>
+                <Link to={`/app/empresa/${empresa}`}>Empresa</Link>
               </li>
-              }
             </ul>
           </div>
           <div className="content">
@@ -88,7 +83,8 @@ function App(cedula_usuario) {
               <Route path="/empleados/:cedulaEmpleador" element={<ListOfEmployees/>}/>
               <Route path="/addPoliticas/:empresa" element={<AddPolicy/>}/>
               <Route path="/perfil/:cedulaEmpleador" element={<VisualizarEmpleadorPorCedula/>}/>
-              <Route path="/addEmpleados" element={<AddEmployee/>}/>
+              <Route path="/addEmpleados/:empresa" element={<AddEmployee/>}/>
+              <Route path="/empresa/:empresa" element={<VisualizarEmpresa/>}/>
         </Routes>
       </div>
       <footer style={{ backgroundColor: '#20212a', color: '#ffffff'    }}  >

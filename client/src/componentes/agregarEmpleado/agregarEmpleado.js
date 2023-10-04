@@ -7,41 +7,31 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useParams } from "react-router-dom";
 
-const URI = 'http://localhost:4223/api/registrarEmpleado/';
+const URI = 'http://localhost:5000/api/registrarEmpleado/';
 
 const AddEmployee = () => {
-
+    const {empresa} = useParams();
     const {register, handleSubmit, 
         formState: {errors},
         watch,
         reset
     } = useForm()
 
-    const onSubmit = handleSubmit((data) => {
-        axios.post(URI, data).then((response) => {
-            console.log('Solicitud POST exitosa:', response.data)
-            toast.success('Empleado agregado con exito', {
-                position: toast.POSITION.TOP_RIGHT
-            });
-            reset()
-        }).catch((error) => {
-            if (error.response && error.response.status === 400
-                && error.response.data 
-                && error.response.data.error === 'Ya existe un usuario con la cedula digitada') {
-                console.error(error.response.data.error, error);
-                // Muestra una notificación de error
-                toast.error('Ya existe un usuario con la cedula digitada', {
-                    position: toast.POSITION.TOP_CENTER
-                });
-            } else {
-                console.error('Error en la solicitud POST:', error);
-                // Muestra una notificación de error
-                toast.error('Hubo un error inesperado al agregar el empleado, trate de nuevo', {
-                    position: toast.POSITION.TOP_CENTER
-                });
-            }
+    const onSubmit = handleSubmit(async (data) => {
+      try {
+        data.empresa = empresa;
+        const response = await axios.post(URI, data);
+        console.log('Solicitud POST exitosa:', response.data);
+        toast.success('Empleado agregado con éxito', {
+          position: toast.POSITION.TOP_RIGHT
         });
+        reset();
+      } catch (error) {
+        console.log("Error: ", error);
+        //handleRequestError(error);
+      }
     });
 
     return (

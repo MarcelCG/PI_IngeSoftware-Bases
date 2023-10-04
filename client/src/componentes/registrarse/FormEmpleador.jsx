@@ -11,6 +11,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		 	name:"empleadorName",
 			type:"text",
 			style:"col-4",
+			label:"Nombre",
 			placeholder:"Nombre",
 			errorMessage: "Solo se permiten letras",
 			required: true,
@@ -22,6 +23,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorApe1",
 			type:"text",
 			style:"col-4",
+			label:"Primer apellido",
 			placeholder:"Primer apellido",
 			errorMessage: "Solo se permiten letras",
 			required: true,
@@ -32,7 +34,8 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorApe2",
 			type:"text",
 			style:"col-4",
-			placeholder:"Segundo pellido",
+			label:"Segundo apellido",
+			placeholder:"Segundo apellido",
 			errorMessage: "Solo se permiten letras",
 			required: true,
 			patron: /^([a-zA-ZÁáÉéÍíÓóÚú]+[a-zA-ZÁáÉéÍíÓóÚú ]*)$/
@@ -41,7 +44,8 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:4,
 		  name:"empleadorCedu",
 			type:"text",
-			placeholder:"Cedula de identidad",
+			placeholder:"1-2345-6789",
+			label:"Cedula de identidad",
 			errorMessage: "Ejemplo: 1-2345-6789",
 			required: true,
 			patron: /^([1-9]-[0-9]{4}-[0-9]{4})$/
@@ -51,8 +55,9 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorCorreo1",
 			type:"text",
 			style:"col-6",
-			placeholder:"Email personal",
-			errorMessage: "Ejemplo: 1-2345-6789",
+			label:"Correo personal",
+			placeholder:"correo@dominio.com",
+			errorMessage: "Ejemplo: correo@dominio.com",
 			required: true,
 			patron: /^([a-zA-Z0-9&-_.]+@[a-zA-Z.]+.[a-zA-Z]{2,})$/
 		},
@@ -61,8 +66,9 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorCorreo2",
 			type:"text",
 			style:"col-6",
-			placeholder:"Email personal *",
-			errorMessage: "Ejemplo: 1-2345-6789",
+			label:"Opcional",
+			placeholder:"correo@dominio.com*",
+			errorMessage: "Ejemplo: correo@dominio.com",
 			required: false,
 			patron: /^([a-zA-Z0-9&\-_.]+@[a-zA-Z.]+.[a-zA-Z]{2,})$/
 		},
@@ -70,9 +76,10 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:7,
 		  name:"empleadorTel1",
 			type:"tel",
+			label:"Telefono personal",
 			style:"col-6",
-			placeholder:"Telefono personal",
-			errorMessage:"Formato 1234-5678",
+			placeholder:"8888-8888",
+			errorMessage:"Ejemplo: 1234-5678",
 			required: true,
 			patron: /^([87624][0-9]{3}-[0-9]{4})$/
 		},
@@ -80,9 +87,10 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:8,
 		  name:"empleadorTel2",
 			type:"tel",
+			label:"Opcional",
 			style:"col-6",
-			placeholder:"Telefono personal *",
-			errorMessage:"1234-5678",
+			placeholder:"8888-8888*",
+			errorMessage:"Ejemplo: 1234-5678",
 			required: false,
 			patron: /^([87624][0-9]{3}-[0-9]{4})$/
 		},
@@ -90,7 +98,8 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:9,
 		  name:"empleadorPass",
 			type: inputType,
-			placeholder:"Contaseña",
+			label:"Contraseña",
+			placeholder:"*********",
 			errorMessage:"No cumple con los requisitos",
 			required: true,
 			isPassword:true,
@@ -129,8 +138,8 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 					</small>
 	      	  </form>
 	      	  <div className="row px-4 justify-content-between">
-		      	<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary ">atras</button>
-		      	<button onClick={nextClick} className="btn col-3 btn-primary ">siguiente</button>
+		      	<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary">atras</button>
+		      	<button onClick={nextClick} className="btn col-3 btn-primary">siguiente</button>
 		     </div>
 			  </div>
 			</div>

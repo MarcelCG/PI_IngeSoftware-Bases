@@ -14,21 +14,23 @@ function VisualizarEmpleado({ cedulaEmpleado, cedulaEmpresa }) {
 
   // Función para cargar los datos del empleado
   const cargarDatosDelEmpleado = async () => {
-    try {
-      // Realiza una solicitud al servidor para obtener los datos del empleado
-      const response = await fetch(`/api/empleado/${cedulaEmpleado}/${cedulaEmpresa}`); // Ajusta la ruta según tu configuración
-      if (response.ok) {
-        const datosEmpleado = await response.json();
-        setDatosDelEmpleado(datosEmpleado);
-      } else {
-        // Maneja el caso en que no se encuentre el empleado
-        console.error('Empleado no encontrado');
-      }
-    } catch (error) {
-      // Maneja errores de la solicitud
-      console.error('Error al cargar datos del empleado', error);
+  try {
+    // Realiza una solicitud al servidor para obtener los datos del empleado
+    const response = await axios.get(`/api/empleado/${cedulaEmpleado}/${cedulaEmpresa}`); // Ajusta la ruta según tu configuración
+    
+    if (response.status === 200) {
+      const datosEmpleado = response.data;
+      setDatosDelEmpleado(datosEmpleado);
+    } else {
+      // Maneja el caso en que no se encuentre el empleado
+      console.error('Empleado no encontrado');
     }
-  };
+  } catch (error) {
+    // Maneja errores de la solicitud
+    console.error('Error al cargar datos del empleado', error);
+  }
+};
+
 
   // Carga los datos del empleado cuando el componente se monta
   useEffect(() => {

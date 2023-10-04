@@ -8,36 +8,45 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useParams } from "react-router-dom";
 
-const URI = 'http://localhost:4223/api/'
+const URI = 'http://localhost:5000/api/'
 const empresaURI = URI + 'empresa/byCedulaEmpleador/'
 const empleadoURI = URI + 'empleados/allByEmpresa/';
 
 const ListOfEmployees = () => {
-    const {cedulaEmpleador} = useParams();
+    const { cedulaEmpleador } = useParams();
     const empresaURIParam = empresaURI + cedulaEmpleador;
 
-    const [empresa, setEmpresa] = useState([])
+    const [empresa, setEmpresa] = useState([]);
 
     useEffect(() => {
         const getEmpresaByCedulaEmpleador = async () => {
-            const res = await axios.get(empresaURIParam)
-            setEmpresa(res.data)
-        };
-        
+        try {
+            const res = await axios.get(empresaURIParam);
+            setEmpresa(res.data);
+        } catch (error) {
+            console.error('Error al obtener datos de la empresa:', error);
+        }
+    };
         getEmpresaByCedulaEmpleador();
-    },[])
-
-    const empleadosURIParam = empleadoURI + empresa.cedula_juridica;
-    const [empleados, setEmpleado] = useState([])
+    }, [empresaURIParam]);
 
     useEffect(() => {
-        const getEmpleadoByEmpresa = async () => {
-            const res = await axios.get(empleadosURIParam)
-            setEmpleado(res.data)
+        if (empresa.cedula_juridica) {
+            const empleadosURIParam = empleadoURI + empresa.cedula_juridica;
+            const getEmpleadoByEmpresa = async () => {
+            try {
+                const res = await axios.get(empleadosURIParam);
+                setEmpleado(res.data);
+            } 
+            catch (error) {
+                console.error('Error al obtener datos de los empleados:', error);
+            }
         };
         getEmpleadoByEmpresa();
-    },[])
-    console.log(empleados)
+        }
+    }, [empresa]);
+
+  const [empleados, setEmpleado] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;

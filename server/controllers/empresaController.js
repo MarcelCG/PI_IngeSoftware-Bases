@@ -1,4 +1,6 @@
 const Empresa = require('../models/empresasModel');
+const EmpresaCorreo = require('../models/correosEmpresasModel');
+const EmpresaTel = require('../models/telefonosEmpresaModel');
 
 // Obtener todas las empresas
 async function getAllEmpresas(req, res) {
@@ -38,6 +40,7 @@ async function createEmpresa(req, res) {
 
 async function getEmpresaByCedula(req, res){
   const {cedula_juridica} = req.params;
+  console.log("cedula juridia: ", cedula_juridica);
 
   try {
     const success = await Empresa.getEmpresaByCedula(cedula_juridica);
@@ -67,10 +70,36 @@ async function getEmpresaByCedulaEmpleador(req, res){
     }
   }
 
+async function getEmpresaInfo(req, res) {
+  try {
+    const { empresa } = req.params;
+    const [empresaData, empresaCorreoData, empresaTelData] = await Promise.all([
+      Empresa.getEmpresaByCedula(empresa),
+      EmpresaCorreo.getByEmpresa(empresa),
+      EmpresaTel.getByEmpresa(empresa),
+    ]);
+
+    if (empresaData) {
+      const empresaInfo = {
+        ...empresaData,
+        correo: empresaCorreoData,
+        telefono: empresaTelData,
+      };
+      res.status(200).json({ data: empresaInfo });
+    } else {
+      res.status(404).json({ error: 'Empresa no encontrada' });
+    }
+  } catch (error) {
+    console.error('Error al cargar datos de la empresa:', error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+}
+
 
 module.exports = {
   getAllEmpresas,
   createEmpresa,
   getEmpresaByCedula,
   getEmpresaByCedulaEmpleador,
+  getEmpresaInfo,
 };

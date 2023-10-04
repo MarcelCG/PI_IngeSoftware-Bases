@@ -1,14 +1,17 @@
-import React, {useState} from "react";
-import {FormReview} from './FormInput'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import {FormReview} from './FormInput';
+import React, {useState} from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation }) => {
 	const [loading, setloading] = useState(false);
+
+	const navigate = useNavigate();
 
 	const empresaValues = [
 		{
@@ -102,45 +105,45 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 
 	const sendDataDB = async (e) => {
 		setloading(true);
-		let errorDesc = "", errorType;
+		let errorDesc = "ERROR: Vuelva a intentar mas tarde";
 	  try {
 	  	// eslint-disable-next-line no-unused-vars
-	    const response = await axios.post('http://localhost:4223/api/registro', {
+	    const response = await axios.post('http://localhost:5000/api/registro', {
 	      formData
 	    });
-	    errorDesc = "SUCCESS: Registro exitoso!";
-	    errorType = "success";
+	    errorDesc = "SUCCESS: Registro exitoso!\nRedirigiendo...";
+	    toast.success(errorDesc,{position: toast.POSITION.TOP_CENTER, className:"alert alert-success"});
+	   	// redirigir
+      	setTimeout(() => {
+        	navigate('/');
+      	}, 	3000); 
 	  }
 	  catch (error) {
 	  	if(error.response){
 		  	switch(error.response.data.message){
 		    	case 1:
-	    			errorDesc = "ERROR: La cedula del empleador ya existe";
+	    			errorDesc = "ERROR: La cedula del EMPLEADOR ya existe";
 	    		break;
 	    		case 2:
-	    			errorDesc = "ERROR: La cedula de la empresa ya existe";
+	    			errorDesc = "ERROR: La cedula de la EMPRESA ya existe";
 	    		break;
 	    		case 3:
-	    			errorDesc = "ERROR: La cedula de la empresa y del empleador ya existe";
+	    			errorDesc = "ERROR: La cedula de la EMPRESA y del EMPLEADOR ya existe";
 	    		break;
-	    	  default:
+	    	  	default:
 		   	}
-			}
-			else {
-				errorDesc = "ERROR: Vuelva a intentar mas tarde";
-	  	}
-	  	errorType = "danger";
+		}
+	  	toast.error(errorDesc,{position: toast.POSITION.TOP_CENTER, className:"alert alert-danger"});
+	  	setloading(false);
 	  }
-	  toast.error(errorDesc,{position: toast.POSITION.TOP_CENTER, className:`alert alert-${errorType}`});
-	  setloading(false);
 	};
 
 	return (
 		<div className="container col-5 position-static">
-	    <ToastContainer />
+	    <ToastContainer autoClose={2500}/>
 			<div className="card border-dark shadow m-3">
 				<div className="card-header">
-					<h2>Registro | Review </h2>
+					<h2>Formulario | Review </h2>
 				</div>
 				<div className="card-body">
 					<h4 className="px-3">Empresa</h4>
