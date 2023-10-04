@@ -1,42 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
+import axios from 'axios';
 import './App.css';
 import VisualizarEmpleador from './VisualizarEmpleador'; 
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Routes, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import {ViewPoliticas} from './componentes/Politicas/viewPoliticas'
+import {ViewPoliticas} from './componentes/Politicas/viewPoliticas';
+import AddPolicy from './componentes/addPolicy/AddPolicy';
+import ListOfEmployees from './componentes/visualizarEmpleado/visualizarEmpleados';
+import VisualizarEmpleadorPorCedula from './VisualizarEmpleador';
+import AddEmployee from './componentes/agregarEmpleado/agregarEmpleado';
 
-function App({cedula}) {
-    const items = [
-    {
-      titulo: "Política 1",
-      inicio: "01/01/2023",
-      final: "31/12/2023",
-      periodo: "Anual",
-      acumulativo: "Sí",
-      horas: "40",
-      descripcion: "Esta es la descripción de la Política 1.",
-    },
-    {
-      titulo: "Política 2",
-      inicio: "15/02/2023",
-      final: "14/02/2024",
-      periodo: "Anual",
-      acumulativo: "No",
-      horas: "30",
-      descripcion: "Esta es la descripción de la Política 2.",
-    },
-    {
-      titulo: "Política 3",
-      inicio: "01/03/2023",
-      final: "28/02/2024",
-      periodo: "Anual",
-      acumulativo: "Sí",
-      horas: "50",
-      descripcion: "Esta es la descripción de la Política 3.",
-    },
-  ];
+const getEmpresa = async (cedula_usuario) => {
+  try {
+    const response = await axios.get(`http://localhost:4223/api/empresa/byCedulaEmpleador/${cedula_usuario}`);
+    console.log('Empresa Encontrada');
+    return response.data.cedula_juridica;
+  } catch (error) {
+    console.log('No se encontro empresa');
+    return '';
+  }
+};
 
+function App(cedula_usuario) {
+
+  const [empresa, setEmpresa] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const empresaEncontrada = await getEmpresa(cedula_usuario.cedula_usuario);
+      setEmpresa(empresaEncontrada);
+    };
+
+    fetchData();
+  }, [cedula_usuario]);
+  console.log(cedula_usuario.cedula_usuario);
   const [menuVisible, setMenuVisible] = useState(false);
 
   const toggleMenu = () => {
@@ -45,9 +43,9 @@ function App({cedula}) {
 
   return (
     // <div className="App">
-    // <VisualizarEmpleador /> {}
-    // </div>
-    <div className="bg-fondo p-3" >
+      // <VisualizarEmpleador /> {}
+      // </div>
+      <div className="bg-fondo p-3" >
       <div className="App bg-fondo" >
       <button onClick={toggleMenu}>Mostrar/ocultar menú</button>
       <main>
@@ -58,11 +56,26 @@ function App({cedula}) {
                 <Link to="/app">Inicio</Link>
               </li>
               <li>
-                <Link to="/empleador">Empleados</Link>
+                <Link to={`/app/empleados/${cedula_usuario.cedula_usuario}`}>Empleados</Link>
               </li>
               <li>
-                <Link to="/politicas">Políticas</Link>
+                <Link to={`/app/politicas/${empresa}`}>Políticas</Link>
               </li>
+              <li>
+                <Link to={`/app/addPoliticas/${empresa}`}>Agregar Políticas</Link>
+              </li>
+              <li>
+                <Link to={`/app/addEmpleados`}>Agregar Empleados</Link>
+              </li>
+              {empresa!='' ? 
+              <li>
+              <Link to={`/app/perfil/${cedula_usuario.cedula_usuario}`}>Perfil</Link>
+              </li>
+              :
+              <li>
+              <Link to={`/app/perfil/${cedula_usuario.cedula_usuario}`}>Perfil</Link>
+              </li>
+              }
             </ul>
           </div>
           <div className="content">
@@ -71,7 +84,11 @@ function App({cedula}) {
       </main>
       <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
         <Routes>
-              <Route path="/politicas" element={<ViewPoliticas items={items}/>} />
+              <Route path="/politicas/:empresa" element={<ViewPoliticas/>} />
+              <Route path="/empleados/:cedulaEmpleador" element={<ListOfEmployees/>}/>
+              <Route path="/addPoliticas/:empresa" element={<AddPolicy/>}/>
+              <Route path="/perfil/:cedulaEmpleador" element={<VisualizarEmpleadorPorCedula/>}/>
+              <Route path="/addEmpleados" element={<AddEmployee/>}/>
         </Routes>
       </div>
       <footer style={{ backgroundColor: '#20212a', color: '#ffffff'    }}  >
