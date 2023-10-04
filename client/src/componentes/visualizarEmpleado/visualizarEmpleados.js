@@ -6,38 +6,37 @@ import 'bootstrap/dist/css/bootstrap.css';
 import "../styles/visualizarEmpleados.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { useParams } from "react-router-dom";
 
 const URI = 'http://localhost:4223/api/'
 const empresaURI = URI + 'empresa/byCedulaEmpleador/'
 const empleadoURI = URI + 'empleados/allByEmpresa/';
 
 const ListOfEmployees = () => {
-
-    const cedulaEmpleador = '8-0061-0075';
+    const {cedulaEmpleador} = useParams();
     const empresaURIParam = empresaURI + cedulaEmpleador;
 
     const [empresa, setEmpresa] = useState([])
 
     useEffect(() => {
-        getEmpresaByCedulaEmpleador()
+        const getEmpresaByCedulaEmpleador = async () => {
+            const res = await axios.get(empresaURIParam)
+            setEmpresa(res.data)
+        };
+        
+        getEmpresaByCedulaEmpleador();
     },[])
-
-    const getEmpresaByCedulaEmpleador = async () => {
-        const res = await axios.get(empresaURIParam)
-        setEmpresa(res.data)
-    }
 
     const empleadosURIParam = empleadoURI + empresa.cedula_juridica;
     const [empleados, setEmpleado] = useState([])
 
     useEffect(() => {
-        getEmpleadoByEmpresa()
+        const getEmpleadoByEmpresa = async () => {
+            const res = await axios.get(empleadosURIParam)
+            setEmpleado(res.data)
+        };
+        getEmpleadoByEmpresa();
     },[])
-
-    const getEmpleadoByEmpresa = async () => {
-        const res = await axios.get(empleadosURIParam)
-        setEmpleado(res.data)
-    }
     console.log(empleados)
 
     const [currentPage, setCurrentPage] = useState(1);
