@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 
-function VisualizarEmpleadorPorCedula({ cedulaEmpleador }) {
+function VisualizarEmpleadorPorCedula() {
+  const {cedulaEmpleador} = useParams();
+
   const [datosEmpleador, setDatosEmpleador] = useState({
     nombre: "",
     primerApellido: "",
@@ -14,7 +17,7 @@ function VisualizarEmpleadorPorCedula({ cedulaEmpleador }) {
   const cargarDatosDelEmpleador = async () => {
     try {
       // Realizar una solicitud al backend para obtener los datos del empleador por su cédula
-      const response = await fetch(`/api/empleador/${cedulaEmpleador}`);
+      const response = await fetch(`http://localhost:4223/api/empleador/${cedulaEmpleador}`);
       if (response.ok) {
         const data = await response.json();
         setDatosEmpleador(data);

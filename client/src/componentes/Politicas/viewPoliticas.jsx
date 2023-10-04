@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react";
+import { useParams } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 
-export const ViewPoliticas = ({cedulaJuridica}) => {
+export const ViewPoliticas = () => {
+  const {empresa} = useParams();
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -12,9 +14,7 @@ export const ViewPoliticas = ({cedulaJuridica}) => {
   
     async function cargarDatos() {
       try {
-        const response = await axios.get('http://localhost:5000/api/politicas',{
-          cedulaJuridica
-        });
+        const response = await axios.get(`http://localhost:4223/api/politicas/byCedula/${empresa}`);
         setItems(response.data);
         setLoading(true);
       } catch (error) {
@@ -23,7 +23,7 @@ export const ViewPoliticas = ({cedulaJuridica}) => {
       }
     }
     cargarDatos();
-  }, [cedulaJuridica]);
+  }, [empresa]);
 
   return (
     <div className="container bg-white rounded shadow" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
