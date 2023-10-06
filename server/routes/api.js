@@ -1,36 +1,50 @@
 const express = require('express');
 const router = express.Router();
 
-// Importa rutas
-const registroEmpleado = require('./registroEmpleadoRoutes')
-const registroRoutes = require('./registroRoutes')
-const politicasRoutes = require('./politicasRoutes')
-const empleadoRoutes = require('./empleadoRoutes')
-const solicitudRoutes = require('./solicitudRoutes')
-const jornadaRoutes = require('./jornadaRoutes')
-const libresRoutes = require('./libresRoutes')
-const telefonosEmpresaRoutes = require('./telefonosEmpresaRoutes')
-const correosEmpresaRoutes = require('./correosEmpresasRoutes')
-const EmpresasRoutes = require('./empresaRoutes')
-const TelefonosUsuarioRoutes = require('./telefonosUsuarioRoutes')
-const CorreosUsuarioRoutes = require('./correosUsuarioRoutes')
-const UsuariosRoutes = require('./usuariosRoutes')
-const EmpleadorRoutes = require('./empleadorRoutes');
-
-// Asocia las rutas
-router.use('/registrarEmpleado', registroEmpleado);
+// Rutas
+//-----usuarios-----//
+const UsuariosRoutes = require('./usuarioRoutes/usuariosRoutes');
+const registroRoutes = require('./usuarioRoutes/registroRoutes');
+const CorreosUsuarioRoutes = require('./usuarioRoutes/correosUsuarioRoutes');
+router.use('/usuario', UsuariosRoutes);
 router.use('/registro', registroRoutes);
-router.use('/politicas', politicasRoutes);
+router.use('/correoUsuario', CorreosUsuarioRoutes);
+
+//-----empleador-----//
+const EmpleadorRoutes = require('./usuarioRoutes/empleadorRoutes/empleadorRoutes');;
+const TelefonosUsuarioRoutes = require('./usuarioRoutes/telefonosUsuarioRoutes');
+router.use('/empleador', EmpleadorRoutes);
+router.use('/telUsuario', TelefonosUsuarioRoutes);
+
+//-----empleado------//
+const empleadoRoutes = require('./usuarioRoutes/empleadoRoutes/empleadoRoutes');
+const registroEmpleado = require('./usuarioRoutes/empleadoRoutes/registroEmpleadoRoutes');
+router.use('/registrarEmpleado', registroEmpleado);
 router.use('/empleados', empleadoRoutes);
-router.use('/solicitudes', solicitudRoutes);
-router.use('/jornadas', jornadaRoutes);
-router.use('/libres', libresRoutes);
+
+//-----empresa-----//
+const EmpresasRoutes = require('./empresaRoutes/empresaRoutes');
+const correosEmpresaRoutes = require('./empresaRoutes/correosEmpresasRoutes');
+const telefonosEmpresaRoutes = require('./empresaRoutes/telefonosEmpresaRoutes');
+router.use('/empresa', EmpresasRoutes);
 router.use('/telEmpresa', telefonosEmpresaRoutes);
 router.use('/correoEmpresa', correosEmpresaRoutes);
-router.use('/empresa', EmpresasRoutes);
-router.use('/telUsuario', TelefonosUsuarioRoutes);
-router.use('/correoUsuario', CorreosUsuarioRoutes);
-router.use('/usuario', UsuariosRoutes);
-router.use('/empleador', EmpleadorRoutes);
+
+//-----solicitudes-----//
+const solicitudRoutes = require('./solicitudRoutes/solicitudRoutes');
+router.use('/solicitudes', solicitudRoutes);
+
+//-----jornada-----//
+const jornadaRoutes = require('./jornadaRoutes/jornadaRoutes');
+router.use('/jornadas', jornadaRoutes);
+
+//-----libres-----//
+const libresRoutes = require('./libresRoutes/libresRoutes');
+router.use('/libres', libresRoutes);
+
+//-----politicas-----//
+const politicasRoutes = require('./politicaRoutes/politicasRoutes');
+router.use('/politicas', politicasRoutes);
+
 
 module.exports = router;
