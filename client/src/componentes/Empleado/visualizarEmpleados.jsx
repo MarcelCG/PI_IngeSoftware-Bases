@@ -6,7 +6,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import React, {useState, useEffect} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { useParams } from "react-router-dom";
 
 const URI = 'http://localhost:5000/api/'
 const empresaURI = URI + 'empresa/byCedulaEmpleador/'
