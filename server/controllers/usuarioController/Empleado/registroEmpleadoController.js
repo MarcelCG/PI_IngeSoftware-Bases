@@ -51,6 +51,10 @@ async function RegistrarUsuario(req, res) {
         return success;
     }
     catch (error) {
+<<<<<<< HEAD:server/controllers/usuarioController/Empleado/registroEmpleadoController.js
+=======
+        //res.status(500).json({ error: error.message });
+>>>>>>> main:server/controllers/registroEmpleadoController.js
         return error;
     }
 }
@@ -61,8 +65,15 @@ async function RegistrarEmpleado(req, res) {
         const data = req.body;
 
         const existeUsuario = await UsuarioModel.getByCedula(data["cedula"]);
+        console.log("voy por aqui");
         if (existeUsuario) {
+<<<<<<< HEAD:server/controllers/usuarioController/Empleado/registroEmpleadoController.js
             res.status(409).json({  message: 'Empleado ya existe' });
+=======
+            console.log("supuestamente ya existe");
+            //res.status(400).json({ error: 'Ya existe un usuario con la cedula digitada'});
+            //return
+>>>>>>> main:server/controllers/registroEmpleadoController.js
         }
 
         const success = await RegistrarUsuario(req, res);

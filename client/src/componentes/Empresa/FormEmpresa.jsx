@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from 'react-router-dom';
 import FormInput, {handleSubmit} from '../Registro/FormInput'
 
+
 export const FormEmpresa = ({ formData, setForm, errForm, setErrForm, navigation }) => {
 	const navigate = useNavigate();
 

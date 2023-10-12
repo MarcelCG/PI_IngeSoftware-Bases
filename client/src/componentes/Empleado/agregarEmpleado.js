@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { ToastContainer, toast } from 'react-toastify';
 
-
 const URI = 'http://localhost:5000/api/registrarEmpleado/';
 
 const AddEmployee = () => {
