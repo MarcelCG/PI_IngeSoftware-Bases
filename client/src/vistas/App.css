@@ -3,6 +3,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding: 0;
 }
 
 header {
@@ -26,34 +27,25 @@ button:hover {
 
 /* Estilos para el menú lateral */
 .menu {
-  background-color: #2d3645; /* Fondo azul */
+  background-color: #243a69; /* Fondo azul */
   color: #ffffff; /* Texto blanco */
-  width: 200px;
+  width: 100%;
   position: fixed;
   top: 20;
-  left: -200px; /* Oculta el menú al inicio */
-  height: 50%;
-  transition: left 0.3s; /* Agrega una transición suave al abrir/cerrar el menú */
-}
-
-.menu.visible {
-  left: 0; /* Muestra el menú cuando es visible */
-  left: 16px;
-
+  vertical-align: middle;
+  height: 3 rem;
+  margin-bottom: 3 rem;
 }
 
 .menu ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .menu li {
   padding: 8px 16px;
-  border-bottom: 1px solid #ffffff; /* Línea separadora blanca */
-}
-
-.menu li:last-child {
-  border-bottom: none; /* Elimina la línea separadora en el último elemento */
+  display: inline-block;
 }
 
 /* Estilos para los enlaces del menú */

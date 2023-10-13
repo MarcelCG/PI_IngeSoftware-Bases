@@ -36,20 +36,14 @@ function App(cedula_usuario) {
   },[cedula_usuario]);
 
   console.log(cedula_usuario.cedula_usuario);
-  const [menuVisible, setMenuVisible] = useState(false);
-
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible);
-  };
 
   return (
-      <div className="bg-fondo p-3" >
+      <div className="bg-fondo" >
         <div className="App bg-fondo" >
-          <button onClick={toggleMenu}>Mostrar/ocultar menú</button>
           <main>
             <div>
-              <div className={`menu ${menuVisible ? 'visible' : ''}`}>
-                <ul>
+              <div className="menu">
+                <ul className='col-12'>
                   <li> <Link to="/app">Inicio</Link> </li>
                   <li> <Link to={`/app/empleados/${cedula_usuario.cedula_usuario}`}>Empleados</Link> </li>
                   <li> <Link to={`/app/politicas/${empresa}`}>Políticas</Link>                       </li>
