@@ -1,99 +1,103 @@
-import React, {useState, useEffect} from "react";
-import { useParams } from "react-router-dom";
+import axios from 'axios';
+import {Modal} from '../Utiles/Modal'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import axios from 'axios';
+import {VerPolitica, ajustarFecha} from './verPolitica'
+import React, {useState, useEffect, useRef} from "react";
 
 export const ViewPoliticas = () => {
-  const {empresa} = useParams();
-
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-
+  // esto lo dejo asi por el momento ya que es para probar 
+  // mas facil con "ElEquipo", y tambien porque al final hay que modi-
+  // ficarlo con lo de los cookies
+  const empresa = "cedula_empresa"; 
   useEffect(() => {
-  
-    async function cargarDatos() {
+    async function cargarPoliticas() {
       try {
-        const response = await axios.get(`http://localhost:5000/api/politicas/byCedula/${empresa}`);
-        setItems(response.data);
-        console.log(response.data);
-        setLoading(true);
+        const respuesta = await axios.get(
+          `http://localhost:5000/api/politicas/byCedula/${empresa}`);
+        setPoliticas(respuesta.data);
+        setCargando(true);
       } catch (error) {
-        //console.error("Error fetching data:", error);
-        setLoading(true);
+        setCargando(true);
       }
     }
-    cargarDatos();
-  }, [empresa]);
+    cargarPoliticas();
+  }, []);
 
-  function formatFecha(fecha) {
-    const date = new Date(fecha);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+  const modalID = "modalPol";
+  const [Politicas, setPoliticas] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [polValores, setPolValores] = useState({
+    titulo: "",
+    componente: ""
+  });
 
+  // variables para la paginacion del GRID
+  const [paginaActual, actualizarPagina] = useState(1);
+    const politicasPorPag = 5;
+    const ultimoInd = paginaActual * politicasPorPag;
+    const primerInd = ultimoInd - politicasPorPag;
+    const politicasActuales = Politicas.slice(primerInd, ultimoInd);
+    const numPag = Math.ceil(Politicas.length/politicasPorPag);
+    const numeros = [...Array(numPag +1).keys()].slice(1)
+
+  const botonRef = useRef(null);
+  let props = {...polValores, modalID};
+
+  const abrirModalPolitica = (politica) => {
+    setPolValores({
+     ...polValores,
+     titulo: politica.titulo,
+     componente: <VerPolitica {...politica}/>});
+    botonRef.current.click();
+  };
 
   return (
-    <div className="container bg-white rounded shadow" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
-      {loading?(<div className="row p-3">
-        {items.map((item, index) => (
-          <div className="col-4 p-3 " key={index}>
-            <div className="accordion" id={`accordion-${index}`}>
-              <div className="accordion-item">
-                <h2 className="accordion-header" id={`heading-${index}`}>
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls={`collapse-${index}`}
-                    data-bs-toggle="collapse"
-                    data-bs-target={`#collapse-${index}`}
-                  >
-                    {item.titulo}
-                  </button>
-                </h2>
-                <div
-                  id={`collapse-${index}`}
-                  className="accordion-collapse collapse"
-                  aria-labelledby={`heading-${index}`}
-                  data-bs-parent={`#accordion-${index}`}
-                >
-                  <div className="accordion-body container">
-                    <div className="row alert alert-primary">
-                      <div className="row">
-                        <div className="col">Inicio: <strong>{formatFecha(item.fecha_inicio)}</strong>
-                        </div>
-                        <div className="col">Final: <strong>{formatFecha(item.fecha_final)}</strong>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">Periodo: <strong>{item.periodo}</strong>
-                        </div>
-                        <div className="col">Acumulativo: <strong>{item.acumulativo? "Si":"No"}</strong>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col ">Tiempo a dar: <strong>{item.dias_a_dar}</strong>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col ">Desde contratacion: <strong>{item.inicia_desde_contrato? "Si":"No"}</strong>
-                        </div>
-                      </div>
-                     </div>
-                      <div><strong>Descripcion: </strong>{item.descripcion}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>):
-      (<div className="container d-flex align-items-center justify-content-center" style={{ height: '78vh' }}>
-        <div className="spinner-grow text-primary" style={{ width: '8rem', height: '8rem' }} role="status" /> 
-      </div>)}
-    </div>
+  <div className="container">
+    {cargando ? (
+      <div className="row p-3">
+      <Modal{... props}/>
+      <div ref={botonRef} 
+        data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
+        <style>{`.table th { width: 33.33%;}`}</style>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Titulo </th>
+              <th scope="col">Inicio</th>
+              <th scope="col">Dias a dar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {politicasActuales.map((politica, index) => (
+              <tr key={index} 
+                onClick={()=> abrirModalPolitica(politica)}>
+                <td>{politica.titulo}</td>
+                <td>{ajustarFecha(politica.fecha_inicio)}</td>
+                <td>{politica.dias_a_dar}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <nav>
+          <ul className="pagination">
+            {numeros.map((n) => (
+              <li className={`page-item ${paginaActual === n ?
+              'active' : ''}`} key={n}>
+                <a className="page-link"
+                  onClick={() => actualizarPagina(n)}>
+                  {n}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    ) : (
+      <div className="container">
+        <div className="spinner-grow text-primary" role="status" />
+      </div>
+    )}
+  </div>
   );
 };
