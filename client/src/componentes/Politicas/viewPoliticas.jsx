@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import {VerPolitica, ajustarFecha} from './verPolitica'
 import React, {useState, useEffect, useRef} from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 export const ViewPoliticas = () => {
   // esto lo dejo asi por el momento ya que es para probar 
@@ -55,26 +57,35 @@ export const ViewPoliticas = () => {
   return (
   <div className="container">
     {cargando ? (
-      <div className="row p-3">
+      <div>
       <Modal{... props}/>
       <div ref={botonRef} 
         data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
-        <style>{`.table th { width: 33.33%;}`}</style>
+        <style>{`.table th { width: 25%;}`}</style>
         <table className="table table-hover">
           <thead>
             <tr>
               <th scope="col">Titulo </th>
               <th scope="col">Inicio</th>
               <th scope="col">Dias a dar</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
             {politicasActuales.map((politica, index) => (
-              <tr key={index} 
+              <tr key={index}
                 onClick={()=> abrirModalPolitica(politica)}>
                 <td>{politica.titulo}</td>
                 <td>{ajustarFecha(politica.fecha_inicio)}</td>
                 <td>{politica.dias_a_dar}</td>
+                <td>
+                  <button className="btn btn-outline-primary me-2">
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </button>
+                  <button className="btn btn-outline-danger">
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
