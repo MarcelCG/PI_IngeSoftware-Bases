@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
@@ -16,6 +16,7 @@ function Login() {
 
 
   const navigate = useNavigate();
+  const loc = useLocation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -75,7 +76,9 @@ function Login() {
             alert('Inicio de sesión exitoso');
             logear(true);
             await obtenerDatosUsuario(username);
-            navigate("/app");
+            // Redirigir al link indicado por el usuario
+            const from = loc.state?.from || { pathname: '/app' };
+            navigate(from);
         } else if (response.status === 401) {
             // Credenciales incorrectas, muestra un mensaje de error
             alert('Credenciales incorrectas');
