@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useAutent } from '../../contexto/ContextoAutenticacion';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 
 function VisualizarEmpresa() {
-  const { empresa } = useParams();
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado.cedula_empresa;
   // Se definen los valores iniciales para los atributos de la empresa
   const [datosEmpresa, setDatosDeEmpresa] = useState({
     nombre: "",

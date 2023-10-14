@@ -3,9 +3,18 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import {Modal} from './test'
+import { useAutent } from '../../contexto/ContextoAutenticacion';
+import axios from 'axios';
 
-function Login({setLoggedIn, setCedula_Usuario}) {
+const enlaceApi = 'http://localhost:5000/api';
+
+function Login() {
+  const {
+    autenticarUsuario,
+    logear
+  } = useAutent();
+
+
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -18,22 +27,54 @@ function Login({setLoggedIn, setCedula_Usuario}) {
     setPassword(password.target.value);
   }
 
+  const obtenerDatosUsuario = async (username) => {
+    try {
+      const response = await axios.get(`${enlaceApi}/usuario/byCedula/${username}`);
+      const usuario = response.data;
+  
+      const cedulaEmpresa = await obtenerDatosEmpresa(username);
+  
+      autenticarUsuario({
+        cedula: usuario.cedula,
+        nombre: `${usuario.nombre} ${usuario.primer_apellido}`,
+        cedula_empresa: cedulaEmpresa,
+      });
+    } catch (error) {
+      console.error('Error al obtener datos del usuario:', error.message);
+    }
+  };
+  
+  const obtenerDatosEmpresa = async (username) => {
+    try {
+      const response = await axios.get(`${enlaceApi}/empresa/byCedulaEmpleador/${username}`);
+      if (response.status === 200) {
+        const empresa = response.data;
+        const cedulaEmpresa = empresa.cedula_juridica;
+        console.log(`La cédula de la empresa es: ${cedulaEmpresa}`);
+        return cedulaEmpresa;
+      } else {
+        console.log("No se encontró la empresa");
+        return '';
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos de la empresa:', error.message);
+      return '';
+    }
+  };
+
   const handleLogin = async () => {
     console.log('Botón de inicio de sesión presionado');
     try {
-        const response = await fetch('http://localhost:5000/api/usuario/login', {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        });
+      const response = await axios.post(enlaceApi + '/usuario/login', {
+        username,
+        password
+      });
 
         if (response.status === 200) {
             // Inicio de sesión exitoso, muestra un mensaje de éxito
             alert('Inicio de sesión exitoso');
-            setLoggedIn(true);
-            setCedula_Usuario(username);
+            logear(true);
+            await obtenerDatosUsuario(username);
             navigate("/app");
         } else if (response.status === 401) {
             // Credenciales incorrectas, muestra un mensaje de error

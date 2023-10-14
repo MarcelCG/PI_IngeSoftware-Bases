@@ -1,19 +1,20 @@
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useParams } from "react-router-dom";
+import { useAutent } from '../../contexto/ContextoAutenticacion';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import React, {useState, useEffect} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom';
 
 const URI = 'http://localhost:5000/api/'
 const empresaURI = URI + 'empresa/byCedulaEmpleador/'
 const empleadoURI = URI + 'empleados/allByEmpresa/';
 
 const ListOfEmployees = () => {
-    const { cedulaEmpleador } = useParams();
-    const empresaURIParam = empresaURI + cedulaEmpleador;
+    const {usuarioAutenticado} = useAutent(); 
+    const empresaURIParam = empresaURI + usuarioAutenticado.cedula;
 
     const [empresa, setEmpresa] = useState([]);
 
@@ -74,7 +75,7 @@ const ListOfEmployees = () => {
                                                 <div className="search-box ml-2">
                                                     <div className="position-relative">
                                                         <input className="me-3"></input>
-                                                        <a href="#" className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</a>
+                                                        <Link to={`/app/addEmpleados/${empresa}`} className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</Link>
                                                     </div>
                                                 </div>
                                             </div>

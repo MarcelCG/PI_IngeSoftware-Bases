@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from "react";
-import { useParams } from "react-router-dom";
+import { useAutent } from "../../contexto/ContextoAutenticacion";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 
 export const ViewPoliticas = () => {
-  const {empresa} = useParams();
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado.cedula_empresa;
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
