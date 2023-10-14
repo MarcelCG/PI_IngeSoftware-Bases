@@ -31,9 +31,9 @@ export const Modal = (props) => {
                {componente}
             </div>}
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" className="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
               {boton&&
-              <button type="button" className="btn btn-primary" onClick={funcion}>boton</button>}
+              <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>boton</button>}
             </div>
           </div>
         </div>

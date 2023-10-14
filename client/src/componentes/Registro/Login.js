@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import {Modal} from './test'
 
 function Login({setLoggedIn, setCedula_Usuario}) {
   const navigate = useNavigate();
