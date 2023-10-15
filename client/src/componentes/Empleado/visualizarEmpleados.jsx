@@ -9,33 +9,20 @@ import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icon
 import { Link } from 'react-router-dom';
 
 const URI = 'http://localhost:5000/api/'
-const empresaURI = URI + 'empresa/byCedulaEmpleador/'
 const empleadoURI = URI + 'empleados/allByEmpresa/';
 
 const ListOfEmployees = () => {
     const {usuarioAutenticado} = useAutent(); 
-    const empresaURIParam = empresaURI + usuarioAutenticado.cedula;
 
-    const [empresa, setEmpresa] = useState([]);
-
-    useEffect(() => {
-        const getEmpresaByCedulaEmpleador = async () => {
-        try {
-            const res = await axios.get(empresaURIParam);
-            setEmpresa(res.data);
-        } catch (error) {
-            console.error('Error al obtener datos de la empresa:', error);
-        }
-    };
-        getEmpresaByCedulaEmpleador();
-    }, [empresaURIParam]);
+    const empresa = usuarioAutenticado.cedula_empresa;
 
     useEffect(() => {
-        if (empresa.cedula_juridica) {
-            const empleadosURIParam = empleadoURI + empresa.cedula_juridica;
+        if (empresa) {
+            const empleadosURIParam = empleadoURI + empresa;
             const getEmpleadoByEmpresa = async () => {
             try {
                 const res = await axios.get(empleadosURIParam);
+                console.log(empleadosURIParam);
                 setEmpleado(res.data);
             } 
             catch (error) {
