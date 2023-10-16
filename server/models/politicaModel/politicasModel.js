@@ -112,6 +112,46 @@ async function getByTituloAndCedula(titulo, cedula_empresa) {
   }
 }
 
+// Función para actualizar una política por su título
+async function editarPolitica(titulo, actualizarDatosPolitica) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const resultado = await pool
+      .request()
+      .input('titulo', sql.NVarChar, titulo)
+      .input('cedula_empresa', sql.NVarChar, actualizarDatosPolitica.cedula_empresa)
+      .input('periodo', sql.Decimal(5, 2), actualizarDatosPolitica.periodo)
+      .input('fecha_inicio', sql.Date, actualizarDatosPolitica.fecha_inicio)
+      .input('fecha_final', sql.Date, actualizarDatosPolitica.fecha_final)
+      .input('inicia_desde_contrato', sql.Bit, actualizarDatosPolitica.inicia_desde_contrato)
+      .input('dias_a_dar', sql.Decimal(5, 2), actualizarDatosPolitica.dias_a_dar)
+      .input('incrementativo', sql.Bit, actualizarDatosPolitica.incrementativo)
+      .input('dias_a_incrementar', sql.Decimal(5, 2), actualizarDatosPolitica.dias_a_incrementar)
+      .input('acumulativo', sql.Bit, actualizarDatosPolitica.acumulativo)
+      .input('activo', sql.Bit, actualizarDatosPolitica.activo)
+      .input('descripcion', sql.NVarChar, actualizarDatosPolitica.descripcion)
+      .query(`
+        UPDATE Politica
+        SET
+          cedula_empresa = @cedula_empresa,
+          periodo = @periodo,
+          fecha_inicio = @fecha_inicio,
+          fecha_final = @fecha_final,
+          inicia_desde_contrato = @inicia_desde_contrato,
+          dias_a_dar = @dias_a_dar,
+          incrementativo = @incrementativo,
+          dias_a_incrementar = @dias_a_incrementar,
+          acumulativo = @acumulativo,
+          activo = @activo,
+          descripcion = @descripcion
+        WHERE titulo = @titulo
+      `);
+    return resultado.rowsAffected > 0;
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 
 module.exports = {
@@ -120,4 +160,5 @@ module.exports = {
   getByTitulo,
   getByCedulaEmpresa,
   getByTituloAndCedula,
+  editarPolitica
 };

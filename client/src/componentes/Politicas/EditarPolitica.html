@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Política de Días Libres</title>
+</head>
+<body>
+    <h1>Editar Política de Días Libres</h1>
+    <form id="editarPoliticaFormulario">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" placeholder="Título de la política" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" rows="4" placeholder="Descripción de la política"></textarea>
+
+        <label for="periodo">Periodo (en días):</label>
+        <input type="number" id="periodo" name="periodo" min="0">
+
+        <label for="fecha_inicio">Fecha de Inicio:</label>
+        <input type="date" id="fecha_inicio" name="fecha_inicio">
+
+        <label for "fecha_final">Fecha de Vencimiento:</label>
+        <input type="date" id="fecha_final" name="fecha_final">
+
+        <label for="inicia_desde_contrato">Inicia desde contrato:</label>
+        <input type="checkbox" id="inicia_desde_contrato" name="inicia_desde_contrato">
+
+        <label for="dias_a_dar">Días a Dar:</label>
+        <input type="number" id="dias_a_dar" name="dias_a_dar" min="0">
+
+        <label for="incrementativo">Incrementativo:</label>
+        <input type="checkbox" id="incrementativo" name="incrementativo">
+
+        <label for="dias_a_incrementar">Días a Incrementar:</label>
+        <input type="number" id="dias_a_incrementar" name="dias_a_incrementar" min="0">
+
+        <label for="acumulativo">Acumulativo:</label>
+        <input type="checkbox" id="acumulativo" name="acumulativo">
+
+        <label for="activo">Activo:</label>
+        <input type="checkbox" id="activo" name="activo">
+
+        <button type="submit">Guardar Cambios</button>
+        <button type="button" id="cancelar">Cancelar</button>
+    </form>
+</body>
+</html>

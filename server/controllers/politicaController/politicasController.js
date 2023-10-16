@@ -118,10 +118,36 @@ async function getPoliticaByTituloAndCedula(req, res) {
   }
 }
 
+async function editarPolitica(req, res) {
+  try {
+    const { titulo } = req.params; // Obtiene el título de la política a editar
+    const actualizarDatosPolitica = req.body; // Datos actualizados de la política
+
+    // Verifica si existe una política con el título especificado
+    const politicaExistente = await getByTitulo(titulo);
+
+    if (politicaExistente) {
+      // Llama a la función para actualizar la política
+      const exito = await editarPolitica(titulo, actualizarDatosPolitica);
+
+      if (exito) {
+        res.status(200).json({ message: 'Política actualizada exitosamente' });
+      } else {
+        res.status(500).json({ message: 'No se pudo actualizar la política' });
+      }
+    } else {
+      res.status(404).json({ error: 'Política no encontrada' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
 module.exports = {
   getAllPoliticas,
   createPolitica,
   getPoliticaByTitulo,
   getPoliticaByCedulaEmpresa,
-  getPoliticaByTituloAndCedula,
+  editarPolitica,
 };
