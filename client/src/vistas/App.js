@@ -6,7 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Link, Route, Routes} from 'react-router-dom';
 import AddPolicy from '../componentes/Politicas/AddPolicy';
 import AddEmployee from '../componentes/Empleado/agregarEmpleado';
-import {ViewPoliticas} from '../componentes/Politicas/viewPoliticas';
+import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarEmpleadorPorCedula from '../componentes/Empleador/VisualizarEmpleador';
@@ -65,7 +65,7 @@ function App(cedula_usuario) {
           </main>
         <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
           <Routes>
-            <Route path="/politicas/:empresa" element={<ViewPoliticas/>} />
+            <Route path="/politicas/:empresa" element={<VerPoliticas/>} />
             <Route path="/empleados/:cedulaEmpleador" element={<ListOfEmployees/>}/>
             <Route path="/addPoliticas/:empresa" element={<AddPolicy/>}/>
             <Route path="/perfil/:cedulaEmpleador" element={<VisualizarEmpleadorPorCedula/>}/>
