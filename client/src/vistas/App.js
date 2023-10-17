@@ -1,9 +1,8 @@
 import './App.css';
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { Link, Route, Routes} from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import AddPolicy from '../componentes/Politicas/AddPolicy';
 import AddEmployee from '../componentes/Empleado/agregarEmpleado';
 import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
@@ -11,31 +10,7 @@ import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarEmpleadorPorCedula from '../componentes/Empleador/VisualizarEmpleador';
 
-const getEmpresa = async (cedula_usuario) => {
-  try {
-    const response = await axios.get(`http://localhost:5000/api/empresa/byCedulaEmpleador/${cedula_usuario}`);
-    console.log('Empresa Encontrada');
-    return response.data.cedula_juridica;
-  }
-  catch (error) {
-    console.log('No se encontro empresa');
-    return '';
-  }
-};
-
-function App(cedula_usuario) {
-
-  const [empresa, setEmpresa] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const empresaEncontrada = await getEmpresa(cedula_usuario.cedula_usuario);
-      setEmpresa(empresaEncontrada);
-    };
-    fetchData();
-  },[cedula_usuario]);
-
-  console.log(cedula_usuario.cedula_usuario);
+function App() {
   const [menuVisible, setMenuVisible] = useState(false);
 
   const toggleMenu = () => {
@@ -51,12 +26,12 @@ function App(cedula_usuario) {
               <div className={`menu ${menuVisible ? 'visible' : ''}`}>
                 <ul>
                   <li> <Link to="/app">Inicio</Link> </li>
-                  <li> <Link to={`/app/empleados/${cedula_usuario.cedula_usuario}`}>Empleados</Link> </li>
-                  <li> <Link to={`/app/politicas/${empresa}`}>Políticas</Link>                       </li>
-                  <li> <Link to={`/app/addPoliticas/${empresa}`}>Agregar Políticas</Link>            </li>
-                  <li> <Link to={`/app/addEmpleados/${empresa}`}>Agregar Empleados</Link>            </li>
-                  <li> <Link to={`/app/perfil/${cedula_usuario.cedula_usuario}`}>Perfil</Link>       </li>
-                  <li> <Link to={`/app/empresa/${empresa}`}>Empresa</Link>                           </li>
+                  <li> <Link to="/app/empleados">Empleados</Link> </li>
+                  <li> <Link to="/app/politicas">Políticas</Link>                       </li>
+                  <li> <Link to="/app/addPoliticas">Agregar Políticas</Link>            </li>
+                  <li> <Link to="/app/addEmpleados/">Agregar Empleados</Link>            </li>
+                  <li> <Link to="/app/perfil">Perfil</Link>       </li>
+                  <li> <Link to="/app/empresa">Empresa</Link>                           </li>
                 </ul>
               </div>
               <div className="content">
@@ -65,12 +40,12 @@ function App(cedula_usuario) {
           </main>
         <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
           <Routes>
-            <Route path="/politicas/:empresa" element={<VerPoliticas/>} />
-            <Route path="/empleados/:cedulaEmpleador" element={<ListOfEmployees/>}/>
-            <Route path="/addPoliticas/:empresa" element={<AddPolicy/>}/>
-            <Route path="/perfil/:cedulaEmpleador" element={<VisualizarEmpleadorPorCedula/>}/>
-            <Route path="/addEmpleados/:empresa" element={<AddEmployee/>}/>
-            <Route path="/empresa/:empresa" element={<VisualizarEmpresa/>}/>
+            <Route path="/politicas" element={<VerPoliticas/>} />
+            <Route path="/empleados" element={<ListOfEmployees/>}/>
+            <Route path="/addPoliticas" element={<AddPolicy/>}/>
+            <Route path="/perfil" element={<VisualizarEmpleadorPorCedula/>}/>
+            <Route path="/addEmpleados" element={<AddEmployee/>}/>
+            <Route path="/empresa" element={<VisualizarEmpresa/>}/>
           </Routes>
         </div>
         <footer style={{ backgroundColor: '#20212a', color: '#ffffff' }}>

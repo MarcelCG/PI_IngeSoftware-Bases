@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useAutent } from '../../contexto/ContextoAutenticacion';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 
 
 function VisualizarEmpleadorPorCedula() {
-  const {cedulaEmpleador} = useParams();
+  const {usuarioAutenticado} = useAutent();
+  const cedulaEmpleador = usuarioAutenticado.cedula;
 
   const [datosEmpleador, setDatosEmpleador] = useState({
     nombre: "",

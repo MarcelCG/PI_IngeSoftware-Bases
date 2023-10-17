@@ -3,13 +3,14 @@ import {VerPoliticasHTML} from './verPoliticasHTML'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import {VerPolitica} from './verPolitica'
+import { useAutent } from "../../contexto/ContextoAutenticacion";
 import React, {useState, useEffect, useRef} from "react";
 
 export const VerPoliticas = () => {
 
-  //---temporal---//
-  const empresa = "cedula_empresa"; 
-  const esEmpleador = true;
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado.cedula_empresa; 
+  const esEmpleador = empresa ? true : false;
 
   useEffect(() => {
     async function cargarPoliticas() {
