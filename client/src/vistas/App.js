@@ -40,7 +40,7 @@ function App() {
           </main>
         <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
           <Routes>
-            <Route path="/politicas" element={<ViewPoliticas/>} />
+            <Route path="/politicas" element={<VerPoliticas/>} />
             <Route path="/empleados" element={<ListOfEmployees/>}/>
             <Route path="/addPoliticas" element={<AddPolicy/>}/>
             <Route path="/perfil" element={<VisualizarEmpleadorPorCedula/>}/>
