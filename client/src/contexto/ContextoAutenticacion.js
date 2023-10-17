@@ -44,10 +44,10 @@ const obtenerDatosUsuario = async (username, autenticarUsuario) => {
   };
 
 export function ProveedorAutenticacion(props){
-    // Obtener el valor almacenado en localStorage, si existe
-    const contextoAlmacenado = JSON.parse(localStorage.getItem('contextoAutenticacion'));
+    // Obtener el valor almacenado en sessionStorage, si existe
+    const contextoAlmacenado = JSON.parse(sessionStorage.getItem('contextoAutenticacion'));
 
-    // Establecer el estado inicial con el valor de localStorage o el valor por defecto
+    // Establecer el estado inicial con el valor de sessionStorage o el valor por defecto
     const [usuarioAutenticado, autenticarUsuario] = useState(contextoAlmacenado ? contextoAlmacenado.usuarioAutenticado : null);
     const [logeado, logear] = useState(contextoAlmacenado ? contextoAlmacenado.logeado : null);
 
@@ -59,9 +59,9 @@ export function ProveedorAutenticacion(props){
         obtenerDatosUsuario
     }
 
-    // Almacenar en localStorage cada vez que el contexto cambie
+    // Almacenar en sessionStorage cada vez que el contexto cambie
     useEffect(() => {
-      localStorage.setItem('contextoAutenticacion', JSON.stringify({
+      sessionStorage.setItem('contextoAutenticacion', JSON.stringify({
         usuarioAutenticado,
         logeado,
       }));

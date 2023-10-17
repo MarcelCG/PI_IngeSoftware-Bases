@@ -27,7 +27,10 @@ export function IniciarSesion(){
   return (
     <Routes>
       <Route path="/app/*" element={logeado ? <App/> : <Navigate to="/" state={{from: loc.pathname}}/>} />
-      <Route path="/" element={<Login/>} />
+      <Route
+        path="/"
+        element={logeado ? <Navigate to="/app" /> : <Login />}
+      />
       <Route path="/registrarse" element={<Registrarse/>} />
     </Routes>
   )
