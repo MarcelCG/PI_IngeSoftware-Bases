@@ -1,7 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import {useForm} from 'react-hook-form'
-import { useParams } from "react-router-dom";
+import { useAutent } from "../../contexto/ContextoAutenticacion";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -10,7 +10,9 @@ import { ToastContainer, toast } from 'react-toastify';
 const URI = 'http://localhost:5000/api/registrarEmpleado/';
 
 const AddEmployee = () => {
-  const {empresa} = useParams();
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado.cedula_empresa;
+  
   const {register, handleSubmit, 
     formState: {errors},
     watch,
