@@ -5,13 +5,15 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const enlaceApi = 'http://localhost:5000/api';
 
 function Login() {
   const {
     autenticarUsuario,
-    logear
+    logear,
+    obtenerDatosUsuario
   } = useAutent();
 
 
@@ -28,41 +30,6 @@ function Login() {
     setPassword(password.target.value);
   }
 
-  const obtenerDatosUsuario = async (username) => {
-    try {
-      const response = await axios.get(`${enlaceApi}/usuario/byCedula/${username}`);
-      const usuario = response.data;
-  
-      const cedulaEmpresa = await obtenerDatosEmpresa(username);
-  
-      autenticarUsuario({
-        cedula: usuario.cedula,
-        nombre: `${usuario.nombre} ${usuario.primer_apellido}`,
-        cedula_empresa: cedulaEmpresa,
-      });
-    } catch (error) {
-      console.error('Error al obtener datos del usuario:', error.message);
-    }
-  };
-  
-  const obtenerDatosEmpresa = async (username) => {
-    try {
-      const response = await axios.get(`${enlaceApi}/empresa/byCedulaEmpleador/${username}`);
-      if (response.status === 200) {
-        const empresa = response.data;
-        const cedulaEmpresa = empresa.cedula_juridica;
-        console.log(`La cédula de la empresa es: ${cedulaEmpresa}`);
-        return cedulaEmpresa;
-      } else {
-        console.log("No se encontró la empresa");
-        return '';
-      }
-    } catch (error) {
-      console.error('Error al obtener los datos de la empresa:', error.message);
-      return '';
-    }
-  };
-
   const handleLogin = async () => {
     console.log('Botón de inicio de sesión presionado');
     try {
@@ -70,35 +37,36 @@ function Login() {
         username,
         password
       });
-
-        if (response.status === 200) {
-            // Inicio de sesión exitoso, muestra un mensaje de éxito
-            alert('Inicio de sesión exitoso');
-            logear(true);
-            await obtenerDatosUsuario(username);
-            // Redirigir al link indicado por el usuario
-            const from = loc.state?.from || { pathname: '/app' };
-            navigate(from);
-        } else if (response.status === 401) {
-            // Credenciales incorrectas, muestra un mensaje de error
-            alert('Credenciales incorrectas');
-            // Borra los valores ingresados en el formulario
-            setUsername('');
-            setPassword('');
-        } else {
-            // Otra respuesta del servidor, maneja según corresponda
-            alert('Hubo un problema al iniciar sesión');
-        }
+  
+      if (response.status === 200) {
+        // Inicio de sesión exitoso, muestra un mensaje de éxito
+        logear(true);
+        await obtenerDatosUsuario(username, autenticarUsuario);
+        // Redirigir al link indicado por el usuario
+        const from = loc.state?.from || { pathname: '/app' };
+        navigate(from);
+      } else {
+        // Otra respuesta del servidor, maneja según corresponda
+        toast.error('Hubo un problema al iniciar sesión. Trate de nuevo más tarde')
+      }
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // Credenciales incorrectas, muestra un mensaje de error
+        toast.error('Credenciales Incorrectas. Trate de nuevo')
+        // Borra los valores ingresados en el formulario
+        setUsername('');
+        setPassword('');
+      } else {
+        // Otro tipo de error
         console.error('Error al iniciar sesión:', error);
+        toast.error('Hubo un problema al iniciar sesión. Trate de nuevo más tarde')
+      } 
     }
-};
+  };
   const handleRegister = () => {
     navigate('/registrarse');
   }
-  // const props = { modalID: "comadreja" };
-  // <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target={`#${props.modalID}`}>TILING</button>
-  // <Modal {...props}/>
+
   return (
     <div className="container">
       <div className="row justify-content-center mt-5">
@@ -109,7 +77,7 @@ function Login() {
             </div>
             <div className="card-body">
               <div className="form-group">
-                <label>Usuario:</label>
+                <label>Cédula:</label>
                 <input type="text" className="form-control" value={username} onChange={changeUsername} />
               </div>
               <div className="form-group">
@@ -126,10 +94,10 @@ function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
-// <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comadreja">
 
 
 export default Login;
