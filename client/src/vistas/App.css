@@ -29,12 +29,10 @@ button:hover {
 .menu {
   background-color: #243a69; /* Fondo azul */
   color: #ffffff; /* Texto blanco */
-  width: 100%;
   position: fixed;
-  top: 20;
-  vertical-align: middle;
-  height: 3 rem;
-  margin-bottom: 3 rem;
+  align-items: center;
+  height: 3rem;
+  margin-bottom: 5rem;
 }
 
 .menu ul {
@@ -59,6 +57,21 @@ button:hover {
   background-color: #4f709c; /* Texto azul oscuro al pasar el mouse */
 }
 
+.menu img {
+  height: 3rem;
+}
+
+.menu .perfil{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.menu .perfil .img-fluid {
+  max-height: 2rem;
+  margin-right: 5px;
+}
+
 /* Estilos para el contenido principal */
 .content {
   margin-left: 220px; /* Espacio para el menú lateral */
@@ -73,8 +86,5 @@ button:hover {
 
 .contenedor {
   height: 80vh;
-  width: 70vw;
-  margin: auto auto auto auto; /* Margen en todos los lados */
-  margin-left: auto; /* Ajustar automáticamente el margen izquierdo */
-  display: flex;
+  margin: auto; /* Margen en todos los lados */
 }

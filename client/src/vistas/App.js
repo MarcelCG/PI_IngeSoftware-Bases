@@ -1,52 +1,46 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {useState} from 'react';
+import React from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import AddPolicy from '../componentes/Politicas/AddPolicy';
 import AddEmployee from '../componentes/Empleado/agregarEmpleado';
 import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarEmpleadorPorCedula from '../componentes/Empleador/VisualizarEmpleador';
+import { MenuEmpleador, MenuEmpleado } from './menu';
+import { useAutent } from '../contexto/ContextoAutenticacion';
 
 function App() {
-  const [menuVisible, setMenuVisible] = useState(false);
-
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible);
-  };
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado?.cedula_empresa; 
+  const esEmpleador = empresa ? true : false;
 
   return (
       <div className="bg-fondo" >
         <div className="App bg-fondo" >
           <main>
-            <div>
-              <div className="menu">
-                <ul className='col-12'>
-                  <li> <Link to="/app">Inicio</Link> </li>
-                  <li> <Link to="/app/empleados">Empleados</Link> </li>
-                  <li> <Link to="/app/politicas">Políticas</Link>                       </li>
-                  <li> <Link to="/app/addPoliticas">Agregar Políticas</Link>            </li>
-                  <li> <Link to="/app/addEmpleados/">Agregar Empleados</Link>            </li>
-                  <li> <Link to="/app/perfil">Perfil</Link>       </li>
-                  <li> <Link to="/app/empresa">Empresa</Link>                           </li>
-                </ul>
-              </div>
-              <div className="content">
-              </div>
+            <div className='menu'>
+              {esEmpleador ? (
+                <MenuEmpleador/>
+                ) : (
+                  <MenuEmpleado/>
+                )
+              }
             </div>
-          </main>
-        <div className="contenedor p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
-          <Routes>
-            <Route path="/politicas" element={<VerPoliticas/>} />
-            <Route path="/empleados" element={<ListOfEmployees/>}/>
-            <Route path="/addPoliticas" element={<AddPolicy/>}/>
-            <Route path="/perfil" element={<VisualizarEmpleadorPorCedula/>}/>
-            <Route path="/addEmpleados" element={<AddEmployee/>}/>
-            <Route path="/empresa" element={<VisualizarEmpresa/>}/>
-          </Routes>
+
+            <div className="contenedor col-10 mt-5 p-2" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
+            <Routes>
+              <Route path="/politicas" element={<VerPoliticas/>} />
+              <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
+              <Route path="/empleados" element={<ListOfEmployees/>}/>
+              <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
+              <Route path="/perfil" element={<VisualizarEmpleadorPorCedula/>}/>
+              <Route path="/empresa" element={<VisualizarEmpresa/>}/>
+            </Routes>
         </div>
+          </main>
         <footer style={{ backgroundColor: '#20212a', color: '#ffffff' }}>
           <div className="container">
             <p className="text-center">&copy; Oraculo.com</p>
