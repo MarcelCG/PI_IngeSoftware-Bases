@@ -39,9 +39,9 @@ function Login() {
       });
   
       if (response.status === 200) {
+        await obtenerDatosUsuario(username, autenticarUsuario);
         // Inicio de sesión exitoso, muestra un mensaje de éxito
         logear(true);
-        await obtenerDatosUsuario(username, autenticarUsuario);
         // Redirigir al link indicado por el usuario
         const from = loc.state?.from || { pathname: '/app' };
         navigate(from);

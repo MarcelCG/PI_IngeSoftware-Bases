@@ -62,7 +62,7 @@ const ListOfEmployees = () => {
                                                 <div className="search-box ml-2">
                                                     <div className="position-relative">
                                                         <input className="me-3"></input>
-                                                        <Link to={`/app/addEmpleados/${empresa}`} className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</Link>
+                                                        <Link to="/app/empleados/addEmpleados" className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</Link>
                                                     </div>
                                                 </div>
                                             </div>
