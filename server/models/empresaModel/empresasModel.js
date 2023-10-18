@@ -70,9 +70,32 @@ async function getEmpresaByCedulaEmpleador(cedula_empleador){
   }
 }
 
+async function editarEmpresa(cedula_juridica, nuevosDatosEmpresa) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const resultado = await pool
+      .request()
+      .input('cedula_juridica', sql.VarChar, cedula_juridica)
+      .input('nombre', sql.VarChar, nuevosDatosEmpresa.nombre)
+      .input('cedula_empleador', sql.VarChar, nuevosDatosEmpresa.cedula_empleador)
+      .query(`
+        UPDATE Empresa
+        SET
+          nombre = @nombre,
+          cedula_empleador = @cedula_empleador
+        WHERE cedula_juridica = @cedula_juridica
+      `);
+    return resultado.rowsAffected > 0;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 module.exports = {
   getAll,
   createEmpresa,
   getEmpresaByCedula,
   getEmpresaByCedulaEmpleador,
+  editarEmpresa,
 };

@@ -96,10 +96,36 @@ async function getEmpresaInfo(req, res) {
 }
 
 
+async function editarEmpresa(req, res) {
+  try {
+    const { cedula_juridica } = req.params; // Obtiene la cédula jurídica de la empresa a editar
+    const nuevosDatosEmpresa = req.body; // Datos actualizados de la empresa
+
+    // Verifica si existe una empresa con la cédula jurídica especificada
+    const empresaExistente = await empresaModel.getEmpresaByCedula(cedula_juridica);
+
+    if (empresaExistente) {
+      // Llama a la función para actualizar la empresa
+      const exito = await empresaModel.editarEmpresa(cedula_juridica, nuevosDatosEmpresa);
+
+      if (exito) {
+        res.status(200).json({ message: 'Empresa actualizada exitosamente' });
+      } else {
+        res.status(500).json({ message: 'No se pudo actualizar la empresa' });
+      }
+    } else {
+      res.status(404).json({ error: 'Empresa no encontrada' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   getAllEmpresas,
   createEmpresa,
   getEmpresaByCedula,
   getEmpresaByCedulaEmpleador,
   getEmpresaInfo,
+  editarEmpresa,
 };

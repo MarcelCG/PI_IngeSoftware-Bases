@@ -8,5 +8,6 @@ router.post('/', EmpresaController.createEmpresa);
 router.get('/byCedula/:cedula_juridica', EmpresaController.getEmpresaByCedula);
 router.get('/byCedulaEmpleador/:cedula_empleador', EmpresaController.getEmpresaByCedulaEmpleador);
 router.get('/getEmpresaInfo/:empresa', EmpresaController.getEmpresaInfo);
+router.put('/editar/:cedula_juridica', EmpresaController.editarEmpresa);
 
 module.exports = router;
