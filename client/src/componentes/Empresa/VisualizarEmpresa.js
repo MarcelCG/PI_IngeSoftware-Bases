@@ -26,8 +26,8 @@ function VisualizarEmpresa() {
           setDatosDeEmpresa({
             nombre: data.nombre,
             cedula_juridica: data.cedula_juridica,
-            telefono: data.telefono[1]?.telefono || '',
-            correo: data.correo[1]?.correo || '',
+            telefono: data.telefono1,
+            correo: data.correo1
           });
         } else if (response.status === 404) {
           throw new Error('Empresa no encontrada');
