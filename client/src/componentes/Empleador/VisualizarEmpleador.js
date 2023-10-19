@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import 'bootstrap/dist/css/bootstrap.css';
+import { URLApi } from '../Compartido/Constantes';
 import axios from 'axios';
+
 
 
 function VisualizarEmpleadorPorCedula() {
@@ -21,7 +23,7 @@ function VisualizarEmpleadorPorCedula() {
     try {
       console.log(cedulaEmpleador);
       // Realizar una solicitud al backend para obtener los datos del empleador por su cédula
-      const response = await axios.get(`http://localhost:5000/api/usuario/infoUser/${cedulaEmpleador}`);
+      const response = await axios.get(`${URLApi}usuario/infoUser/${cedulaEmpleador}`);
       
       if (response.status === 200) {
         const data = response.data.data;

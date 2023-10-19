@@ -6,8 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { ToastContainer, toast } from 'react-toastify';
+import { URLApi } from '../Compartido/Constantes';
 
-const URI = 'http://localhost:5000/api/registrarEmpleado/';
+const URI = URLApi+'registrarEmpleado/';
 
 const AddEmployee = () => {
   const {usuarioAutenticado} = useAutent();

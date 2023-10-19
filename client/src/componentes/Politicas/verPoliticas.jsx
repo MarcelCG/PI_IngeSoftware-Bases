@@ -5,6 +5,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import {VerPolitica} from './verPolitica'
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import React, {useState, useEffect, useRef} from "react";
+import { URLApi } from '../Compartido/Constantes';
 
 export const VerPoliticas = () => {
 
@@ -16,7 +17,7 @@ export const VerPoliticas = () => {
     async function cargarPoliticas() {
       try {
         const respuesta = await axios.get(
-          `http://localhost:5000/api/politicas/byCedula/${empresa}`);
+          `${URLApi}politicas/byCedula/${empresa}`);
         setPoliticas(respuesta.data);
         setCargando(true);
       } catch (error) {

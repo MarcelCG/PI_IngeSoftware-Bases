@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { URLApi } from '../Compartido/Constantes';
 import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -108,7 +109,7 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 		let errorDesc = "ERROR: Vuelva a intentar mas tarde";
 	  try {
 	  	// eslint-disable-next-line no-unused-vars
-	    const response = await axios.post('http://localhost:5000/api/registro', {
+	    const response = await axios.post(`${URLApi}registro`, {
 	      formData
 	    });
 	    errorDesc = "SUCCESS: Registro exitoso!\nRedirigiendo...";

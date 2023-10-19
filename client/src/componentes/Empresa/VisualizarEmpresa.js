@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import 'bootstrap/dist/css/bootstrap.css';
+import {URLApi} from '../Compartido/Constantes';
 import axios from 'axios';
 
 function VisualizarEmpresa() {
@@ -17,7 +18,7 @@ function VisualizarEmpresa() {
   useEffect(() => {
   async function cargarDatosEmpresa() {
       try {
-        const response = await axios.get(`http://localhost:5000/api/empresa/getEmpresaInfo/${empresa}`);
+        const response = await axios.get(`${URLApi}empresa/getEmpresaInfo/${empresa}`);
         
         if (response.status === 200) {
 

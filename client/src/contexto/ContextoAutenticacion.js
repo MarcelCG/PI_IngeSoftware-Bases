@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { URLApi } from '../componentes/Compartido/Constantes';
 import axios from 'axios';
 
-const enlaceApi = 'http://localhost:5000/api';
 const ContextoAutenticacion = React.createContext();
 
 export function useAutent(){
@@ -10,7 +10,7 @@ export function useAutent(){
 
 const obtenerDatosUsuario = async (username, autenticarUsuario) => {
     try {
-      const response = await axios.get(`${enlaceApi}/usuario/byCedula/${username}`);
+      const response = await axios.get(`${URLApi}usuario/byCedula/${username}`);
       const usuario = response.data;
   
       const cedulaEmpresa = await obtenerDatosEmpresa(username);
@@ -27,7 +27,7 @@ const obtenerDatosUsuario = async (username, autenticarUsuario) => {
   
   const obtenerDatosEmpresa = async (username) => {
     try {
-      const response = await axios.get(`${enlaceApi}/empresa/byCedulaEmpleador/${username}`);
+      const response = await axios.get(`${URLApi}empresa/byCedulaEmpleador/${username}`);
       if (response.status === 200) {
         const empresa = response.data;
         const cedulaEmpresa = empresa.cedula_juridica;

@@ -4,14 +4,12 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import AddPolicyForm from "./AddPolicyForm";
+import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
 import "./AddPolicy.css"
 
-// URL para el Api
-const api = 'http://localhost:5000/api';
-
 // URL para el manejo de politicas
-const politicas = api + '/politicas';
+const politicas = URLApi + 'politicas';
 
 function AddPolicy() {
 
