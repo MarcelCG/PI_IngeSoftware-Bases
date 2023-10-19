@@ -2,21 +2,20 @@ import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { useParams } from "react-router-dom";
+import { useAutent } from "../../contexto/ContextoAutenticacion";
 import AddPolicyForm from "./AddPolicyForm";
+import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
 import "./AddPolicy.css"
 
-// URL para el Api
-const api = 'http://localhost:5000/api';
-
 // URL para el manejo de politicas
-const politicas = api + '/politicas';
+const politicas = URLApi + 'politicas';
 
 function AddPolicy() {
 
   // Cedula de la empresa que inició sesión
-  const {empresa} = useParams();
+  const {usuarioAutenticado} = useAutent(); 
+  const empresa = usuarioAutenticado.cedula_empresa;
   console.log(empresa);
 
   // Configuración del formulario usando react-hook-form

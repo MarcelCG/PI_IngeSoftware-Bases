@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useAutent } from '../../contexto/ContextoAutenticacion';
 import 'bootstrap/dist/css/bootstrap.css';
+import {URLApi} from '../Compartido/Constantes';
 import axios from 'axios';
 
 function VisualizarEmpresa() {
-  const { empresa } = useParams();
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado.cedula_empresa;
   // Se definen los valores iniciales para los atributos de la empresa
   const [datosEmpresa, setDatosDeEmpresa] = useState({
     nombre: "",
@@ -16,7 +18,7 @@ function VisualizarEmpresa() {
   useEffect(() => {
   async function cargarDatosEmpresa() {
       try {
-        const response = await axios.get(`http://localhost:5000/api/empresa/getEmpresaInfo/${empresa}`);
+        const response = await axios.get(`${URLApi}empresa/getEmpresaInfo/${empresa}`);
         
         if (response.status === 200) {
 
