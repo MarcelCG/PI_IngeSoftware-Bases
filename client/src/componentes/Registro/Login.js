@@ -6,8 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-
-const enlaceApi = 'http://localhost:5000/api';
+import { URLApi } from '../Compartido/Constantes';
 
 function Login() {
   const {
@@ -33,7 +32,7 @@ function Login() {
   const handleLogin = async () => {
     console.log('Botón de inicio de sesión presionado');
     try {
-      const response = await axios.post(enlaceApi + '/usuario/login', {
+      const response = await axios.post( `${URLApi}usuario/login`, {
         username,
         password
       });

@@ -7,9 +7,9 @@ import React, {useState, useEffect} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
+import { URLApi } from '../Compartido/Constantes';
 
-const URI = 'http://localhost:5000/api/'
-const empleadoURI = URI + 'empleados/allByEmpresa/';
+const empleadoURI = URLApi + 'empleados/allByEmpresa/';
 
 const ListOfEmployees = () => {
     const {usuarioAutenticado} = useAutent(); 
