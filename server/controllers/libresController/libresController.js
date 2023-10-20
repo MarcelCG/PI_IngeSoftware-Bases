@@ -72,10 +72,27 @@ async function createLibre(req, res) {
     }
 }
 
+// Actualizar Horas libres de todos los empleados segun la politica
+async function actualizarTodos(cedula_empresa) {
+    const error = -1;
+    try {
+        const empleadosActualizados =
+            await Libres.actualizarTodos(cedula_empresa);
+        if (empleadosActualizados >= 0) {
+            return empleadosActualizados;
+        } else {
+            return error;
+        }
+    } catch (error) {
+        return error;
+    }
+}
+
 module.exports = {
     getAllLibres,
     getLibresByEmpleado,
     getLibresByPolitica,
     getLibresByEmpleadoAndPolitica,
-    createLibre
+    createLibre,
+    actualizarTodos
 };

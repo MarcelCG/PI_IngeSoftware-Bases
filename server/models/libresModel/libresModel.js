@@ -82,10 +82,27 @@ async function createLibre(cedula_empleado, titulo_politica, cedula_empresa, dia
     }
 }
 
+async function actualizarTodos(cedula_empresa) {
+    try {
+        const pool = await sql.connect(dbConfig);
+        const result = await pool.request()
+            .input('Empresa', sql.NVarChar, cedula_empresa)
+            .output('EmpleadosModificados', sql.Int)
+            .execute('actualizarTiempos');
+        const empleadosModificados = 
+        result.output.EmpleadosModificados;
+        return empleadosModificados;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 module.exports = {
     getAll,
     getByEmpleado,
     getByPolitica,
     getByEmpleadoAndPolitica,
-    createLibre
+    createLibre,
+    actualizarTodos
 };
