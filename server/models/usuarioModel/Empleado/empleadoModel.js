@@ -31,14 +31,13 @@ async function getAllByEmpresa(cedula_empresa) {
                   .query('SELECT u.cedula,'
                       + ' CONCAT(u.nombre, \' \', u.primer_apellido, \' \', u.segundo_apellido)'
                       + ' AS nombre_completo,'
-                      + ' c.correo,'
+                      + ' u.correo1 AS \'correo\','
                       + ' e.rol,'
                       + ' e.fecha_contratacion'
-                      + ' FROM Usuario u, Empleado e, CorreosUsuarios c '
+                      + ' FROM Usuario u, Empleado e'
                       + ' WHERE u.cedula=e.cedula_empleado'
                       + ' AND u.activo=1'
-                      + ' AND c.cedula_usuario=u.cedula'
-                      + ' AND cedula_empresa = @cedula_empresa');
+                      + ' AND e.cedula_empresa = @cedula_empresa');
     return result.recordset;
   } catch (error) {
     throw error;

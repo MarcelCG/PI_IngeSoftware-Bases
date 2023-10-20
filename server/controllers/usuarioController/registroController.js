@@ -11,8 +11,17 @@ const EmpresaTelModel = require('../../models/empresaModel/telefonosEmpresaModel
 async function RegistrarEmpleador(req, res) {
     try {
         const data = req;
-        let empleadorCedu = data["empleadorCedu"];
-        empleadorCedu = empleadorCedu.replace(/-/g, '');
+        const empleadorCedu = data["empleadorCedu"];
+
+        let empleadorTel2 = null;
+        if (data["empleadorTel2"] != "") {
+            empleadorTel2 = data["empleadorTel2"];
+        }
+
+        let empleadorCorreo2 = null;
+        if (data["empleadorCorreo2"] != "") {
+            empleadorCorreo2 = data["empleadorCorreo2"];
+        }
 
         let success = await UsuarioModel.createUsuario(
             empleadorCedu,
@@ -20,6 +29,10 @@ async function RegistrarEmpleador(req, res) {
             data["empleadorName"],
             data["empleadorApe1"],
             data["empleadorApe2"],
+            data["empleadorTel1"],
+            empleadorTel2,
+            data["empleadorCorreo1"],
+            empleadorCorreo2,
             true
         );
 
@@ -27,19 +40,6 @@ async function RegistrarEmpleador(req, res) {
             empleadorCedu,
         );
 
-        for (let i = 1; i <= 2; ++i) {
-            success = await UsuarioCorreoModel.createCorreoUsuario(
-                empleadorCedu,
-                data["empleadorCorreo"+i] || ' '
-            );
-            let empresaTel = data["empresaTel"+i];
-            empresaTel = empresaTel.replace(/-/g, '');
-
-            success = await UsuarioTelModel.createTelefonoUsuario(
-                empleadorCedu,
-                empresaTel || ' ',
-            );
-        }
         return success;
     }
     catch (error) {
@@ -53,25 +53,28 @@ async function RegistrarEmpresa(req, res) {
         console.log("registrando Empresa");
         const data = req;
         let empleadorCedu = data["empleadorCedu"];
-        empleadorCedu = empleadorCedu.replace(/-/g, '');
+        empleadorCedu = empleadorCedu;
+
+        let empresaTel2 = null;
+        if (data["empresaTel2"] != "") {
+            empresaTel2 = data["empresaTel2"];
+        }
+
+        let empresaCorreo2 = null;
+        if (data["empresaCorreo2"] != "") {
+            empresaCorreo2 = data["empresaCorreo2"];
+        }
+
         let success = await EmpresaModel.createEmpresa(
             data["empresaCedu"],
             data["empresaName"],
             empleadorCedu,
+            data["empresaTel1"],
+            empresaTel2,
+            data["empresaCorreo1"],
+            empresaCorreo2
         );
 
-        for (let i = 1; i <= 2; ++i) {
-            success = await EmpresaCorreoModel.create(
-                data["empresaCedu"] || ' ',
-                data["empresaCorreo"+i] || ' '
-            );
-            // let empresaTel = data["empresaTel"+i];
-            // empresaTel = empresaTel.replace(/-/g, '');
-            success = await EmpresaTelModel.create(
-                data["empresaCedu"] || ' ',
-                data["empresaTel"+i].replace(/-/g, '') || ' '
-            );
-        }
         return success; 
     }
     catch (error) {
@@ -87,7 +90,7 @@ async function Registrarse(req, res) {
         const success = 200;
 
         let cedula_empleador = data["empleadorCedu"];
-        cedula_empleador = cedula_empleador.replace(/-/g, '');
+        cedula_empleador = cedula_empleador;
 
         const [existenUsuario, existenEmpresa] = await Promise.all([
             UsuarioModel.getByCedula(cedula_empleador),
