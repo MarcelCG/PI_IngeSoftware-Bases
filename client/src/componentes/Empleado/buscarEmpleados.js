@@ -9,7 +9,7 @@ function BuscarEmpleados({empleados, filtrarEmpleados}){
 
     return (
         <div className="busqueda">
-            <button type="submit" className='btn btn-primary icono'
+            <button type="submit" name='Buscar' className='btn btn-primary icono'
              onClick={() => 
                 filtrarEmpleado({empleados, filtrarEmpleados, busqueda, filtro})}>
              <FontAwesomeIcon icon={faSearch} />
@@ -22,10 +22,11 @@ function BuscarEmpleados({empleados, filtrarEmpleados}){
             />
             <select
                 className="col-3 opciones"
+                name="filtro"
                 value={filtro}
                 onChange={(e) => filtrarPor(e.target.value)}
             >
-                <option value="nombre_completo">Por Nombre</option>
+                <option value="nombre_completo" name="Por Nombre">Por Nombre</option>
                 <option value="correo">Por Correo</option>
                 <option value="cedula">Por Cedula</option>
                 <option value="rol">Por Rol</option>
