@@ -9,25 +9,24 @@ CREAR LIBRES PARA TODOS LOS EMPLEADOS DE LA EMPRESA DEACUERDO A ESA
 POLITICA*/
 
 export const CalcTiemposBoton = () => {
+
 	const empresa = "cedula_empresa"; 
   const esEmpleador = true;
   const [Politicas, setPoliticas] = useState([]);
   const [Libres, setLibres] = useState([]);
+  const [Cargando, setCargando] = useState(false);
 
-  // const enviarDatos = async() => {
-  // 	try {
-  // 		const respuesta = await axios.get
-  // 		(
-  // 		 	`http://localhost:5000/api/calcularTiempos/${empresa}`
-  // 		);
-  // 		  //setPoliticas(...Politicas,respuesta[0]);
-  // 		  //setLibres(...Libres,respuesta[1]);
-  // 		  setCargando(true);
-  // 		}
-  // 		catch (error) {
-  // 		  setCargando(true);
-  // 		}
-  // 	}
+  const enviarDatos = async (nuevosDias) => {
+	  try {
+	  	// eslint-disable-next-line no-unused-vars
+	    const response = await axios.post
+	    ('http://localhost:5000/api/libres/', {nuevosDias});
+	    return true;
+	  }
+	  catch (error) {
+	  	return false;
+		}
+	};
 
 	const cargarDatos = async() => {
 	  try {
@@ -35,9 +34,9 @@ export const CalcTiemposBoton = () => {
 	    (`http://localhost:5000/api/libres/getLibPol/${empresa}`,);
 	    setPoliticas(respuesta.data.politicas);
 	    setLibres(respuesta.data.libres);
-	    console.log("hola")
+	    return true;
 	  } catch (error) {
-
+	  	return false;
 	  }
 	};
 
@@ -45,61 +44,68 @@ export const CalcTiemposBoton = () => {
   	return (n * (n + 1)) / 2;
 	};
 
-	//const fechaHoy = new Date();
-	const fechaHoy = new Date("2023-11-01");
+	const fechaHoy = new Date();
+	//const fechaHoy = new Date("2023-11-01");
 	const fechaUnMesAtras = new Date(fechaHoy);
 	fechaUnMesAtras.setMonth(fechaHoy.getMonth() - 1);
 	const milisegDia = 86400000; // milisegundos en un dia
 	let nuevosDias = [];
 
 	const calcularTiempos = async () => {
-		await cargarDatos(); // no traer vigentes
 
-		Politicas.filter(pol => 
-			new Date(pol.fecha_final) >= fechaUnMesAtras &&
-			new Date(pol.fecha_inicio) <= fechaHoy).
-			forEach(pol => {
-				pol.fecha_final = new Date(pol.fecha_final);
+		if(await cargarDatos()){
+			console.log(Politicas, Libres);
 
-				Libres.filter(lib => lib.titulo_politica === pol.titulo).
-					forEach(lib => {
-				
-					const ultimaAct = (fechaHoy > pol.fecha_final) ?
-						pol.fecha_final:fechaHoy;
+			Politicas.filter(pol => 
+				new Date(pol.fecha_final) >= fechaUnMesAtras &&
+				new Date(pol.fecha_inicio) <= fechaHoy).
+				forEach(pol => { 
 
-					const cantPeriodos = 
+					pol.fecha_final = new Date(pol.fecha_final);
+					Libres.filter(lib => lib.titulo_politica === pol.titulo).
+						forEach(lib => {
+					
+						const ultimaAct = (fechaHoy > pol.fecha_final) ?
+							pol.fecha_final:fechaHoy;
+
+						const cantPeriodos = 
 						((ultimaAct - fechaUnMesAtras) / milisegDia)/pol.periodo;
+						
+						let newDays = pol.acumulativo ?
+							lib.dias_libres_disponibles +
+							(pol.dias_a_dar * cantPeriodos):
+							pol.dias_a_dar;
+							console.log(cantPeriodos);
+						if(pol.incrementativo){
+							/* newDays += 
+							 pol.dias_a_incrementar * 
+							 ( Gauss((cantPeriodos - 1) + lib.periodos_totales) -
+							 Gauss(cantPeriodos - 1) );*/
+							newDays += Gauss(cantPeriodos -1)*pol.dias_a_incrementar;
+						}
 
-					let newDays = pol.acumulativo ?
-						lib.dias_libres_disponibles +
-						(pol.dias_a_dar * cantPeriodos):
-						pol.dias_a_dar;
-
-					if(pol.incrementativo){
-						newDays += 
-						pol.dias_a_incrementar * 
-						( Gauss((cantPeriodos - 1) + lib.periodosRecorridos) -
-						Gauss(cantPeriodos - 1) );
-					}
-
-				  const libre = {
-				  	cedEmple: lib.cedula_empleado,
-				  	tituloPol: lib.titulo_politica,
-				  	Dias: newDays
-					};
-				
-					nuevosDias.push(libre);
+					  const libre = {
+					  	cedula_empleado: lib.cedula_empleado,
+					  	titulo_politica: lib.titulo_politica,
+					  	cedula_empresa: lib.cedula_empresa,
+					  	dias_libres_disponibles: newDays,
+					  	dias_libres_utilizados: 0,
+					  	/*periodos_totales: 0*/
+						};
+						nuevosDias.push(libre);
+				});
 			});
-		});
-		const numEmpleados = nuevosDias.filter((item, indice, self) =>
-				self.findIndex((elemento) =>
-					elemento.cedEmple === item.cedEmple) === indice
-			).length;
+			const numEmpleados = nuevosDias.filter((item, indice, self) =>
+					self.findIndex((elemento) =>
+						elemento.cedEmple === item.cedEmple) === indice
+				).length;
 
-		toast.success(`Empleados actualizados: ${numEmpleados}`,
-			{position: toast.POSITION.TOP_CENTER,
-			className:"alert alert-success"});
-		
+			//console.log(nuevosDias);
+		}
+
+		else{
+			// ERROR
+		}
 	};
 
 	return (
@@ -112,3 +118,21 @@ export const CalcTiemposBoton = () => {
 	);
 
 };
+
+
+
+
+/*
+activas => 
+desactivar =>
+*/
+
+
+
+
+
+
+
+
+
+
