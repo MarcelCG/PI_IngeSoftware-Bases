@@ -118,8 +118,8 @@ async function editarPolitica(titulo, actualizarDatosPolitica) {
       const pool = await sql.connect(dbConfig);
       const result = await pool
           .request()
-          .input("titulo", sql.VarChar, titulo)
-          .input("cedula_empresa", sql.VarChar, actualizarDatosPolitica.cedula_empresa)
+          .input("titulo", sql.NVarChar, titulo)
+          .input("cedula_empresa", sql.NVarChar, actualizarDatosPolitica.cedula_empresa)
           .input("periodo", sql.Decimal(5, 2), actualizarDatosPolitica.periodo)
           .input("fecha_inicio", sql.Date, actualizarDatosPolitica.fecha_inicio)
           .input("fecha_final", sql.Date, actualizarDatosPolitica.fecha_final)
@@ -129,7 +129,7 @@ async function editarPolitica(titulo, actualizarDatosPolitica) {
           .input("dias_a_incrementar", sql.Decimal(5, 2), actualizarDatosPolitica.dias_a_incrementar)
           .input("acumulativo", sql.Bit, actualizarDatosPolitica.acumulativo)
           .input("activo", sql.Bit, actualizarDatosPolitica.activo)
-          .input("descripcion", sql.VarChar, actualizarDatosPolitica.descripcion)
+          .input("descripcion", sql.NVarChar, actualizarDatosPolitica.descripcion)
           .execute("ActualizarPolitica");
 
       return result.rowsAffected > 0;
