@@ -145,5 +145,5 @@ module.exports = {
   getByTitulo,
   getByCedulaEmpresa,
   getByTituloAndCedula,
-  editarPolitica
+  editarPolitica,
 };

@@ -124,11 +124,11 @@ async function editarPolitica(req, res) {
     const actualizarDatosPolitica = req.body; // Datos actualizados de la política
 
     // Verifica si existe una política con el título especificado
-    const politicaExistente = await getByTitulo(titulo);
+    const politicaExistente = await Politica.getByTitulo(titulo);
 
     if (politicaExistente) {
       // Llama a la función para actualizar la política
-      const exito = await editarPolitica(titulo, actualizarDatosPolitica);
+      const exito = await Politica.editarPolitica(titulo, actualizarDatosPolitica); // Cambia "editarPolitica" a "Politica.editarPolitica"
 
       if (exito) {
         res.status(200).json({ message: 'Política actualizada exitosamente' });
@@ -143,7 +143,7 @@ async function editarPolitica(req, res) {
   }
 }
 
-
+// Exporta la función editarPolitica
 module.exports = {
   getAllPoliticas,
   createPolitica,

@@ -17,7 +17,7 @@ export const VerPoliticasHTML = (props) => {
 		abrirModalPolitica,
 		numeros,
 		esEmpleador,
-		editarPolitica
+		handleEditarPolitica
 	} = props;
 
 	return (
