@@ -1,109 +1,225 @@
-import React, { useState, useEffect } from "react";
-import { editarPolitica } from "../../../../server/models/politicaModel/politicasModel";
-import { useForm } from "react-hook-form";
+import React, { Component } from "react";
 
-const EditarPoliticaFormulario = ({ politica, onSave, onCancel }) => {
-  const {
-    titulo,
-    activo,
-    acumulativo,
-    descripcion,
-    periodo,
-    fecha_inicio,
-    fecha_final,
-    inicia_desde_contrato,
-    dias_a_dar,
-    incrementativo,
-    dias_a_incrementar,
-  } = politica;
+class EditarPoliticaFormulario extends Component {
+  render() {
+    const {
+      onSubmit,
+      cancelarFormulario,
+      setDisableStartDate,
+      disableStartDate,
+      disableIncremental,
+      setDisableIncremental,
+      clearErrors,
+      errors,
+      register,
+      validationPatterns,
+      datosPolitica, // Los datos previos de la política
+    } = this.props;
 
-  // Inicializa el formulario con los datos de la política
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    return (
+      <form onSubmit={onSubmit}>
+        {/* Campo de entrada de texto para el título de la política */}
+        <label className="etiqueta" htmlFor="titulo">
+          Título:
+        </label>
+        <input
+          className={`campo ${errors.titulo ? "campoError" : ""}`}
+          {...register("titulo", {
+            required: "Este campo es obligatorio",
+          })}
+          name="titulo"
+          type="text"
+          placeholder="Coloca el título de la política aquí"
+          defaultValue={datosPolitica.titulo} // Rellenar con el dato previo
+        />
+        {errors.titulo && (
+          <span className="mensjError">{errors.titulo.message}</span>
+        )}
 
-  useEffect(() => {
-    // Configura los valores iniciales del formulario
-    setValue("titulo", titulo);
-    setValue("activo", activo);
-    setValue("acumulativo", acumulativo);
-    setValue("descripcion", descripcion);
-    setValue("periodo", periodo);
-    setValue("fecha_inicio", fecha_inicio);
-    setValue("fecha_final", fecha_final);
-    setValue("inicia_desde_contrato", inicia_desde_contrato);
-    setValue("dias_a_dar", dias_a_dar);
-    setValue("incrementativo", incrementativo);
-    setValue("dias_a_incrementar", dias_a_incrementar);
-  }, [
-    titulo,
-    activo,
-    acumulativo,
-    descripcion,
-    periodo,
-    fecha_inicio,
-    fecha_final,
-    inicia_desde_contrato,
-    dias_a_dar,
-    incrementativo,
-    dias_a_incrementar,
-  ]);
+        {/* Campo de fecha de inicio (no editable) */}
+        <label className="etiqueta" htmlFor="fecha_inicio">
+          Fecha de Inicio:
+        </label>
+        <input
+          className={`campo ${errors.fecha_inicio ? "campoError" : ""}`}
+          {...register("fecha_inicio")}
+          name="fecha_inicio"
+          type="date"
+          disabled={true} // No editable
+          defaultValue={datosPolitica.fecha_inicio} // Rellenar con el dato previo
+        />
 
-  const onSubmit = async (data) => {
-    try {
-      // Llama a la función del backend para actualizar la política
-      const actualizacionExitosa = await editarPolitica(titulo, data);
+        {/* Checkbox para "Rige a partir del contrato" */}
+        <section className="checkbox">
+          <input
+            {...register("inicia_desde_contrato")}
+            type="checkbox"
+            checked={disableStartDate}
+            onChange={(e) => {
+              setDisableStartDate(e.target.checked);
+              clearErrors("fecha_inicio");
+            }}
+          />
 
-      if (actualizacionExitosa) {
-        // Si la actualización es exitosa, llama a la función onSave para actualizar la vista
-        onSave(data);
-      } else {
-        // Si la actualización falla, puedes manejar el error o mostrar un mensaje de error
-        console.error("Error al actualizar la política");
-      }
-    } catch (error) {
-      console.error("Error al actualizar la política", error);
-    }
-  };
+          <label>Rige a partir del contrato</label>
+        </section>
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="titulo">Título:</label>
-      <input type="text" {...register("titulo")} />
+        {/* Campo de fecha de vencimiento */}
+        <label className="etiqueta" htmlFor="fecha_final">
+          Fecha de Vencimiento:
+        </label>
+        <input
+          className={`campo ${errors.fecha_final ? "campoError" : ""}`}
+          {...register("fecha_final", {
+            required: "Este campo es obligatorio",
+          })}
+          name="fecha_final"
+          type="date"
+          defaultValue={datosPolitica.fecha_final} // Rellenar con el dato previo
+        />
+        {errors.fecha_final && (
+          <span className="mensjError">{errors.fecha_final.message}</span>
+        )}
 
-      <label htmlFor="activo">Activo:</label>
-      <input type="checkbox" {...register("activo")} />
+        {/* Campo de período */}
+        <label className="etiqueta" htmlFor="periodo">
+          Periodo:
+        </label>
+        <section className="campoDrop">
+          <input
+            className={`campo ${errors.periodo ? "campoError" : ""}`}
+            {...register("periodo", {
+              required: "Este campo es obligatorio",
+              ...validationPatterns.periodo,
+            })}
+            name="periodo"
+            type="number"
+            min={0}
+            defaultValue={datosPolitica.periodo} // Rellenar con el dato previo
+          />
 
-      <label htmlFor="acumulativo">Acumulativo:</label>
-      <input type="checkbox" {...register("acumulativo")} />
+          <select {...register("periodUnit")}>
+            <option value="1/24">Horas</option>
+            <option value="1">Días</option>
+            <option value="7">Semanas</option>
+            <option value="30">Meses</option>
+            <option value="365">Años</option>
+          </select>
 
-      <label htmlFor="descripcion">Descripción:</label>
-      <textarea {...register("descripcion")} rows="4" />
+          {errors.periodo && (
+            <span className="mensjError">{errors.periodo.message}</span>
+          )}
+        </section>
 
-      <label htmlFor="periodo">Periodo (en días):</label>
-      <input type="number" {...register("periodo")} />
+        {/* Campo de incrementativo */}
+        <label className="etiqueta" htmlFor="dias_a_incrementar">
+          Incremento por Periodo:
+        </label>
+        <section className="campoDrop">
+          <input
+            className={`campo ${errors.dias_a_incrementar ? "campoError" : ""}`}
+            {...register("dias_a_incrementar", {
+              required: !disableIncremental
+                ? "Este campo es obligatorio"
+                : false,
+              ...validationPatterns.dias_a_incrementar,
+            })}
+            name="dias_a_incrementar"
+            type="number"
+            disabled={disableIncremental}
+            min={0}
+            defaultValue={datosPolitica.dias_a_incrementar} // Rellenar con el dato previo
+          />
 
-      <label htmlFor="fecha_inicio">Fecha de Inicio:</label>
-      <input type="date" {...register("fecha_inicio")} />
+          <select className="drop" disabled={disableIncremental}>
+            <option value="1/24">Horas</option>
+            <option value="1">Días</option>
+            <option value="7">Semanas</option>
+            <option value="30">Meses</option>
+            <option value="365">Años</option>
+          </select>
+          {errors.dias_a_incrementar && (
+            <span className="mensjError">
+              {errors.dias_a_incrementar.message}
+            </span>
+          )}
+        </section>
 
-      <label htmlFor="fecha_final">Fecha de Vencimiento:</label>
-      <input type="date" {...register("fecha_final")} />
+        {/* Checkbox para "Incrementativo" */}
+        <section className="checkbox">
+          <input
+            {...register("incrementativo")}
+            type="checkbox"
+            checked={disableIncremental}
+            onChange={(e) => {
+              setDisableIncremental(e.target.checked);
+              clearErrors("dias_a_incrementar");
+            }}
+          />
 
-      <label htmlFor="inicia_desde_contrato">Inicia desde contrato:</label>
-      <input type="checkbox" {...register("inicia_desde_contrato")} />
+          <label>No es incrementativo</label>
+        </section>
 
-      <label htmlFor="dias_a_dar">Días a Dar:</label>
-      <input type="number" {...register("dias_a_dar")} />
+        {/* Campo para la unidad */}
+        <label className="etiqueta" htmlFor="dias_a_dar">
+          Unidad:
+        </label>
+        <section className="campoDrop">
+          <input
+            className={`campo ${errors.dias_a_dar ? "campoError" : ""}`}
+            {...register("dias_a_dar", {
+              required: "Este campo es obligatorio",
+              ...validationPatterns.dias_a_dar,
+            })}
+            name="dias_a_dar"
+            type="number"
+            min={0}
+            defaultValue={datosPolitica.dias_a_dar} // Rellenar con el dato previo
+          />
 
-      <label htmlFor="incrementativo">Incrementativo:</label>
-      <input type="checkbox" {...register("incrementativo")} />
+          <select {...register("dias_a_darUnit")}>
+            <option value="1/24">Horas</option>
+            <option value="1">Días</option>
+            <option value="7">Semanas</option>
+            <option value="30">Meses</option>
+            <option value="365">Años</option>
+          </select>
+          {errors.dias_a_dar && (
+            <span className="mensjError">{errors.dias_a_dar.message}</span>
+          )}
+        </section>
 
-      <label htmlFor="dias_a_incrementar">Días a Incrementar:</label>
-      <input type="number" {...register("dias_a_incrementar")} />
+        {/* Checkbox para "Acumulativo" */}
+        <section className="cumulative">
+          <input {...register("acumulativo")} type="checkbox" />
 
-      {/* Botones de guardar y cancelar */}
-      <button type="submit">Guardar Cambios</button>
-      <button type="button" onClick={onCancel}>Cancelar</button>
-    </form>
-  );
+          <label>Es acumulativo</label>
+        </section>
+
+        {/* Campo para descripción */}
+        <label className="etiqueta">Descripción:</label>
+        <textarea
+          className="campo"
+          {...register("descripcion")}
+          rows={5}
+          placeholder="Puedes describir la política aquí"
+          defaultValue={datosPolitica.descripcion} // Rellenar con el dato previo
+        />
+
+        /* Botones de Cancelar y Guardar */
+        <section className="botones">
+          <input
+            className="cancelar"
+            type="button"
+            value="Cancelar"
+            onClick={cancelarFormulario}
+          />
+          <input className="guardar" type="submit" value="Guardar" />
+        </section>
+      </form>
+    );
+  }
 }
 
 export default EditarPoliticaFormulario;
+

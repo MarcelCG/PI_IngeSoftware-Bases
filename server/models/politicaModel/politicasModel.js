@@ -121,7 +121,7 @@ async function editarPolitica(titulo, actualizarDatosPolitica) {
           .input("titulo", sql.NVarChar, titulo)
           .input("cedula_empresa", sql.NVarChar, actualizarDatosPolitica.cedula_empresa)
           .input("periodo", sql.Decimal(5, 2), actualizarDatosPolitica.periodo)
-          .input("fecha_inicio", sql.Date, actualizarDatosPolitica.fecha_inicio)
+          // No se actualiza la fecha de inicio
           .input("fecha_final", sql.Date, actualizarDatosPolitica.fecha_final)
           .input("inicia_desde_contrato", sql.Bit, actualizarDatosPolitica.inicia_desde_contrato)
           .input("dias_a_dar", sql.Decimal(5, 2), actualizarDatosPolitica.dias_a_dar)
@@ -137,6 +137,7 @@ async function editarPolitica(titulo, actualizarDatosPolitica) {
       throw error;
   }
 }
+
 
 module.exports = {
   getAll,

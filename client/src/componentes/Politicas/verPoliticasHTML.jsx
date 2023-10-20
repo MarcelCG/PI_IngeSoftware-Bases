@@ -16,7 +16,8 @@ export const VerPoliticasHTML = (props) => {
 		botonRef,
 		abrirModalPolitica,
 		numeros,
-		esEmpleador
+		esEmpleador,
+		editarPolitica
 	} = props;
 
 	return (
@@ -44,7 +45,7 @@ export const VerPoliticasHTML = (props) => {
 	              <td>{ajustarFecha(politica.fecha_inicio)}</td>
 	              <td>{politica.dias_a_dar}</td>
 	              {esEmpleador && <td>
-	                <button className="btn btn-outline-primary me-2">
+					<button className="btn btn-outline-primary me-2" onClick={() => handleEditarPolitica(politica)}>
 	                  <FontAwesomeIcon icon={faPenToSquare} />
 	                </button>
 	                <button className="btn btn-outline-danger">

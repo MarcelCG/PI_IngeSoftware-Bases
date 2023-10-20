@@ -6,6 +6,7 @@ import {VerPolitica} from './verPolitica'
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import React, {useState, useEffect, useRef} from "react";
 import { URLApi } from '../Compartido/Constantes';
+import {editarPolitica} from './EditarPolitica';
 
 export const VerPoliticas = () => {
 
@@ -53,6 +54,12 @@ export const VerPoliticas = () => {
     botonRef.current.click();
   };
 
+    // Función para abrir el formulario de edición
+    const manejoEditarPolitica = (politica) => {
+      // Llama a la función para editar la política pasando la política como argumento
+      editarPolitica(politica);
+    };
+
   let props = {
     ...polValores,
     politicasAct,
@@ -63,7 +70,8 @@ export const VerPoliticas = () => {
     botonRef,
     abrirModalPolitica,
     numeros,
-    esEmpleador
+    esEmpleador,
+    manejoEditarPolitica
   };
 
   return ( <VerPoliticasHTML {...props}/> );
