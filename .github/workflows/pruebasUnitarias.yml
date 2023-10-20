@@ -22,10 +22,10 @@ jobs:
 
     - name: Install dependencies (Cliente)
       run: |
-        cd cliente
+        cd client
         npm install --legacy-peer-deps
 
     - name: Run client tests
       run: |
-        cd cliente
+        cd client
         npm test
