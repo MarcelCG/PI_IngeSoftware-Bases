@@ -1,16 +1,19 @@
 import React from "react";
 import axios from 'axios';
 import {useForm} from 'react-hook-form'
-import { useParams } from "react-router-dom";
+import { useAutent } from "../../contexto/ContextoAutenticacion";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { ToastContainer, toast } from 'react-toastify';
+import { URLApi } from '../Compartido/Constantes';
 
-const URI = 'http://localhost:5000/api/registrarEmpleado/';
+const URI = URLApi+'registrarEmpleado/';
 
 const AddEmployee = () => {
-  const {empresa} = useParams();
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado.cedula_empresa;
+  
   const {register, handleSubmit, 
     formState: {errors},
     watch,
@@ -28,7 +31,22 @@ const AddEmployee = () => {
       reset();
     }
     catch (error) {
-      console.log("Error: ", error);
+        console.log(error)
+        if (error.response && error.response.status === 409
+            && error.response.data 
+            && error.response.data.message === 'Empleado ya existe') {
+            console.error(error.response.data.error, error);
+            // Muestra una notificación de error
+            toast.error('Ya existe un usuario con la cedula digitada', {
+                position: toast.POSITION.TOP_CENTER
+            });
+        } else {
+            console.error('Error en la solicitud POST:', error);
+            // Muestra una notificación de error
+            toast.error('Hubo un error inesperado al agregar el empleado, trate de nuevo', {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
     }
   });
 
@@ -182,7 +200,7 @@ const AddEmployee = () => {
                                 { errors.telefono1 && <span>{errors.telefono1.message}</span>}
                             </div>                      
                             <div className='mt-2'>
-                                <label htmlFor="telefono2">Numero de telefono</label>
+                                <label htmlFor="telefono2">Numero de telefono opcional</label>
                                     <input type="text"
                                     {...register("telefono2", {
                                         pattern: {
@@ -217,7 +235,7 @@ const AddEmployee = () => {
                                 { errors.correo1 && <span>{errors.correo1.message}</span>}
                             </div> 
                             <div className='mt-2'>
-                                <label htmlFor="correo2">Correo</label>
+                                <label htmlFor="correo2">Correo opcional</label>
                                     <input type="email"
                                     {...register("correo2", {
                                     pattern: {
@@ -243,10 +261,6 @@ const AddEmployee = () => {
                                     })}
                                 />
                                 { errors.fecha_contratacion && <span>La fecha de contratacion es requerida</span>}
-                            </div>    
-                            <div className='mt-2'>
-                                <label htmlFor="empleador">Empleador</label>
-                                <input type="text" disabled/>
                             </div>
                         </div>
                         <div className='d-flex justify-content-end mt-3'>

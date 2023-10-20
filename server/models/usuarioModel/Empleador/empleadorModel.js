@@ -42,11 +42,11 @@ async function getByCedula(cedula_empleador) {
       .input('cedula_empleador', sql.NVarChar, cedula_empleador)
       .query('SELECT u.cedula,'
         + ' u.nombre, u.primer_apellido, u.segundo_apellido,'
-        + ' c.correo'
-        + ' FROM Usuario u, Empleador e, CorreosUsuarios c '
-        + ' WHERE u.cedula=e.cedula_empleador'
+        + ' u.correo1, em.nombre AS \'nombre_empresa\''
+        + ' FROM Usuario u, Empleador e, Empresa em '
+        + ' WHERE u.cedula=@cedula_empleador'
         + ' AND u.activo=1'
-        + ' AND c.cedula_usuario=u.cedula');
+        + ' AND e.cedula_empleador=em.cedula_empleador');
     if (result.recordset.length > 0) {
       // Si se encontró un empleado, se retorna
       return result.recordset[0];

@@ -18,14 +18,22 @@ async function createEmpresa(req, res) {
     const {
       cedula_juridica,
       nombre,
-      cedula_empleador
+      cedula_empleador,
+      telefono1,
+      telefono2,
+      correo1,
+      correo2
     } = req.body;
 
     // Llama a la función createPolitica que inserta en la tabla "Politica"
     const success = await Empresa.createEmpresa(
-     cedula_juridica,
+      cedula_juridica,
       nombre,
-      cedula_empleador
+      cedula_empleador,
+      telefono1,
+      telefono2,
+      correo1,
+      correo2
     );
 
     if (success) {
@@ -73,18 +81,15 @@ async function getEmpresaByCedulaEmpleador(req, res){
 async function getEmpresaInfo(req, res) {
   try {
     const { empresa } = req.params;
-    const [empresaData, empresaCorreoData, empresaTelData] = await Promise.all([
-      Empresa.getEmpresaByCedula(empresa),
-      EmpresaCorreo.getByEmpresa(empresa),
-      EmpresaTel.getByEmpresa(empresa),
+    const [empresaData] = await Promise.all([
+      Empresa.getEmpresaByCedula(empresa)
     ]);
 
     if (empresaData) {
       const empresaInfo = {
         ...empresaData,
-        correo: empresaCorreoData,
-        telefono: empresaTelData,
       };
+      console.log(empresaInfo)
       res.status(200).json({ data: empresaInfo });
     } else {
       res.status(404).json({ error: 'Empresa no encontrada' });
