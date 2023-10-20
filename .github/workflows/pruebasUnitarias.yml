@@ -1,4 +1,4 @@
-name: Unit Tests
+name: Pruebas Unitarias
 
 on:
   push:
@@ -12,20 +12,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Revisar código
       uses: actions/checkout@v2
 
-    - name: Set up Node.js (Cliente)
+    - name: Preparar Node (Cliente)
       uses: actions/setup-node@v2
       with:
         node-version: 14
 
-    - name: Install dependencies (Cliente)
+    - name: Instalar dependencias (Cliente)
       run: |
         cd client
         npm install --legacy-peer-deps
 
-    - name: Run client tests
+    - name: Ejecutar pruebas de cliente
       run: |
         cd client
         npm test
