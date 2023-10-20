@@ -80,11 +80,29 @@ button:hover {
 
 /* App.css */
 .bg-fondo  {
-  background-color: #F1F6F9; /* Cambia 'blue' al color que prefieras */
+  background-color: #FFFFFF;
 }
 
 
 .contenedor {
   height: 80vh;
   margin: auto; /* Margen en todos los lados */
+}
+
+.busqueda {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.busqueda .icono, .busqueda .campo, .busqueda .opciones {
+  height: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.busqueda .icono {
+  margin-top: 0; /* Asegura que el ícono no tenga margen superior */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0 ;
 }
