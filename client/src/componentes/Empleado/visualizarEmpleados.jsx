@@ -1,40 +1,28 @@
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useParams } from "react-router-dom";
+import { useAutent } from '../../contexto/ContextoAutenticacion';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import React, {useState, useEffect} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom';
+import { URLApi } from '../Compartido/Constantes';
 
-const URI = 'http://localhost:5000/api/'
-const empresaURI = URI + 'empresa/byCedulaEmpleador/'
-const empleadoURI = URI + 'empleados/allByEmpresa/';
+const empleadoURI = URLApi + 'empleados/allByEmpresa/';
 
 const ListOfEmployees = () => {
-    const { cedulaEmpleador } = useParams();
-    const empresaURIParam = empresaURI + cedulaEmpleador;
+    const {usuarioAutenticado} = useAutent(); 
 
-    const [empresa, setEmpresa] = useState([]);
-
-    useEffect(() => {
-        const getEmpresaByCedulaEmpleador = async () => {
-        try {
-            const res = await axios.get(empresaURIParam);
-            setEmpresa(res.data);
-        } catch (error) {
-            console.error('Error al obtener datos de la empresa:', error);
-        }
-    };
-        getEmpresaByCedulaEmpleador();
-    }, [empresaURIParam]);
+    const empresa = usuarioAutenticado.cedula_empresa;
 
     useEffect(() => {
-        if (empresa.cedula_juridica) {
-            const empleadosURIParam = empleadoURI + empresa.cedula_juridica;
+        if (empresa) {
+            const empleadosURIParam = empleadoURI + empresa;
             const getEmpleadoByEmpresa = async () => {
             try {
                 const res = await axios.get(empleadosURIParam);
+                console.log(empleadosURIParam);
                 setEmpleado(res.data);
             } 
             catch (error) {
@@ -74,7 +62,7 @@ const ListOfEmployees = () => {
                                                 <div className="search-box ml-2">
                                                     <div className="position-relative">
                                                         <input className="me-3"></input>
-                                                        <a href="#" className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</a>
+                                                        <Link to="/app/empleados/addEmpleados" className="btn btn-success"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</Link>
                                                     </div>
                                                 </div>
                                             </div>
