@@ -2,7 +2,9 @@ import {Modal} from '../Utiles/Modal'
 import {ajustarFecha} from './verPolitica'
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faTrash, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus }
+ from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom';
 
 export const VerPoliticasHTML = (props) => {
 	const {
@@ -25,6 +27,11 @@ export const VerPoliticasHTML = (props) => {
 	    <div ref={botonRef} 
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
+            <div className="row mb-4 col-12 d-flex p-1 align-items-center">
+                <Link to="/app/politicas/addPoliticas" className="btn-primary col-2 continuar">
+                    <FontAwesomeIcon icon={faPlus} />Agregar
+                </Link>
+            </div>
 	      <table className="table table-hover mt-titulo">
 	        <thead>
 	          <tr>
