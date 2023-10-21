@@ -12136,9 +12136,13 @@ button:hover {
   background-color: #FFFFFF;
 }
 
-.titulo-modal {
-  background-color: #5b88a5;
-  color: #FFFFFF;
+.ventana {
+  margin-top: 3.5rem;
+}
+
+.titulo-ventana {
+  background-color: #5b88a5 !important;
+  color: #FFFFFF !important;
   text-align: center;
 }
 

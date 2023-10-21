@@ -22,7 +22,7 @@ export const Modal = (props) => {
         <div className="modal-dialog modal-dialog-scrollable">
           <div className="modal-content">
             {titulo &&
-            <div className="modal-header titulo-modal">
+            <div className="modal-header titulo-ventana">
               <h1 className="modal-title fs-5">{titulo}</h1>
               <button type="button" className="btn-primary" data-bs-dismiss="modal" aria-label="Close">
                 <FontAwesomeIcon icon={faTimes} />
