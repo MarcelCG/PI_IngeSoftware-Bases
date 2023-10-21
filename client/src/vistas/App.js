@@ -28,7 +28,12 @@ function App() {
     case '/app/empleados':
       titulo = 'Lista de Empleados';
       break;
-    // Agrega más casos según tus rutas
+      case '/app/empresa':
+        titulo = 'Información de la Empresa';
+      break;
+      case '/app/perfil':
+        titulo = 'Información del Usuario';
+      break;
     default:
       titulo = '';
       break;
