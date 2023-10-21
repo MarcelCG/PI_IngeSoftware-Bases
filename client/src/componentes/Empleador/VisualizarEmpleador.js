@@ -42,12 +42,11 @@ function VisualizarEmpleadorPorCedula() {
   }, [cedulaEmpleador]);
 
   return (
-    <div className="container">
-      <h2 className="text-center mb-4">Información del Empleador</h2>
+    <div className="container mt-4">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
-            <div className="card-header">
+            <div className="card-header titulo-ventana">
               <h5 className="mb-0">Datos Personales</h5>
             </div>
             <div className="card-body">
@@ -61,7 +60,7 @@ function VisualizarEmpleadorPorCedula() {
         </div>
         <div className="col-md-6">
           <div className="card">
-            <div className="card-header">
+            <div className="card-header titulo-ventana">
               <h5 className="mb-0">Datos de la Empresa</h5>
             </div>
             <div className="card-body">
