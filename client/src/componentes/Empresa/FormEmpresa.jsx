@@ -77,7 +77,7 @@ export const FormEmpresa = ({ formData, setForm, errForm, setErrForm, navigation
 	return (
 		<div className="container col-5 position-static">
 			<div className="card border-dark shadow m-3">
-				<div className="card-header"><h1>Formulario | Empresa</h1></div>
+				<div className="card-header titulo-ventana"><h1>Formulario | Empresa</h1></div>
 					<div className="card-body">
 					  <form className="px-4 row py-3">
 						  {inputs.map((input) => (
@@ -91,9 +91,11 @@ export const FormEmpresa = ({ formData, setForm, errForm, setErrForm, navigation
 							</div>
 						))}
 				    </form>
-				<div className="row px-4 justify-content-between">
-					<button onClick={() => navigate('/')} className="btn col-3 btn-secondary ">cancelar</button>
-			    	<button onClick={nextClick} className="btn col-3 btn-primary">siguiente</button>
+				<div className='d-flex justify-content-end mt-3'>
+					<div className='align-items-right text-align-right float-right'>
+						<button onClick={() => navigate('/')} className="btn btn-secondary me-2">Cancelar</button>
+						<button onClick={nextClick} className="btn-primary">Siguiente</button>
+					</div>
 			    </div>
 			  </div>
 			</div>

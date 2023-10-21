@@ -116,7 +116,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 	return (
 		<div className="container col-5 position-static">
 			<div className="card border-dark shadow m-3">
-				<div className="card-header"><h1>Formulario | Empleador</h1></div>
+				<div className="card-header titulo-ventana"><h1>Formulario | Empleador</h1></div>
 					<div className="card-body">
 			      <form className="px-4 row py-3">
 			        {inputs.map((input) => (
@@ -137,9 +137,11 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 					  <div>Al menos 1 signo especial [ ! , @ , # , $ , % , & , _ , \ , - ]</div>
 					</small>
 	      	  </form>
-	      	  <div className="row px-4 justify-content-between">
-		      	<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary">atras</button>
-		      	<button onClick={nextClick} className="btn col-3 btn-primary">siguiente</button>
+	      	  <div className='d-flex justify-content-end mt-3'>
+					<div className='align-items-right text-align-right float-right'>
+						<button onClick={() => navigation.previous()} className="btn btn-secondary me-2">Atras</button>
+						<button onClick={nextClick} className="btn btn-primary">Siguiente</button>
+					</div>
 		     </div>
 			  </div>
 			</div>
