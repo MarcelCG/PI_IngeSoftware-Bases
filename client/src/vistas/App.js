@@ -1,6 +1,6 @@
 import '../estilos/estilos.css';
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import AddPolicy from '../componentes/Politicas/AddPolicy';
 import AddEmployee from '../componentes/Empleado/agregarEmpleado';
 import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
@@ -15,6 +15,25 @@ function App() {
   const empresa = usuarioAutenticado?.cedula_empresa; 
   const esEmpleador = empresa ? true : false;
 
+  let titulo;
+
+  // Define el título según la ruta actual
+  switch (useLocation().pathname) {
+    case '/app':
+      titulo = 'Inicio';
+      break;
+    case '/app/politicas':
+      titulo = 'Lista de Politicas';
+      break;
+    case '/app/empleados':
+      titulo = 'Lista de Empleados';
+      break;
+    // Agrega más casos según tus rutas
+    default:
+      titulo = '';
+      break;
+  }
+
   return (
       <div className="bg-fondo" >
         <div className="App bg-fondo" >
@@ -28,7 +47,8 @@ function App() {
               }
             </div>
 
-            <div className="container col-10 mt-5" style={{ maxHeight: '100vh' }}>
+            {titulo && <h3 className='titulo-pagina text-center'>{titulo}</h3>}
+            <div className="container col-10">
             <Routes>
               <Route path="/politicas" element={<VerPoliticas/>} />
               <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>

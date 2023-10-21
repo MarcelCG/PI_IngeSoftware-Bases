@@ -5,6 +5,7 @@ $color-primario: #243A69;
 $color-secundario: #5b88a5;
 $color-blanco: #FFFFFF;
 $color-rojo: #990000;
+$color-rojo-secundario: #660000;
 $color-gris: #f4f4f2;
 
 .btn-primary {
@@ -35,9 +36,13 @@ $color-gris: #f4f4f2;
     color: $color-blanco !important; // Cambia el color del texto
 
     &:hover {
-        background-color: $color-primario !important; // Cambia el color de fondo al pasar el mouse
-        border-color: $color-primario !important; // Cambia el color del borde al pasar el mouse
+        background-color: $color-rojo-secundario !important; // Cambia el color de fondo al pasar el mouse
+        border-color: $color-rojo-secundario !important; // Cambia el color del borde al pasar el mouse
     }
+}
+
+.btn-close {
+  color: $color-blanco !important;
 }
 
 /* Estilos generales para la aplicación */
@@ -127,23 +132,34 @@ $color-gris: #f4f4f2;
     background-color: $color-blanco;
   }
 
+  .titulo-modal{
+    background-color: $color-secundario;
+    color: $color-blanco;
+    text-align: center;
+  }
+
   .titulo-pagina{
     height: 3rem;
     width: 100vw;
     margin: 0;
-    position: absolute;
+    position: relative;
     left: 0;
+    margin-top: 3rem;
     background-color: $color-secundario;
     color: $color-blanco;
     z-index: 50;
   }
   
+  .mt-titulo {
+    margin-top: 6rem;
+  }
+
   .busqueda {
     display: flex;
     align-items: center;
     padding: 0;
     height: 3rem;
-    margin-top: 4rem;
+    margin-top: 1rem;
   }
   
   .busqueda .icono, .busqueda .campo, .busqueda .opciones{
@@ -154,10 +170,10 @@ $color-gris: #f4f4f2;
 
   .continuar {
     height: 3rem;
-    margin-top: 4rem !important; 
     display: flex; /* Hacer que el contenedor sea un contenedor flexible */
     align-items: center; /* Centrar verticalmente los elementos hijos */
     justify-content: center; /* Centrar horizontalmente los elementos hijos */
+    margin-top: 1rem !important;
   }
 
   .busqueda .opciones {

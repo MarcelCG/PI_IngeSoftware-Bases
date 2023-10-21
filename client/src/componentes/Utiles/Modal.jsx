@@ -1,5 +1,5 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 /* ---------------------------------------------------------------------------------------------------------------------
   │Explicacion:                                                                                                          │
@@ -22,16 +22,18 @@ export const Modal = (props) => {
         <div className="modal-dialog modal-dialog-scrollable">
           <div className="modal-content">
             {titulo &&
-            <div className="modal-header">
+            <div className="modal-header titulo-modal">
               <h1 className="modal-title fs-5">{titulo}</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+              <button type="button" className="btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
             </div>}
             {componente &&
             <div className="modal-body">
                {componente}
             </div>}
             <div className="modal-footer">
-              <button type="button" className="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" className="btn btn-primary btn-sm" data-bs-dismiss="modal">Cerrar</button>
               {boton&&
               <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>boton</button>}
             </div>

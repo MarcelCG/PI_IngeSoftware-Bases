@@ -45,9 +45,6 @@ const ListOfEmployees = () => {
 
     return(
         <div className='container'>
-            <div className="row titulo-pagina">
-                    <h3 className=' text-center'>Lista de Empleados</h3>
-            </div>
             <div className="row mb-4 col-12 d-flex p-1 align-items-center">
                 <div className='col-10'>
                     <BuscarEmpleados empleados={empleados} filtrarEmpleados={filtrarEmpleados}/>

@@ -12041,8 +12041,12 @@ textarea.form-control-lg {
   color: #FFFFFF !important;
 }
 .btn-danger:hover {
-  background-color: #243A69 !important;
-  border-color: #243A69 !important;
+  background-color: #660000 !important;
+  border-color: #660000 !important;
+}
+
+.btn-close {
+  color: #FFFFFF !important;
 }
 
 /* Estilos generales para la aplicación */
@@ -12132,15 +12136,26 @@ button:hover {
   background-color: #FFFFFF;
 }
 
+.titulo-modal {
+  background-color: #5b88a5;
+  color: #FFFFFF;
+  text-align: center;
+}
+
 .titulo-pagina {
   height: 3rem;
   width: 100vw;
   margin: 0;
-  position: absolute;
+  position: relative;
   left: 0;
+  margin-top: 3rem;
   background-color: #5b88a5;
   color: #FFFFFF;
   z-index: 50;
+}
+
+.mt-titulo {
+  margin-top: 6rem;
 }
 
 .busqueda {
@@ -12148,7 +12163,7 @@ button:hover {
   align-items: center;
   padding: 0;
   height: 3rem;
-  margin-top: 4rem;
+  margin-top: 1rem;
 }
 
 .busqueda .icono, .busqueda .campo, .busqueda .opciones {
@@ -12159,10 +12174,10 @@ button:hover {
 
 .continuar {
   height: 3rem;
-  margin-top: 4rem !important;
   display: flex; /* Hacer que el contenedor sea un contenedor flexible */
   align-items: center; /* Centrar verticalmente los elementos hijos */
   justify-content: center; /* Centrar horizontalmente los elementos hijos */
+  margin-top: 1rem !important;
 }
 
 .busqueda .opciones {

@@ -1,7 +1,5 @@
 import axios from 'axios';
 import {VerPoliticasHTML} from './verPoliticasHTML'
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import {VerPolitica} from './verPolitica'
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import React, {useState, useEffect, useRef} from "react";
