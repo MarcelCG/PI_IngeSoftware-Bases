@@ -5,6 +5,7 @@ import {ajustarFecha} from './verPolitica'
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import BuscarPoliticas from './BuscarPolitica';
 
 export const VerPoliticasHTML = (props) => {
 	const {
@@ -16,6 +17,8 @@ export const VerPoliticasHTML = (props) => {
 		botonRef,
 		abrirModalPolitica,
 		numeros,
+		politicas,
+		filtrarPoliticas,
 		esEmpleador
 	} = props;
 
@@ -27,6 +30,10 @@ export const VerPoliticasHTML = (props) => {
 	    <div ref={botonRef} 
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
+
+		<div className="mb-3">
+          <BuscarPoliticas politicas={politicas} filtrarPoliticas={filtrarPoliticas} />
+        </div>
 	      <table className="table table-hover">
 	        <thead>
 	          <tr>
