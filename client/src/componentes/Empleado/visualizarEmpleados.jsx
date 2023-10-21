@@ -1,11 +1,8 @@
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.css';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
 import React, {useState, useEffect} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faPlus, faTrash, faChevronRight, faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import { URLApi } from '../Compartido/Constantes';
 import BuscarEmpleados from './buscarEmpleados';
@@ -47,17 +44,18 @@ const ListOfEmployees = () => {
     const numbers = [...Array(npage +1).keys()].slice(1)
 
     return(
-        <div className="col-12">
-            <div className="row mb-3 text-center titulo-pagina">
-                    <h3>Lista de Empleados</h3>
+        <div className='container'>
+            <div className="row titulo-pagina">
+                    <h3 className=' text-center'>Lista de Empleados</h3>
             </div>
-            <div className="row mb-2 col-12 d-flex p-1 align-items-center">
+            <div className="row mb-4 col-12 d-flex p-1 align-items-center">
                 <div className='col-10'>
                     <BuscarEmpleados empleados={empleados} filtrarEmpleados={filtrarEmpleados}/>
                 </div>
-                <Link to="/app/empleados/addEmpleados" className="btn btn-success col-2 m-0"><FontAwesomeIcon icon={faPlus} className="me-1" />Agregar</Link>
+                <Link to="/app/empleados/addEmpleados" className="btn-primary col-2 continuar">
+                    <FontAwesomeIcon icon={faPlus} />Agregar
+                </Link>
             </div>
-            <hr></hr>
             <div className="table-responsive mb-4">
                     <table className="table">
                         <thead>
@@ -77,8 +75,8 @@ const ListOfEmployees = () => {
                                     <td className="col--5">{ empleado.correo }</td>
                                     <td className="col--5">{ empleado.rol }</td>
                                     <td className="col--5 acciones">
-                                        <button className="btn btn-primary me-2"><FontAwesomeIcon className='editar' icon={faPenToSquare} /></button>
-                                        <button className="btn btn-danger"><FontAwesomeIcon className='borrar' icon={faTrash} /></button>
+                                        <button className="btn-primary me-2"><FontAwesomeIcon icon={faPenToSquare} /></button>
+                                        <button className="btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
                                     </td>
                                 </tr>
                             ))}
@@ -87,20 +85,20 @@ const ListOfEmployees = () => {
                     <nav>
                         <ul className="pagination">
                             <li className="page-item">
-                                <a href="#" className="page-link"
-                                    onClick={prePage}>Prev</a>
+                                <button className="page-link"
+                                    onClick={prePage}><FontAwesomeIcon icon={faChevronLeft} /></button>
                             </li>
                             {
                                 numbers.map((n, i) => (
                                     <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
-                                        <a href="#" className='page-link'
-                                        onClick={()=> changeCPage(n)}>{n}</a>
+                                        <button className='page-link'
+                                        onClick={()=> changeCPage(n)}>{n}</button>
                                     </li>
                                 ))
                             }
                             <li className="page-item">
-                                <a href="#" className="page-link"
-                                    onClick={nextPage}>Next</a>
+                                <button className="page-link"
+                                    onClick={nextPage}><FontAwesomeIcon icon={faChevronRight} /></button>
                             </li>
                         </ul>
                     </nav>
