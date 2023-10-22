@@ -112,8 +112,8 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 	    const response = await axios.post(`${URLApi}registro`, {
 	      formData
 	    });
-	    errorDesc = "SUCCESS: Registro exitoso!\nRedirigiendo...";
-	    toast.success(errorDesc,{position: toast.POSITION.TOP_CENTER, className:"alert alert-success"});
+	    errorDesc = "EXITO: Registro exitoso!\nRedirigiendo...";
+	    toast.success(errorDesc);
 	   	// redirigir
       	setTimeout(() => {
         	navigate('/');
@@ -134,7 +134,7 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 	    	  	default:
 		   	}
 		}
-	  	toast.error(errorDesc,{position: toast.POSITION.TOP_CENTER, className:"alert alert-danger"});
+	  	toast.error(errorDesc);
 	  	setloading(false);
 	  }
 	};
@@ -143,8 +143,8 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 		<div className="container col-5 position-static">
 	    <ToastContainer autoClose={2500}/>
 			<div className="card border-dark shadow m-3">
-				<div className="card-header">
-					<h2>Formulario | Review </h2>
+				<div className="card-header titulo-ventana">
+					<h2>Formulario | Revisión </h2>
 				</div>
 				<div className="card-body">
 					<h4 className="px-3">Empresa</h4>
@@ -163,11 +163,13 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 				 			</div>
 				 		))}
 				 	</div>
-				 	<div className="row px-4 justify-content-between">
-				 		<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary" disabled={loading}>atras</button>
-				 		<button onClick={sendDataDB} className="btn col-3 btn-primary" disabled={loading}>
-				 			{loading ? (<div className="spinner-border spinner-border-sm" role="status" />) : ("Submit")}
-				 		</button>
+				 	<div className='d-flex justify-content-end mt-3'>
+						<div className='align-items-right text-align-right float-right'>
+							<button onClick={() => navigation.previous()} className="btn btn-secondary me-2" disabled={loading}>Atrás</button>
+							<button onClick={sendDataDB} className="btn btn-primary" disabled={loading}>
+								{loading ? (<div className="spinner-border spinner-border-sm" role="status" />) : ("Enviar")}
+							</button>
+						</div>
 				 	</div>
 		        </div>
 		  	</div>

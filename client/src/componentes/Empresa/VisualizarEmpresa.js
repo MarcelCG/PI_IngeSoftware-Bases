@@ -56,8 +56,8 @@ function VisualizarEmpresa() {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card mb-3">
-            <div className="card-header" style={{ backgroundColor: '#4f709c', color: '#ffffff' }}>
-              <h5 className="text-center mb-0">Información de la empresa</h5>
+            <div className="card-header  titulo-ventana">
+              <h5 className="text-center mb-0">{datosEmpresa.nombre}</h5>
             </div>
             <div className="card-body">
               <p><strong>Nombre:</strong> {datosEmpresa.nombre}</p>

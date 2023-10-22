@@ -1,6 +1,4 @@
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 export const VerPolitica = (politica) => {
   const {
@@ -16,28 +14,22 @@ export const VerPolitica = (politica) => {
     periodo,
     titulo
   } = politica;
-  
-//  ---------------------------------------------------------------
-// │Richard, a usted le voy a dejar la parte del estilo a este .css│
-// │la profe me dijo que tenia que ser igual al del formulario de  │
-// │add-policy en cuanto a estilo entonces voy a dejarle esto      │
-//  ---------------------------------------------------------------
 
   return (
   <div className="container">
     <div>
       <div>
-        titulo:{titulo}<br/>
-        activo: {activo? "Si":"No"}<br/>
-        acumulativo: {acumulativo? "Si":"No"}<br/>
-        dias_a_dar: {dias_a_dar}<br/>
-        dias_a_incrementar: {dias_a_incrementar}<br/>
-        fecha_final: {ajustarFecha(fecha_final)}<br/>
-        fecha_inicio: {ajustarFecha(fecha_inicio)}<br/>
-        incrementativo: {incrementativo? "Si":"No"}<br/>
-        inicia_desde_contrato: {inicia_desde_contrato? "Si":"No"}<br/>
-        periodo: {periodo}<br/>
-        descripcion: {descripcion}<br/>
+        <strong>Titulo: </strong>{titulo}<br/>
+        <strong>Activo: </strong>{activo? "Si":"No"}<br/>
+        <strong>Acumulativo: </strong>{acumulativo? "Si":"No"}<br/>
+        <strong>Dias a dar: </strong>{dias_a_dar}<br/>
+        <strong>Dias a incrementar: </strong>{dias_a_incrementar}<br/>
+        <strong>Fecha final: </strong>{ajustarFecha(fecha_final)}<br/>
+        <strong>Fecha inicio: </strong>{ajustarFecha(fecha_inicio)}<br/>
+        <strong>Incrementativo: </strong>{incrementativo? "Si":"No"}<br/>
+        <strong>Inicia desde contrato: </strong>{inicia_desde_contrato? "Si":"No"}<br/>
+        <strong>Periodo: </strong>{periodo}<br/>
+        <strong>Descripcion: </strong>{descripcion}<br/>
         </div>
     </div>
   </div>

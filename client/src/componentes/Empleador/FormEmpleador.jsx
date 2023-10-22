@@ -11,7 +11,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		 	name:"empleadorName",
 			type:"text",
 			style:"col-4",
-			label:"Nombre",
+			label:"Nombre de Empleador:",
 			placeholder:"Nombre",
 			errorMessage: "Solo se permiten letras",
 			required: true,
@@ -23,7 +23,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorApe1",
 			type:"text",
 			style:"col-4",
-			label:"Primer apellido",
+			label:"Primer apellido:",
 			placeholder:"Primer apellido",
 			errorMessage: "Solo se permiten letras",
 			required: true,
@@ -34,7 +34,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorApe2",
 			type:"text",
 			style:"col-4",
-			label:"Segundo apellido",
+			label:"Segundo apellido:",
 			placeholder:"Segundo apellido",
 			errorMessage: "Solo se permiten letras",
 			required: true,
@@ -45,7 +45,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorCedu",
 			type:"text",
 			placeholder:"1-2345-6789",
-			label:"Cedula de identidad",
+			label:"Cedula de identidad:",
 			errorMessage: "Ejemplo: 1-2345-6789",
 			required: true,
 			patron: /^([1-9]-[0-9]{4}-[0-9]{4})$/
@@ -55,7 +55,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorCorreo1",
 			type:"text",
 			style:"col-6",
-			label:"Correo personal",
+			label:"Correo personal:",
 			placeholder:"correo@dominio.com",
 			errorMessage: "Ejemplo: correo@dominio.com",
 			required: true,
@@ -66,7 +66,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  name:"empleadorCorreo2",
 			type:"text",
 			style:"col-6",
-			label:"Opcional",
+			label:"Opcional:",
 			placeholder:"correo@dominio.com*",
 			errorMessage: "Ejemplo: correo@dominio.com",
 			required: false,
@@ -76,7 +76,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:7,
 		  name:"empleadorTel1",
 			type:"tel",
-			label:"Telefono personal",
+			label:"Telefono personal:",
 			style:"col-6",
 			placeholder:"8888-8888",
 			errorMessage:"Ejemplo: 1234-5678",
@@ -87,7 +87,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:8,
 		  name:"empleadorTel2",
 			type:"tel",
-			label:"Opcional",
+			label:"Opcional:",
 			style:"col-6",
 			placeholder:"8888-8888*",
 			errorMessage:"Ejemplo: 1234-5678",
@@ -98,7 +98,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 		  id:9,
 		  name:"empleadorPass",
 			type: inputType,
-			label:"Contraseña",
+			label:"Contraseña:",
 			placeholder:"*********",
 			errorMessage:"No cumple con los requisitos",
 			required: true,
@@ -116,7 +116,7 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 	return (
 		<div className="container col-5 position-static">
 			<div className="card border-dark shadow m-3">
-				<div className="card-header"><h1>Formulario | Empleador</h1></div>
+				<div className="card-header titulo-ventana"><h1>Formulario | Empleador</h1></div>
 					<div className="card-body">
 			      <form className="px-4 row py-3">
 			        {inputs.map((input) => (
@@ -137,9 +137,11 @@ export const FormEmpleador = ({ formData, setForm, errForm, setErrForm, navigati
 					  <div>Al menos 1 signo especial [ ! , @ , # , $ , % , & , _ , \ , - ]</div>
 					</small>
 	      	  </form>
-	      	  <div className="row px-4 justify-content-between">
-		      	<button onClick={() => navigation.previous()} className="btn col-3 btn-secondary">atras</button>
-		      	<button onClick={nextClick} className="btn col-3 btn-primary">siguiente</button>
+	      	  <div className='d-flex justify-content-end mt-3'>
+					<div className='align-items-right text-align-right float-right'>
+						<button onClick={() => navigation.previous()} className="btn btn-secondary me-2">Atras</button>
+						<button onClick={nextClick} className="btn btn-primary">Siguiente</button>
+					</div>
 		     </div>
 			  </div>
 			</div>
