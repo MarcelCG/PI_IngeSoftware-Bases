@@ -7,12 +7,12 @@ import { useAutent } from "../../contexto/ContextoAutenticacion";
 
 export const ActualizarTiempoLibre = () => {
 
-	const [cargando, setCargando] = useState(false);
+  const [cargando, setCargando] = useState(false);
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa; 
   const esEmpleador = empresa ? true : false;
   /*Si quieren ver el boton, modifiquen esto al dia de hoy*/
-  const esPrimeroDelMes = new Date().getDate() === 20;
+  const esPrimeroDelMes = true;/*new Date().getDate() === 20;*/
 
 	const cargarDatos = async() => {
 		setCargando(true);

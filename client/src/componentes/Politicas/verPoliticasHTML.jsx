@@ -3,8 +3,9 @@ import {ajustarFecha} from './verPolitica'
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus }
- from '@fortawesome/free-solid-svg-icons'
+from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
+import { ActualizarTiempoLibre } from '../Libres/ActualizarLibres'
 
 export const VerPoliticasHTML = (props) => {
 	const {
@@ -22,12 +23,8 @@ export const VerPoliticasHTML = (props) => {
 	return (
 	<div className="container">
 	  {cargando ? (
-<<<<<<< HEAD
 	    <div>
 	    <ActualizarTiempoLibre />
-=======
-	    <div className='row'>
->>>>>>> desarrollo
 	    <Modal{...props}/>
 	    <div ref={botonRef} 
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
@@ -51,11 +48,7 @@ export const VerPoliticasHTML = (props) => {
 	          {politicasAct.map((politica, index) => (
 	            <tr key={index}
 	              onClick={()=> abrirModalPolitica(politica)}>
-<<<<<<< HEAD
-	              <td><div className="btn">{politica.titulo}</div></td>
-=======
 	              <td><button className="btn">{politica.titulo}</button></td>
->>>>>>> desarrollo
 	              <td>{ajustarFecha(politica.fecha_inicio)}</td>
 	              <td>{politica.dias_a_dar}</td>
 	              {esEmpleador && <td>

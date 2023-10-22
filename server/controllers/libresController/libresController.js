@@ -1,6 +1,6 @@
 const Libres = require('../../models/libresModel/libresModel');
+const LibresServicio = require('../../servicios/libresServicios/libresServicios');
 
-// Obtener todos los registros de la tabla Libres
 async function getAllLibres(req, res) {
     try {
         const libres = await Libres.getAll();
@@ -72,19 +72,29 @@ async function createLibre(req, res) {
     }
 }
 
-// Actualizar Horas libres de todos los empleados segun la politica
-async function actualizarTodos(cedula_empresa) {
-    const error = -1;
+// Obtener registros de la tabla Libres por cédula de empleado
+async function obtenerPorEmpresa(req, res) {
     try {
-        const empleadosActualizados =
-            await Libres.actualizarTodos(cedula_empresa);
+        const { cedula_empresa } = req.params;
+        const libres = await Libres.obtenerPorEmpresa(cedula_empresa);
+        res.status(200).json(libres);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+// Actualizar Horas libres de todos los empleados segun la politica
+async function actualizarTodos(req, res) {
+    try {
+        const {cedula_empresa} = req.params;
+        const empleadosActualizados = LibresServicio.actualizarTodos(cedula_empresa);
         if (empleadosActualizados >= 0) {
-            return empleadosActualizados;
+           res.status(200).json(0);
         } else {
-            return error;
+            res.status(200).json(0);
         }
     } catch (error) {
-        return error;
+        res.status(200).json(0);
     }
 }
 
@@ -94,5 +104,6 @@ module.exports = {
     getLibresByPolitica,
     getLibresByEmpleadoAndPolitica,
     createLibre,
-    actualizarTodos
+    actualizarTodos,
+    obtenerPorEmpresa
 };
