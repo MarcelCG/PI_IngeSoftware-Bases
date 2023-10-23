@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import AddPolicyForm from "./AddPolicyForm";
 import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
-import "./AddPolicy.css"
 
 // URL para el manejo de politicas
 const politicas = URLApi + 'politicas';
@@ -18,8 +18,10 @@ function AddPolicy() {
   const empresa = usuarioAutenticado.cedula_empresa;
   console.log(empresa);
 
+  const navegar = useNavigate();
+
   // Configuración del formulario usando react-hook-form
-  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm();
+  const { register, handleSubmit, formState: { errors }, clearErrors, reset } = useForm();
 
   // Estado del checkbox de "Rige a partir del contrato"
   const [disableStartDate, setDisableStartDate] = useState(false);
@@ -78,6 +80,7 @@ function AddPolicy() {
         toast.error('Hubo un error inesperado al agregar la política, trate de nuevo');
         }
       });
+      reset();
   };
 
   // Esta función prepara los datos antes de enviarlos
@@ -102,29 +105,32 @@ function AddPolicy() {
   const handleCancel = () => {
     console.log("Formulario cancelado");
 
-    /*Aquí debería volver a la pantalla visualizar políticas*/
+    navegar('/app/politicas');
   };
   
 
   return (
-    <div className="formulario bg-white" >
-        <h1 className="titulo">Agregar Política</h1>
+    <div className="container col-6 position-static ventana" >
+        <div className='card border-dark shadow m-3'>
+          <div className='card-header titulo-ventana'>
+            <h3 className="titulo-ventana">Agregar Política</h3>
+          </div>
+          <AddPolicyForm
+            onSubmit={handleSubmit(onSubmit)}
+            handleCancel={handleCancel}
+            setDisableStartDate={setDisableStartDate}
+            disableStartDate={disableStartDate}
+            disableIncremental={disableIncremental}
+            setDisableIncremental={setDisableIncremental}
+            clearErrors={clearErrors}
+            errors={errors}
+            errorMessages={errorMessages}
+            register={register}
+            validationPatterns={validationPatterns}
+          />
 
-        <AddPolicyForm
-          onSubmit={handleSubmit(onSubmit)}
-          handleCancel={handleCancel}
-          setDisableStartDate={setDisableStartDate}
-          disableStartDate={disableStartDate}
-          disableIncremental={disableIncremental}
-          setDisableIncremental={setDisableIncremental}
-          clearErrors={clearErrors}
-          errors={errors}
-          errorMessages={errorMessages}
-          register={register}
-          validationPatterns={validationPatterns}
-        />
-
-        <ToastContainer />
+          <ToastContainer />
+        </div>
     </div>
   );
 }
