@@ -3,8 +3,8 @@ const router = express.Router();
 const LibModel = require('../../models/libresModel/libresModel');
 const PolModel = require('../../models/politicaModel/politicasModel');
 const EmpleModel = require('../../models/usuarioModel/Empleado/empleadoModel');
-const PoliticaServicio =
-  require('../politicaServicios/politicaServicios');
+const PoliticaServicios = require('../politicaServicios/politicaServicios');
+const EmpleadoServicios = require('../usuarioServicios/empleadoServicios/empleadoServicios');
 
 async function actualizarTodos(cedula_empresa) {
   try {
@@ -14,30 +14,71 @@ async function actualizarTodos(cedula_empresa) {
       PolModel.getByCedulaEmpresa(cedula_empresa),
     ]);
 
-    const politicasVigentes = Politicas.filter(pol => PoliticaServicio.vigente(pol));
-    const nuevosDias = calcularTiempos(politicasVigentes, Libres, Empleados);
-     console.log("1");
-    const magico = 0;//await  LibModel.actualizarTodos(nuevosDias, cedula_empresa);
-     console.log("4");
-    if (magico >= 0) {
-      return magico;
+    const politicasVigentes = Politicas.filter(pol => PoliticaServicios.vigente(pol));
+    
+    const Hoy = new Date();
+    const LibresSinActualizar = Libres.filter(lib => sinActualizar(lib, Hoy));
+
+    const nuevosDias = calcularTiempos(politicasVigentes, Libres, Empleados, Hoy);
+    const cantEmpleados = new Set(nuevosDias.map(lib => lib.cedula_empleado)).size;
+    verificarMaximo(nuevosDias);
+
+    await LibModel.actualizarTodos(nuevosDias, cedula_empresa);
+    if (cantEmpleados >= 0) {
+      return cantEmpleados;
     } else {
-      return 0;
+      return -1;
     }
   } catch (error) {
     console.error("Error al actualizar todos:", error);
-    return 0;
+    return -1;
   }
 }
 
-const Gauss = (n) => {
-  console.log("->>>", n);
-  return Number((n * (n + 1)) / 2).toFixed(2);
+function Gauss(n) {
+  if (n < 1) {
+    return 0;
+  }
+  return (n * (n + 1)) / 2;
 };
 
-function calcularTiempos(PoliticasVigentes, Libres, Empleados) {
+function verificarMaximo(libres) {
+  // Número más grande que permite DECIMAL(5,2) en SQL Server
+  const maximoDecimal = 999.99;
+  libres.forEach(lib => {
+    if (lib.dias_libres_disponibles > maximoDecimal) {
+      lib.dias_libres_disponibles = maximoDecimal;
+    }
+  });
+};
+
+function FechaMinMax(arregloFechas, obtenerMax) {
+  if (obtenerMax === true) {
+    return new Date(Math.max.apply(null, arregloFechas));
+  } else {
+    return new Date(Math.min.apply(null, arregloFechas));
+  }
+};
+
+function sinActualizar(Libre, Hoy) {
+  if (Libre.ultima_actualizacion !== null) {
+    const ultimaAct = new Date(Libre.ultima_actualizacion);
+    const mesUltimaAct = ultimaAct.getMonth();
+    const anhoUltimaAct = ultimaAct.getFullYear();
+    const mes = Hoy.getMonth();
+    const anio = Hoy.getFullYear();
+    if (mesUltimaAct === mes && anhoUltimaAct === anio) {
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+  return true;
+}
+
+function calcularTiempos(PoliticasVigentes, LibresSinActualizar, Empleados, hoy) {
   const nuevosDias = [];
-  const hoy = new Date();
   const haceUnMes = new Date(hoy);
   haceUnMes.setMonth(hoy.getMonth() - 1);
   const milisegDia = 86400000;
@@ -45,55 +86,43 @@ function calcularTiempos(PoliticasVigentes, Libres, Empleados) {
   PoliticasVigentes.forEach(pol => {
     pol.fecha_final = new Date(pol.fecha_final);
     pol.fecha_inicio = new Date(pol.fecha_inicio);
-    Libres.filter(lib =>
-    lib.titulo_politica === pol.titulo).forEach(lib => {
-        
-      const empleado =
-        Empleados.find(E => E.cedula === lib.cedula_empleado);
-      const fechaContratacion = new Date(empleado.fecha_contratacion);
+    LibresSinActualizar.filter(lib => lib.titulo_politica === pol.titulo).forEach(lib => {
+      const fechaContratacion = EmpleadoServicios.obtenerFechaContrato(Empleados,lib.cedula_empleado);
 
-      const minFecha = new Date(
-        Math.max(pol.fecha_inicio, fechaContratacion));
-      const maxFecha = new Date(Math.min(pol.fecha_final, hoy));
+      const maxFecha = FechaMinMax([pol.fecha_final, hoy], false);
+      const inicioVigencia = FechaMinMax([pol.fecha_inicio, fechaContratacion], true);
+      const ultimaActua = (lib.ultima_actualizacion === null) ? inicioVigencia : new Date(lib.ultima_actualizacion);
 
-      const periodosMes = ((maxFecha - haceUnMes) / milisegDia)/pol.periodo;
-       console.log("Izq(",minFecha,")");
-       console.log("Der(",maxFecha,")");
-       console.log("P(",periodosMes,")");
-      const periodosTotales = lib.periodos_recorridos + periodosMes;
+      const periodosHastaUltima = (lib.ultima_actualizacion === null) ?
+        (((ultimaActua - inicioVigencia) / milisegDia) / pol.periodo).toFixed(2):0;
+      const periodosTotales = (((maxFecha - inicioVigencia) / milisegDia) / pol.periodo).toFixed(2);
+      const periodosDesdeUltima = periodosTotales - periodosHastaUltima;
 
       let diasNuevos = (pol.acumulativo === true) ?
-        periodosMes * pol.dias_a_dar + lib.dias_libres_disponibles :
-        periodosMes * pol.dias_a_dar;
+        (periodosDesdeUltima * pol.dias_a_dar + lib.dias_libres_disponibles) :
+        (periodosDesdeUltima >= 1) ? // si al menos ha pasado un Periodo
+        pol.dias_a_dar : (periodosDesdeUltima * pol.dias_a_dar);
 
       if (pol.incrementativo === true) {
+        const incrementoTotal = Gauss(Math.round(periodosTotales));
+        const incrementoDesdeUltima = Gauss(Math.round(periodosHastaUltima));
         diasNuevos += pol.dias_a_incrementar *
-        (Gauss(periodosTotales) - Gauss(lib.periodos_recorridos));
-
-        // console.log("Gauss1(",periodosTotales,")");
-        // console.log("Gauss2(",lib.periodos_recorridos,")");
-        // console.log("= ", diasNuevos);
+          (incrementoTotal - (lib.ultima_actualizacion === null ? 0 : incrementoDesdeUltima));
       }
 
       const libre = {
         cedula_empleado: lib.cedula_empleado,
         titulo_politica: lib.titulo_politica,
-        dias_libres_disponibles: Number(diasNuevos.toFixed(2)),
-        periodos_recorridos: Number(periodosTotales.toFixed(2))
+        dias_libres_disponibles: Number(diasNuevos).toFixed(2),
+        ultima_actualizacion: hoy.toISOString().slice(0, 10)
       };
       console.log(libre);
-
       nuevosDias.push(libre);
     });
   });
-
   return nuevosDias;
 }
-
 
 module.exports = {
   actualizarTodos
 };
-
-
-

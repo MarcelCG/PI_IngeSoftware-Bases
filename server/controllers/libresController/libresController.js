@@ -87,14 +87,15 @@ async function obtenerPorEmpresa(req, res) {
 async function actualizarTodos(req, res) {
     try {
         const {cedula_empresa} = req.params;
-        const empleadosActualizados = LibresServicio.actualizarTodos(cedula_empresa);
+        const empleadosActualizados = await LibresServicio.actualizarTodos(cedula_empresa);
+        console.log()
         if (empleadosActualizados >= 0) {
-           res.status(200).json(0);
+           res.status(200).json(empleadosActualizados);
         } else {
-            res.status(200).json(0);
+            res.status(200).json(empleadosActualizados);
         }
     } catch (error) {
-        res.status(200).json(0);
+        res.status(500).json({ error: "Servidor caido" });
     }
 }
 

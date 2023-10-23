@@ -29,3 +29,8 @@ jobs:
       run: |
         cd client
         npm test
+
+    - name: Ejecutar pruebas Server
+      run: |
+        cd server
+        npm test

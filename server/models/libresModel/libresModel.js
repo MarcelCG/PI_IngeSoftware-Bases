@@ -95,9 +95,8 @@ async function actualizarTodos(nuevosLibres, cedula_empresa) {
       '${cedula_empresa}',
       `+Lib.dias_libres_disponibles+`,
       `+0+`,
-      `+Lib.periodos_recorridos+`)`
+      '${Lib.ultima_actualizacion}')`
     );
-
    const query = `
      INSERT INTO Libres (
          cedula_empleado,
@@ -105,7 +104,7 @@ async function actualizarTodos(nuevosLibres, cedula_empresa) {
          cedula_empresa,
          dias_libres_disponibles,
          dias_libres_utilizados,
-         periodos_recorridos)
+         ultima_actualizacion)
      VALUES
          ${valores.join(', ')}
    `;
@@ -140,3 +139,41 @@ module.exports = {
     obtenerPorEmpresa,
     actualizarTodos
 };
+/*
+
+Servidor en ejecución en el puerto 4223
+totales:  9.97  recorridos:  3
+49.68545000000001
+2023-10-22
+[
+  {
+    cedula_empleado: '4-0256-0399',
+    titulo_politica: 'Incremental',
+    dias_libres_disponibles: 49.69,
+    ultima_actualizacion: '2023-10-22'
+  }
+]
+[
+  '\n' +
+    "          '4-0256-0399',\n" +
+    "          'Incremental',\n" +
+    "          '1-234-567890',\n" +
+    '          49.69,\n' +
+    '          0,\n' +
+    "          '2020-10-10'\n" +
+    '        '
+]
+[
+  '(\n' +
+    "      '4-0256-0399',\n" +
+    "      'Incremental',\n" +
+    "      '1-234-567890',\n" +
+    '      49.69,\n' +
+    '      0,\n' +
+    '      undefined)'
+]
+
+
+
+
+*/

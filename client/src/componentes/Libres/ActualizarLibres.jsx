@@ -1,8 +1,9 @@
 import axios from 'axios';
+import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { URLApi } from '../Compartido/Constantes';
-import React, {useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { ActualizarLibresHTML } from './ActualizarLibresHTML';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 
 export const ActualizarTiempoLibre = () => {
@@ -11,7 +12,6 @@ export const ActualizarTiempoLibre = () => {
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa; 
   const esEmpleador = empresa ? true : false;
-  /*Si quieren ver el boton, modifiquen esto al dia de hoy*/
   const esPrimeroDelMes = true;/*new Date().getDate() === 20;*/
 
 	const cargarDatos = async() => {
@@ -22,9 +22,11 @@ export const ActualizarTiempoLibre = () => {
 	    (`${URLApi}libres/actualizarTodos/${empresa}`,);
 	    if(respuesta.data >= 0){
 	   		toast.success(
-	   			"Se han actualizado: " + respuesta.data + " empleados"
-	   			,{position: toast.POSITION.TOP_CENTER,
-	   			className:"alert alert-success"}
+   		   	<span>
+   		      Se ha actualizado: <strong>{respuesta.data}</strong>
+   		      {respuesta.data === 1 ? " empleado" : " empleados"}
+   		   	</span>,{position: toast.POSITION.TOP_CENTER,
+   		    className: "alert alert-success"}
 	   		);
 	   	} else {
 	   		toast.error(
@@ -42,16 +44,16 @@ export const ActualizarTiempoLibre = () => {
 	  }
 	};
 
+	const props = {
+  	esEmpleador,
+		esPrimeroDelMes,
+		cargarDatos,
+		cargando
+	};
+
 	return (
 		<>
-			{(esEmpleador && esPrimeroDelMes) && <div>
-				<ToastContainer autoClose={2500}/>
-				<button className="btn btn-primary btn-lg"
-					onClick={cargarDatos} disabled={cargando}>
-					{cargando ? ("Actualizando..."):("Actualizar libres")}
-				</button >
-			</div>}
+		<ActualizarLibresHTML {...props}/>
 		</>
 	);
 };
-
