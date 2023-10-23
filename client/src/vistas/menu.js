@@ -32,6 +32,7 @@ export function MenuEmpleador() {
     { to: '/app/empleados', label: 'Empleados' },
     { to: '/app/politicas', label: 'Políticas' },
     { to: '/app/empresa', label: 'Empresa' },
+    { to: '/app/solicitudes', label: 'Solicitudes'}
   ];
 
   return (
