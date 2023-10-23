@@ -35,6 +35,9 @@ function App() {
       case '/app/perfil':
         titulo = 'Información del Usuario';
       break;
+      case '/app/solicitudes':
+        titulo = 'Lista de Solicitudes';
+      break;
     default:
       titulo = '';
       break;

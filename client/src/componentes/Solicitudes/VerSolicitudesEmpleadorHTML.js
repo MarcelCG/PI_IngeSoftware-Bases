@@ -29,9 +29,6 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
 
 	return (
 		<div className="col-12">
-            <div className="row mb-3 text-center titulo-pagina">
-                    <h3>Lista de Solicitudes</h3>
-            </div>
             <div className="row float-right">
             </div>
             <hr></hr>
@@ -60,7 +57,7 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
 											{ solicitud.estado }</span>
 									</td>
                                     <td className="col--5 acciones text-center">
-										<button className='btn btn-info'>Gestionar</button>
+										<button className='btn btn-primary'>Gestionar</button>
                                     </td>
                                 </tr>
                             ))}
