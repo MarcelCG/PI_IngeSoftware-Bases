@@ -4,3 +4,7 @@ function obtenerFechaContrato(Empleados, cedula){
 	const empleado = Empleados.find(Emple => Emple.cedula === cedula);
     return fechaContratacion = new Date(empleado.fecha_contratacion);
 }
+
+module.exports = {
+  obtenerFechaContrato
+};

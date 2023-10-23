@@ -15,7 +15,7 @@ async function actualizarTodos(cedula_empresa) {
     ]);
 
     const politicasVigentes = Politicas.filter(pol => PoliticaServicios.vigente(pol));
-    
+
     const Hoy = new Date();
     const LibresSinActualizar = Libres.filter(lib => sinActualizar(lib, Hoy));
 
@@ -93,11 +93,25 @@ function calcularTiempos(PoliticasVigentes, LibresSinActualizar, Empleados, hoy)
       const inicioVigencia = FechaMinMax([pol.fecha_inicio, fechaContratacion], true);
       const ultimaActua = (lib.ultima_actualizacion === null) ? inicioVigencia : new Date(lib.ultima_actualizacion);
 
-      const periodosHastaUltima = (lib.ultima_actualizacion === null) ?
-        (((ultimaActua - inicioVigencia) / milisegDia) / pol.periodo).toFixed(2):0;
+      if (lib.ultima_actualizacion === null) {
+        console.log("es nulo");
+      }
+
+      const periodosHastaUltima = (lib.ultima_actualizacion !== null) ?
+              (((ultimaActua - inicioVigencia) / milisegDia) / pol.periodo).toFixed(2) : 0;
       const periodosTotales = (((maxFecha - inicioVigencia) / milisegDia) / pol.periodo).toFixed(2);
       const periodosDesdeUltima = periodosTotales - periodosHastaUltima;
+      if (pol.titulo == 'Anual') {
 
+        console.log("maxFecha[",maxFecha,"]");
+        console.log("inicioVigencia[",inicioVigencia,"]");
+        console.log("ultimaActua[",ultimaActua,"]");
+
+        console.log("Hasta[",periodosHastaUltima,"]");
+        console.log("Total[",periodosTotales,"]");
+        console.log("Desde[",periodosDesdeUltima,"]");
+
+      }
       let diasNuevos = (pol.acumulativo === true) ?
         (periodosDesdeUltima * pol.dias_a_dar + lib.dias_libres_disponibles) :
         (periodosDesdeUltima >= 1) ? // si al menos ha pasado un Periodo
@@ -116,7 +130,9 @@ function calcularTiempos(PoliticasVigentes, LibresSinActualizar, Empleados, hoy)
         dias_libres_disponibles: Number(diasNuevos).toFixed(2),
         ultima_actualizacion: hoy.toISOString().slice(0, 10)
       };
-      console.log(libre);
+      if(lib.titulo_politica == 'Anual'){
+        console.log(libre)
+      }
       nuevosDias.push(libre);
     });
   });
