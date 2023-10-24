@@ -25,8 +25,7 @@ export const ActualizarTiempoLibre = () => {
    		   	<span>
    		      Se ha actualizado: <strong>{respuesta.data}</strong>
    		      {respuesta.data === 1 ? " empleado" : " empleados"}
-   		   	</span>,{position: toast.POSITION.TOP_CENTER,
-   		    className: "alert alert-success"}
+   		   	</span>,{position: toast.POSITION.TOP_CENTER}
 	   		);
 	   	} else {
 	   		toast.error(
