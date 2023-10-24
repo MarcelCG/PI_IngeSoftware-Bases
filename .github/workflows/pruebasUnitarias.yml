@@ -41,7 +41,7 @@ jobs:
     - name: Preparar Node (BACK-END)
       uses: actions/setup-node@v2
       with:
-        node-version: 14
+        node-version: 19
 
     - name: Instalar dependencias (BACK-END)
       run: |
