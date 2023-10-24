@@ -19,9 +19,11 @@ async function actualizarTodos(cedula_empresa) {
     const Hoy = new Date();
     const LibresSinActualizar = Libres.filter(lib => sinActualizar(lib, Hoy));
 
-    const nuevosDias = calcularTiempos(politicasVigentes, Libres, Empleados, Hoy);
+    const nuevosDias = calcularTiempos(politicasVigentes, LibresSinActualizar, Empleados, Hoy);
+    console.log(nuevosDias);
     const cantEmpleados = new Set(nuevosDias.map(lib => lib.cedula_empleado)).size;
     verificarMaximo(nuevosDias);
+
 
     await LibModel.actualizarTodos(nuevosDias, cedula_empresa);
     if (cantEmpleados >= 0) {
@@ -86,7 +88,6 @@ function calcularTiempos(PoliticasVigentes, LibresSinActualizar, Empleados, hoy)
     pol.fecha_final = new Date(pol.fecha_final);
     pol.fecha_inicio = new Date(pol.fecha_inicio);
     LibresSinActualizar.filter(lib => lib.titulo_politica === pol.titulo).forEach(lib => {
-      //console.log("antes:\n", lib);
       const fechaContratacion = EmpleadoServicios.obtenerFechaContrato(Empleados,lib.cedula_empleado);
       const maxFecha = FechaMinMax([pol.fecha_final, hoy], false);
       const inicioVigencia = FechaMinMax([pol.fecha_inicio, fechaContratacion], true);
