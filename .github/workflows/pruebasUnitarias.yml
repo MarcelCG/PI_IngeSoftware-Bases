@@ -31,28 +31,24 @@ jobs:
         cd client
         npm test
 
-    - name: Ejecutar pruebas Server
-      run: |
-        cd server
-        npm test
-
   server-tests:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Revisar código
+    - name: CHECK BACK-END
       uses: actions/checkout@v2
 
-    - name: Preparar Node (Server)
+    - name: Preparar Node (BACK-END)
       uses: actions/setup-node@v2
-      with: node-version: 14
+      with:
+        node-version: 14
 
-    - name: Instalar dependencias (Server)
+    - name: Instalar dependencias (BACK-END)
       run: |
         cd server
         npm install --legacy-peer-deps
 
-    - name: Ejecutar pruebas del server
+    - name: Ejecutar pruebas BACK-END
       run: |
         cd server
         npm test
