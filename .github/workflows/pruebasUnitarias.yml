@@ -34,3 +34,24 @@ jobs:
       run: |
         cd server
         npm test
+
+  server-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Revisar código
+      uses: actions/checkout@v2
+
+    - name: Preparar Node (Cliente)
+      uses: actions/setup-node@v2
+      with: node-version: 14
+
+    - name: Instalar dependencias (Cliente)
+      run: |
+        cd server
+        npm install --legacy-peer-deps
+
+    - name: Ejecutar pruebas del server
+      run: |
+        cd server
+        npm test
