@@ -1,3 +1,4 @@
+import {Modal} from '../Utiles/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React from "react";
@@ -9,7 +10,10 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
 		cambiarPagina,
 		siguientePagina,
 		paginaActual,
-		numeros
+		numeros,
+        abrirModalSolicitud,
+        botonRef,
+        modalID
 	} = props;
 
 	function getClassForEstado(estado) {
@@ -28,6 +32,11 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
 	}	  
 
 	return (
+        <div>
+        <Modal{...props}/>
+	    <div ref={botonRef} 
+	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
+	      <style>{`.table th { width: 25%;}`}</style>
 		<div className="col-12">
             <div className="row float-right">
             </div>
@@ -44,8 +53,9 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            { solicitudesPagina.map ( (solicitud, i) => (
-                                <tr key={i}>
+                            { solicitudesPagina.map ( (solicitud, index) => (
+                                <tr  key={index}
+                                onClick={()=> abrirModalSolicitud(solicitud)}>
                                     <td className="col--5 text-center">{ solicitud.cedula_empleado }</td>
                                     <td className="col--5 text-center">{ solicitud.titulo_politica }</td>
                                     <td className="col--5 text-center">{ solicitud.fecha_inicio === solicitud.fecha_final
@@ -85,5 +95,6 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
                     </nav>
             </div>
         </div>
+    </div>
 	);
 }
