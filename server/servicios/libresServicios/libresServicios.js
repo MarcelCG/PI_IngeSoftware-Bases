@@ -30,7 +30,7 @@ async function actualizarTodos(cedula_empresa) {
       return -1;
     }
   } catch (error) {
-    console.error("Error al actualizar todos:", error);
+    console.error("Error al Actualizar", error);
     return -1;
   }
 }
@@ -82,36 +82,20 @@ function calcularTiempos(PoliticasVigentes, LibresSinActualizar, Empleados, hoy)
   const haceUnMes = new Date(hoy);
   haceUnMes.setMonth(hoy.getMonth() - 1);
   const milisegDia = 86400000;
-
   PoliticasVigentes.forEach(pol => {
     pol.fecha_final = new Date(pol.fecha_final);
     pol.fecha_inicio = new Date(pol.fecha_inicio);
     LibresSinActualizar.filter(lib => lib.titulo_politica === pol.titulo).forEach(lib => {
+      //console.log("antes:\n", lib);
       const fechaContratacion = EmpleadoServicios.obtenerFechaContrato(Empleados,lib.cedula_empleado);
-
       const maxFecha = FechaMinMax([pol.fecha_final, hoy], false);
       const inicioVigencia = FechaMinMax([pol.fecha_inicio, fechaContratacion], true);
       const ultimaActua = (lib.ultima_actualizacion === null) ? inicioVigencia : new Date(lib.ultima_actualizacion);
-
-      if (lib.ultima_actualizacion === null) {
-        console.log("es nulo");
-      }
 
       const periodosHastaUltima = (lib.ultima_actualizacion !== null) ?
               (((ultimaActua - inicioVigencia) / milisegDia) / pol.periodo).toFixed(2) : 0;
       const periodosTotales = (((maxFecha - inicioVigencia) / milisegDia) / pol.periodo).toFixed(2);
       const periodosDesdeUltima = periodosTotales - periodosHastaUltima;
-      if (pol.titulo == 'Anual') {
-
-        console.log("maxFecha[",maxFecha,"]");
-        console.log("inicioVigencia[",inicioVigencia,"]");
-        console.log("ultimaActua[",ultimaActua,"]");
-
-        console.log("Hasta[",periodosHastaUltima,"]");
-        console.log("Total[",periodosTotales,"]");
-        console.log("Desde[",periodosDesdeUltima,"]");
-
-      }
       let diasNuevos = (pol.acumulativo === true) ?
         (periodosDesdeUltima * pol.dias_a_dar + lib.dias_libres_disponibles) :
         (periodosDesdeUltima >= 1) ? // si al menos ha pasado un Periodo
@@ -130,9 +114,6 @@ function calcularTiempos(PoliticasVigentes, LibresSinActualizar, Empleados, hoy)
         dias_libres_disponibles: Number(diasNuevos).toFixed(2),
         ultima_actualizacion: hoy.toISOString().slice(0, 10)
       };
-      if(lib.titulo_politica == 'Anual'){
-        console.log(libre)
-      }
       nuevosDias.push(libre);
     });
   });
@@ -140,5 +121,6 @@ function calcularTiempos(PoliticasVigentes, LibresSinActualizar, Empleados, hoy)
 }
 
 module.exports = {
-  actualizarTodos
+  actualizarTodos,
+  calcularTiempos
 };
