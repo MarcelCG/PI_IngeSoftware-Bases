@@ -3,8 +3,9 @@ import {ajustarFecha} from './verPolitica'
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus }
- from '@fortawesome/free-solid-svg-icons'
+from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
+import { ActualizarTiempoLibre } from '../Libres/ActualizarLibres'
 
 export const VerPoliticasHTML = (props) => {
 	const {
@@ -22,7 +23,8 @@ export const VerPoliticasHTML = (props) => {
 	return (
 	<div className="container">
 	  {cargando ? (
-	    <div className='row'>
+	    <div>
+	    <ActualizarTiempoLibre />
 	    <Modal{...props}/>
 	    <div ref={botonRef} 
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
