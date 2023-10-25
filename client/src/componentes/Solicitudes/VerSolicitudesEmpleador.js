@@ -27,7 +27,7 @@ const SolicitudesEmpleador = () => {
                     console.error('Error al obtener las solicitudes:', error);
                 }
             };
-        obtenerSolicitudesDeEmpresa();
+            obtenerSolicitudesDeEmpresa();
         }
     }, [empresa]);
     const [solicitudes, setSolicitudes] = useState([]);
@@ -48,29 +48,6 @@ const SolicitudesEmpleador = () => {
          footerPersonalizado: <FooterModalSolicitudEmpleador {...solicitud}/>})
         botonRef.current.click();
     };
-
-    // variables de paginacion
-    const [paginaActual, setPaginaActual] = useState(1);
-    const solicitudesPorPagina = 5;
-    const ultimoIndice = paginaActual * solicitudesPorPagina;
-    const primerIndice = ultimoIndice - solicitudesPorPagina;
-    const solicitudesPagina = solicitudes.slice(primerIndice, ultimoIndice);
-    const numPag = Math.ceil(solicitudes.length/solicitudesPorPagina);
-    const numeros = [...Array(numPag +1).keys()].slice(1)
-  
-    function paginaAtras() {
-        if(paginaActual !== 1) {
-            setPaginaActual(paginaActual-1)
-        }
-    }
-    function cambiarPagina(id) {
-        setPaginaActual(id)
-    }
-    function siguientePagina() {
-        if(paginaActual !== numPag) {
-            setPaginaActual(paginaActual+1)
-        }
-    }
 
     solicitudes.forEach(solicitud => {
         const inicio = solicitud["inicio_fechas_solicitadas"];
@@ -134,7 +111,6 @@ const SolicitudesEmpleador = () => {
 			}
 		}
         if (fechaFinal.getDay() == 6) {
-            console.log(fechaFinal)
             fechaFinal.setDate(fechaFinal.getDate() + 1);
         }
 		return fechaFinal;
@@ -151,17 +127,28 @@ const SolicitudesEmpleador = () => {
         return fechaNueva;
     }
 
+    function getClassForEstado(estado) {
+		switch (estado) {
+		  case 'Aprobada':
+			return 'bg-success';
+		  case 'Pendiente':
+			return 'bg-warning text-dark';
+		  case 'Rechazada':
+			return 'bg-danger';
+		  case 'Cancelada':
+			  return 'bg-dark';
+		  default:
+			return 'bg-primary';
+		}
+    }
+
     let props = {
         ...solicitudValores,
-        solicitudesPagina,
-        paginaAtras,
-        cambiarPagina,
-        siguientePagina,
-        paginaActual,
-        numeros,
+        solicitudes,
         abrirModalSolicitud,
         modalID,
-        botonRef
+        botonRef,
+        getClassForEstado
     };
   
     return ( <VerSolicitudesEmpleadorHTML {...props}/> );

@@ -1,35 +1,44 @@
 import {Modal} from '../Utiles/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import React from "react";
+import React, {useState, useEffect} from "react";
+import FiltrarSolicitudesEmpleador from './filtrarSolicitudesEmpleador.js'
 
 export const VerSolicitudesEmpleadorHTML = (props) => {
 	const {
-		solicitudesPagina,
-		paginaAtras,
-		cambiarPagina,
-		siguientePagina,
-		paginaActual,
-		numeros,
+		solicitudes,
         abrirModalSolicitud,
         botonRef,
-        modalID
+        modalID,
+        filtroEstado,
+        setFiltroEstado,
+        handleFiltroEstado,
+        getClassForEstado
 	} = props;
 
-	function getClassForEstado(estado) {
-		switch (estado) {
-		  case 'Aprobada':
-			return 'bg-success';
-		  case 'Pendiente':
-			return 'bg-warning text-dark';
-		  case 'Rechazada':
-			return 'bg-danger';
-		  case 'Cancelada':
-			  return 'bg-dark';
-		  default:
-			return 'bg-primary';
-		}
-	}	  
+    const [solicitudesFiltradas, filtrarSolicitudes] = useState([])
+
+    const [paginaActual, setPaginaActual] = useState(1);
+    const solicitudesPorPagina = 5;
+    const ultimoIndice = paginaActual * solicitudesPorPagina;
+    const primerIndice = ultimoIndice - solicitudesPorPagina;
+    const solicitudesPagina = solicitudesFiltradas.slice(primerIndice, ultimoIndice);
+    const numPag = Math.ceil(solicitudesFiltradas.length/solicitudesPorPagina);
+    const numeros = [...Array(numPag +1).keys()].slice(1)
+  
+    function paginaAtras() {
+        if(paginaActual !== 1) {
+            setPaginaActual(paginaActual-1)
+        }
+    }
+    function cambiarPagina(id) {
+        setPaginaActual(id)
+    }
+    function siguientePagina() {
+        if(paginaActual !== numPag) {
+            setPaginaActual(paginaActual+1)
+        }
+    }
 
 	return (
         <div>
@@ -38,7 +47,9 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
 		<div className="col-12">
-            <div className="row float-right">
+            <div className="row mb-4 col-12 d-flex p-1 align-items-end">
+                <div className="col-10"></div>
+                <FiltrarSolicitudesEmpleador solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
             </div>
             <hr></hr>
             <div className="table-responsive mb-4">
