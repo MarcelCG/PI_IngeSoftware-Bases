@@ -56,8 +56,8 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
                             { solicitudesPagina.map ( (solicitud, index) => (
                                 <tr  key={index}
                                 onClick={()=> abrirModalSolicitud(solicitud)}>
-                                    <td className="col--5 text-center">{ solicitud.cedula_empleado }</td>
-                                    <td className="col--5 text-center">{ solicitud.titulo_politica }</td>
+                                    <td className="col--5 text-center">{ solicitud.nombre_completo }</td>
+                                    <td className="col--5 text-center">{ solicitud.politica }</td>
                                     <td className="col--5 text-center">{ solicitud.fecha_inicio === solicitud.fecha_final
 																? solicitud.fecha_inicio
 																: `${solicitud.fecha_inicio} - ${solicitud.fecha_final}`}</td>

@@ -94,7 +94,16 @@ async function getSolicitudByCedula(cedula_empleado) {
       const result = await pool
         .request()
         .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-        .query('SELECT * FROM Solicitud WHERE cedula_empresa = @cedula_empresa');
+        .query(`SELECT CONCAT(u.nombre, ' ', u.primer_apellido,
+        ' ', u.segundo_apellido) AS 'nombre_completo',
+        s.cedula_empleado AS 'cedula', s.titulo_politica AS 'politica',
+        s.fecha_solicitud, s.inicio_fechas_solicitadas,
+        s.dias_libres_solicitados, s.hora_de_inicio, s.horas_solicitadas,
+        s.estado
+        FROM Empleado e, Solicitud s, Usuario u
+        WHERE s.cedula_empresa=@cedula_empresa
+        AND e.cedula_empleado=u.cedula
+        AND s.cedula_empleado=e.cedula_empleado`);
       return result.recordset;
     } catch (error) {
       throw error;
