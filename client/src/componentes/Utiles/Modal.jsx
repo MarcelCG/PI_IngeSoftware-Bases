@@ -15,7 +15,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
    ---------------------------------------------------------------------------------------------------------------------*/
 
 export const Modal = (props) => {
-  const {modalID, titulo, componente, boton, funcion} = props;
+  const {modalID, titulo, componente, boton, funcion, footerPersonalizado} = props;
   return (
     <div>
       <div className="modal fade" id={modalID} tabIndex="-1" aria-labelledby="" aria-hidden="true">
@@ -33,9 +33,16 @@ export const Modal = (props) => {
                {componente}
             </div>}
             <div className="modal-footer">
-              <button type="button" className="btn btn-primary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-              {boton&&
-              <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>boton</button>}
+              {footerPersonalizado ? (
+                footerPersonalizado
+              ) : (
+                <div>
+                  <button type="button" className="btn btn-primary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                  {boton && (
+                  <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>{boton}</button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
