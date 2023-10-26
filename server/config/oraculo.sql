@@ -152,3 +152,13 @@ BEGIN
     CLOSE libsInsertados;
     DEALLOCATE libsInsertados;
 END;
+GO:
+CREATE PROC obtenerDatosEmpleador @cedula_empleador varchar(255)
+AS
+BEGIN
+	SELECT u.cedula,u.nombre, u.primer_apellido, 
+	u.segundo_apellido,u.correo1, u. correo2,
+	u.telefono1, u.telefono2, em.nombre AS 'nombre_empresa'
+	FROM Usuario u
+	INNER JOIN Empresa em ON em.cedula_empleador = u.cedula AND u.cedula = @cedula_empleador
+END
