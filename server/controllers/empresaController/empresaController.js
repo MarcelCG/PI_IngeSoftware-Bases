@@ -63,12 +63,14 @@ async function getEmpresaByCedula(req, res){
 
 async function getEmpresaByCedulaEmpleador(req, res){
   const {cedula_empleador} = req.params;
-
+    console.log('Se llega al controlador');
     try {
       const success = await Empresa.getEmpresaByCedulaEmpleador(cedula_empleador);
+      console.log('Se pasa del modelo')
       if(success != null){
         res.status(200).json(success);
       } else {
+        res.status(404).json({error: "Empresa no encontrada"});
       }
     } catch (error) {
       res.status(500).json({error: error.message});

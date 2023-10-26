@@ -12,6 +12,7 @@ const obtenerDatosUsuario = async (username, autenticarUsuario) => {
     try {
       const response = await axios.get(`${URLApi}usuario/byCedula/${username}`);
       const usuario = response.data;
+      console.log('datos usuario');
   
       const empresa = await obtenerDatosEmpresa(username);
   
@@ -29,6 +30,7 @@ const obtenerDatosUsuario = async (username, autenticarUsuario) => {
   const obtenerDatosEmpresa = async (username) => {
     try {
       const response = await axios.get(`${URLApi}empresa/byCedulaEmpleador/${username}`);
+      console.log('datos empleador');
       
       if (response.status === 200) {
         const empresa = response.data;

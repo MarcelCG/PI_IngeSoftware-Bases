@@ -43,7 +43,7 @@ export function MenuEmpleado() {
 
   const enlaces = [
     { to: '/app', label: 'Inicio' },
-    { to: '/app/politicas', label: 'Políticas' }
+    { to: '/app/politicas', label: 'Políticas' },
     { to: '/app/solicitudes', label: 'Solicitudes'}
   ];
 
