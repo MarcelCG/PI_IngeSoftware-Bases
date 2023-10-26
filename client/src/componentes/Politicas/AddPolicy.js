@@ -7,6 +7,9 @@ import { useAutent } from "../../contexto/ContextoAutenticacion";
 import AddPolicyForm from "./AddPolicyForm";
 import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
 
 // URL para el manejo de politicas
 const politicas = URLApi + 'politicas';
@@ -104,16 +107,12 @@ function AddPolicy() {
   // Función para cancelar el formulario
   const handleCancel = () => {
     console.log("Formulario cancelado");
-
-    navegar('/app/politicas');
   };
   
-
   return (
-    <div className="container col-6 position-static ventana" >
-        <div className='card border-dark shadow m-3'>
+        <>
           <div className='card-header titulo-ventana'>
-            <h3 className="titulo-ventana">Agregar Política</h3>
+            <h3 className='mt-2'>Agregar Política</h3>
           </div>
           <AddPolicyForm
             onSubmit={handleSubmit(onSubmit)}
@@ -130,9 +129,24 @@ function AddPolicy() {
           />
 
           <ToastContainer />
-        </div>
-    </div>
+        </>
   );
 }
+
+export const ModalAgregarPol = ({botonRef, setPolValores }) => {
+  const abrir = () => {
+    setPolValores({
+      componente: <AddPolicy/ >,
+      modalID:"modalPol",
+      tamanio:"modal-lg"});
+    botonRef.current.click();
+  };
+
+  return (
+    <button className="col btn btn-primary me-2" onClick={abrir}>
+      <FontAwesomeIcon icon={faPlus} />Agregar
+    </button>
+  );
+};
 
 export default AddPolicy;

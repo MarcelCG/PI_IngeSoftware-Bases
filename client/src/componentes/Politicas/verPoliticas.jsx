@@ -4,6 +4,7 @@ import {VerPolitica} from './verPolitica'
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import React, {useState, useEffect, useRef} from "react";
 import { URLApi } from '../Compartido/Constantes';
+import { setModal } from '../Utiles/Modal';
 
 export const VerPoliticas = () => {
 
@@ -25,14 +26,15 @@ export const VerPoliticas = () => {
     cargarPoliticas();
   }, []);
 
-  const modalID = "modalPol";
+  //const modalID = "modalPol";
   const botonRef = useRef(null);
   const [Politicas, setPoliticas] = useState([]);
   const [cargando, setCargando]   = useState(true);
   const [paginaActual, actualizarPagina] = useState(1);
   const [polValores, setPolValores] = useState({
     titulo: "",
-    componente: ""
+    componente: "",
+    modalID:"modalPol"
   });
 
   // variables para la paginacion del GRID
@@ -45,9 +47,10 @@ export const VerPoliticas = () => {
 
   const abrirModalPolitica = (politica) => {
     setPolValores({
-     ...polValores,
      titulo: politica.titulo,
-     componente: <VerPolitica {...politica}/>});
+     componente: <VerPolitica {...politica}/>,
+     modalID: "modalPol",
+     tituloEstilos: "text-bg-secondary"});
     botonRef.current.click();
   };
 
@@ -56,13 +59,16 @@ export const VerPoliticas = () => {
     politicasAct,
     paginaActual,
     actualizarPagina,
-    modalID,
     cargando,
     botonRef,
     abrirModalPolitica,
     numeros,
-    esEmpleador
+    esEmpleador,
+    setPolValores //nuevo
   };
 
   return ( <VerPoliticasHTML {...props}/> );
 };
+
+
+// roadblock
