@@ -79,8 +79,8 @@ async function getSolicitudByCedula(cedula_empleado) {
       const pool = await sql.connect(dbConfig);
       const result = await pool
         .request()
-        .input('cedula_empleado', sql.NVarChar, cedula_empleado)
-        .query('SELECT * FROM Solicitud WHERE cedula_empleado = @cedula_empleado');
+        .input('cedula', sql.NVarChar, cedula_empleado)
+        .execute('ObtenerSolicitudesDeEmpleado')
       return result.recordset;
     } catch (error) {
       throw error;
@@ -94,7 +94,7 @@ async function getSolicitudByCedula(cedula_empleado) {
       const result = await pool
         .request()
         .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-        .query('SELECT * FROM Solicitud WHERE cedula_empresa = @cedula_empresa');
+        .execute(`ObtenerSolicitudesDeEmpresa`);
       return result.recordset;
     } catch (error) {
       throw error;
