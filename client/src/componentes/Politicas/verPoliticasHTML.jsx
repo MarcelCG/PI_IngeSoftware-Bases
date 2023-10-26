@@ -6,6 +6,7 @@ import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus }
 from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import { ActualizarTiempoLibre } from '../Libres/ActualizarLibres'
+import BuscarPoliticas from './BuscarPolitica';
 
 export const VerPoliticasHTML = (props) => {
 	const {
@@ -17,7 +18,9 @@ export const VerPoliticasHTML = (props) => {
 		botonRef,
 		abrirModalPolitica,
 		numeros,
-		esEmpleador
+		esEmpleador,
+		politicas,
+		filtrarPoliticas
 	} = props;
 
 	return (
@@ -34,6 +37,9 @@ export const VerPoliticasHTML = (props) => {
                     <FontAwesomeIcon icon={faPlus} />Agregar
                 </Link>
             </div>
+		<div className="mb-3">
+			<BuscarPoliticas politicas={politicas} filtrarPoliticas={filtrarPoliticas} />
+        </div>
 	      <table className="table table-hover mt-titulo">
 	        <thead>
 	          <tr>
