@@ -1,51 +1,61 @@
 import axios from 'axios';
-import {VerSolicitudesEmpleadorHTML} from './VerSolicitudesEmpleadorHTML.js'
-import {ModalSolicitud} from './modalSolicitudEmpleador.js';
-import { FooterModalSolicitudEmpleador } from './footerModalSolicitudEmpleador.js';
+import {VerSolicitudesHTML} from './VerSolicitudesHTML.js'
+import {ModalSolicitud} from './modalSolicitud.js';
+import { FooterModalSolicitudEmpleador } from './footerModalSolicitud.js';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useAutent } from '../../contexto/ContextoAutenticacion';
+import { useAutent } from '../../contexto/ContextoAutenticacion.js';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import React, {useState, useEffect, useRef} from "react";
-import { URLApi } from '../Compartido/Constantes';
+import { URLApi } from '../Compartido/Constantes.js';
 
-const solicitudURI = URLApi + 'solicitudes/byEmpresa/';
+const solicitudEmpleadorURI = URLApi + 'solicitudes/byEmpresa/';
+const solicitudEmpleadoURI = URLApi + 'solicitudes/byCedula/'
 
-const SolicitudesEmpleador = () => {
+const Solicitudes = () => {
     const {usuarioAutenticado} = useAutent();
     const empresa = usuarioAutenticado.cedula_empresa;
+    const cedula = usuarioAutenticado.cedula;
+    const esEmpleador = empresa ? true : false;
+
 
     useEffect(() => {
-        if (empresa) {
-            const solicitudesEmpresaURI = solicitudURI + empresa;
-            const obtenerSolicitudesDeEmpresa = async () => {
-                try {
-                    const respuesta = await axios.get(solicitudesEmpresaURI);
-                    setSolicitudes(respuesta.data);
-                } 
-                catch (error) {
-                    console.error('Error al obtener las solicitudes:', error);
-                }
-            };
-            obtenerSolicitudesDeEmpresa();
+        let solicitudURI = "";
+        if (esEmpleador) {
+            solicitudURI = solicitudEmpleadorURI + empresa;
+        } else {
+            solicitudURI = solicitudEmpleadoURI + cedula; 
         }
+        const obtenerSolicitudes = async () => {
+            try {
+                const respuesta = await axios.get(solicitudURI);
+                setSolicitudes(respuesta.data);
+            } 
+            catch (error) {
+                console.error('Error al obtener las solicitudes:', error);
+            }
+        };
+        obtenerSolicitudes();
+    
     }, [empresa]);
     const [solicitudes, setSolicitudes] = useState([]);
 
     const modalID = "modalSolicitud";
     const botonRef = useRef(null);
     const [solicitudValores, setSolicitudValores] = useState({
-      titulo: "",
-      componente: "",
-      footerPersonalizado: ""
+        titulo: "",
+        componente: "",
+        footerPersonalizado: ""
     });
 
     const abrirModalSolicitud = (solicitud) => {
+        solicitud["esEmpleador"] = esEmpleador;
         setSolicitudValores({
-         ...solicitudValores,
-         titulo: "Solicitud",
-         componente: <ModalSolicitud {...solicitud}/>,
-         footerPersonalizado: <FooterModalSolicitudEmpleador {...solicitud}/>})
+            ...solicitudValores,
+            titulo: "Solicitud",
+            componente: <ModalSolicitud {...solicitud}/>,
+            footerPersonalizado: (esEmpleador === true ? <FooterModalSolicitudEmpleador {...solicitud}/> : "")
+        })
         botonRef.current.click();
     };
 
@@ -129,16 +139,16 @@ const SolicitudesEmpleador = () => {
 
     function getClassForEstado(estado) {
 		switch (estado) {
-		  case 'Aprobada':
-			return 'bg-success';
-		  case 'Pendiente':
-			return 'bg-warning text-dark';
-		  case 'Rechazada':
-			return 'bg-danger';
-		  case 'Cancelada':
-			  return 'bg-dark';
-		  default:
-			return 'bg-primary';
+            case 'Aprobada':
+			    return 'bg-success';
+		    case 'Pendiente':
+			    return 'bg-warning text-dark';
+		    case 'Rechazada':
+			    return 'bg-danger';
+		    case 'Cancelada':
+			    return 'bg-dark';
+		    default:
+			    return 'bg-primary';
 		}
     }
 
@@ -148,11 +158,12 @@ const SolicitudesEmpleador = () => {
         abrirModalSolicitud,
         modalID,
         botonRef,
-        getClassForEstado
+        getClassForEstado,
+        esEmpleador
     };
   
-    return ( <VerSolicitudesEmpleadorHTML {...props}/> );
+    return ( <VerSolicitudesHTML {...props}/> );
 };
 
-export default SolicitudesEmpleador;
+export default Solicitudes;
   

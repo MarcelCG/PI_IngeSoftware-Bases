@@ -1,19 +1,21 @@
 import {Modal} from '../Utiles/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import React, {useState, useEffect} from "react";
-import FiltrarSolicitudesEmpleador from './filtrarSolicitudesEmpleador.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faTrash, faPlus }
+ from '@fortawesome/free-solid-svg-icons'
+import React, {useState} from "react";
+import FiltrarSolicitudes from './filtrarSolicitudes.js'
+import { Link } from 'react-router-dom';
 
-export const VerSolicitudesEmpleadorHTML = (props) => {
+export const VerSolicitudesHTML = (props) => {
 	const {
 		solicitudes,
         abrirModalSolicitud,
-        botonRef,
         modalID,
-        filtroEstado,
-        setFiltroEstado,
-        handleFiltroEstado,
-        getClassForEstado
+        botonRef,
+        getClassForEstado,
+        esEmpleador
 	} = props;
 
     const [solicitudesFiltradas, filtrarSolicitudes] = useState([])
@@ -48,16 +50,39 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
 	      <style>{`.table th { width: 25%;}`}</style>
 		<div className="col-12">
             <div className="row mb-4 col-12 d-flex p-1 align-items-end">
-                <div className="col-10"></div>
-                <FiltrarSolicitudesEmpleador solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
+                { esEmpleador === true ? (
+                    <>
+                        <div className="col-10"></div>
+                        <FiltrarSolicitudes solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
+                    </>
+                ) : (
+                    <>
+                        <div className="col-8"></div>
+                        <FiltrarSolicitudes solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
+                        <div className=' col-2'>
+                            <Link to="/app/solicitudes" className="btn-primary continuar">
+                                <FontAwesomeIcon icon={faPlus} />Agregar
+                            </Link>
+                        </div>
+                    </>
+                )}
             </div>
             <hr></hr>
             <div className="table-responsive mb-4">
                     <table className="table">
                         <thead>
                             <tr>
-                                <th className="col--5 text-center" scope="col">Nombre</th>
-                                <th className="col--5 text-center" scope="col">Politica</th>
+                                { esEmpleador === true ? (
+                                    <>
+                                        <th className="col--5 text-center" scope="col">Nombre</th>
+                                        <th className="col--5 text-center" scope="col">Politica</th>
+                                    </>
+                                ) : (
+                                    <>
+                                        <th className="col--5 text-center" scope="col">Politica</th>
+                                        <th className="col--5 text-center" scope="col">Fecha de Solicitud</th>
+                                    </>
+                                )}
                                 <th className="col--5 text-center" scope="col">Fechas Solicitadas</th>
                                 <th className="col--5 text-center" scope="col">Estado</th>
                                 <th className="col--5 text-center" scope="col">Acciones</th>
@@ -67,8 +92,17 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
                             { solicitudesPagina.map ( (solicitud, index) => (
                                 <tr  key={index}
                                 onClick={()=> abrirModalSolicitud(solicitud)}>
-                                    <td className="col--5 text-center">{ solicitud.nombre_completo }</td>
-                                    <td className="col--5 text-center">{ solicitud.politica }</td>
+                                    { esEmpleador === true ? (
+                                        <>
+                                            <td className="col--5 text-center">{ solicitud.nombre_completo }</td>
+                                            <td className="col--5 text-center">{ solicitud.politica }</td>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <td className="col--5 text-center">{ solicitud.politica }</td>
+                                            <td className="col--5 text-center">{ solicitud.fecha_solicitud_nueva }</td>
+                                        </>
+                                    )}
                                     <td className="col--5 text-center">{ solicitud.fecha_inicio === solicitud.fecha_final
 																? solicitud.fecha_inicio
 																: `${solicitud.fecha_inicio} - ${solicitud.fecha_final}`}</td>
@@ -77,9 +111,20 @@ export const VerSolicitudesEmpleadorHTML = (props) => {
 										 className={`badge rounded-pill  ${getClassForEstado(solicitud.estado)} `}>
 											{ solicitud.estado }</span>
 									</td>
-                                    <td className="col--5 acciones text-center">
-										<button className='btn btn-primary'>Gestionar</button>
-                                    </td>
+                                    { esEmpleador === true ? (
+                                        <td className="col--5 acciones text-center">
+										    <button className='btn btn-primary'>Gestionar</button>
+                                        </td>
+                                    ) : (
+                                        <td className="col--5 acciones text-center d-flex flex-row">
+                                            <button className="btn-primary me-2">
+                                            <FontAwesomeIcon icon={faPenToSquare} />
+                                            </button>
+                                            <button className="btn-danger">
+                                            <FontAwesomeIcon icon={faTrash} />
+                                            </button>
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>

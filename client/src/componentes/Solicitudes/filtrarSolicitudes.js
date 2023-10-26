@@ -1,11 +1,9 @@
 import React, {useState, useEffect} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
-function FiltrarSolicitudesEmpleador({solicitudes, filtrarSolicitudes}) {
+function FiltrarSolicitudes({solicitudes, filtrarSolicitudes}) {
     const [filtroEstado, setFiltroEstado] = useState('Todos');
     
-    const handleFiltroEstado = (nuevoEstado) => {
+    const manejarFiltroEstado = (nuevoEstado) => {
         setFiltroEstado(nuevoEstado);
     };
     
@@ -24,7 +22,7 @@ function FiltrarSolicitudesEmpleador({solicitudes, filtrarSolicitudes}) {
     return (
         <select className="col-2 mt-3 continuar"
             value={filtroEstado}
-            onChange={(e) => handleFiltroEstado(e.target.value)}>
+            onChange={(e) => manejarFiltroEstado(e.target.value)}>
             <option value="Todos">Todos</option>
             <option value="Pendiente">Pendientes</option>
             <option value="Aprobada">Aprobadas</option>
@@ -33,4 +31,4 @@ function FiltrarSolicitudesEmpleador({solicitudes, filtrarSolicitudes}) {
     )
 }
 
-export default FiltrarSolicitudesEmpleador
+export default FiltrarSolicitudes
