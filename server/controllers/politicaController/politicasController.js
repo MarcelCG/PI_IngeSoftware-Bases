@@ -103,8 +103,8 @@ async function getPoliticaByTituloAndCedula(req, res) {
   try {
     const { titulo, cedula_empresa } = req.params;
 
-    // Llama a la función getByTituloAndCedula en el modelo de Política
-    const politica = await Politica.getByTituloAndCedula(titulo, cedula_empresa);
+    // Llama a la función getPoliticaByTituloAndCedula en el modelo de Política
+    const politica = await Politica.getPoliticaByTituloAndCedula(titulo, cedula_empresa);
 
     if (politica !== null) {
       // Si se encontró una política con ese título y cédula de empresa, la retornamos
@@ -149,5 +149,6 @@ module.exports = {
   createPolitica,
   getPoliticaByTitulo,
   getPoliticaByCedulaEmpresa,
+  getPoliticaByTituloAndCedula,
   editarPolitica,
 };
