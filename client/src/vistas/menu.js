@@ -45,6 +45,7 @@ export function MenuEmpleado() {
   const enlaces = [
     { to: '/app', label: 'Inicio' },
     { to: '/app/perfil', label: 'Perfil' },
+    { to: '/app/solicitudes', label: 'Solicitudes'}
   ];
 
   return (

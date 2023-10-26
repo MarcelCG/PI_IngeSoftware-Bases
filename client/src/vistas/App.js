@@ -7,7 +7,7 @@ import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarEmpleadorPorCedula from '../componentes/Empleador/VisualizarEmpleador';
-import SolicitudesEmpleador from '../componentes/Solicitudes/VerSolicitudesEmpleador'
+import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
 import { MenuEmpleador, MenuEmpleado } from './menu';
 import { useAutent } from '../contexto/ContextoAutenticacion';
 
@@ -65,7 +65,7 @@ function App() {
               <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
               <Route path="/perfil" element={<VisualizarEmpleadorPorCedula/>}/>
               <Route path="/empresa" element={<VisualizarEmpresa/>}/>
-              <Route path="/solicitudes" element={<SolicitudesEmpleador/>}/>
+              <Route path="/solicitudes" element={<Solicitudes/>}/>
             </Routes>
         </div>
           </main>
