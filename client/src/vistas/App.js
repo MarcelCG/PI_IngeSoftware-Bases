@@ -7,6 +7,7 @@ import AddPolicy from '../componentes/Politicas/AddPolicy';
 import AddEmployee from '../componentes/Empleado/agregarEmpleado';
 import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
+import EditarEmpleado from '../componentes/Empleado/editarEmpleado';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarEmpleadorPorCedula from '../componentes/Empleador/VisualizarEmpleador';
 import { MenuEmpleador, MenuEmpleado } from './menu';
@@ -38,6 +39,7 @@ function App() {
               <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
               <Route path="/perfil" element={<VisualizarEmpleadorPorCedula/>}/>
               <Route path="/empresa" element={<VisualizarEmpresa/>}/>
+              <Route path="/empleados/editar/:cedula" element={<EditarEmpleado />} />
             </Routes>
         </div>
           </main>

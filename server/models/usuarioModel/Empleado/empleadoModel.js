@@ -162,7 +162,33 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
       throw error;
     }
   }
-  
+  async function editarEmpleado(
+    cedula_empleado,
+    rol,
+    fecha_contratacion
+  ) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const resultado = await pool
+        .request()
+        .input('cedula_empleado', sql.NVarChar, cedula_empleado)
+        .input('rol', sql.NVarChar, rol)
+        .input('fecha_contratacion', sql.Date, fecha_contratacion)
+        .query(
+          `UPDATE Empleado 
+          SET 
+            cedula_empleado=@cedula_empleado,
+            rol=@rol,
+            fecha_contratacion=@fecha_contratacion
+          WHERE 
+            cedula_empleado=@cedula_empleado`
+        );
+      return resultado.rowsAffected > 0;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 
 // Exportar el modelo
 module.exports = {
@@ -173,4 +199,5 @@ module.exports = {
   getByEmpresa,
   getByCedulaAndEmpresa,
   getEmpleadoByCedulaYEmpresa,
+  editarEmpleado
 };

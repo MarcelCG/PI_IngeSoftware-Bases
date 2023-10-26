@@ -77,7 +77,9 @@ const ListOfEmployees = () => {
                                     <td className="col--5">{ empleado.correo }</td>
                                     <td className="col--5">{ empleado.rol }</td>
                                     <td className="col--5 acciones">
-                                        <button className="btn btn-primary me-2"><FontAwesomeIcon className='editar' icon={faPenToSquare} /></button>
+                                        <Link to={`/app/empleados/editar/${empleado.cedula}`} className="btn btn-primary me-2">
+                                            <FontAwesomeIcon className='editar' icon={faPenToSquare} />
+                                        </Link>
                                         <button className="btn btn-danger"><FontAwesomeIcon className='borrar' icon={faTrash} /></button>
                                     </td>
                                 </tr>

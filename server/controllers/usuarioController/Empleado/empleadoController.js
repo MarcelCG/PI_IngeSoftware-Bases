@@ -126,6 +126,35 @@ async function getEmpleadoConCedulaYEmpresa(req, res) {
 }
 
 // Otros controladores para operaciones adicionales con Empleados pueden ser agregados aquí
+async function updateEmpleado(req, res) {
+  try {
+    const {
+      cedula_empleado,
+      cedula_empresa,
+      rol,
+      fecha_contratacion,
+    } = req.body;
+
+    const success = await Empleado.updateEmpleado(
+      cedula_empleado,
+      cedula_empresa,
+      rol,
+      fecha_contratacion
+    );
+
+    if (success) {
+      res.status(201).json({ message: 'Empleado actualizado exitosamente' });
+    } else {
+      res.status(500).json({ message: 'No se pudo actualizar el empleado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+
+
 
 module.exports = {
   getAllEmpleados,
