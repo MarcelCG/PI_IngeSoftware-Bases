@@ -84,10 +84,10 @@ function Login() {
                 <input type="password" className="form-control" value={password} onChange={changePassword} />
               </div>
             </div>
-              <div className="card-footer bg-transparent border-top-0">
-                <div className="d-flex justify-content-center"> 
-                <button className="btn btn-secondary mx-5 btn-lg btn-xl" onClick={handleRegister}>Registro</button>
-                <button className="btn btn-primary mx-5 btn-lg btn-xl" onClick={handleLogin}>Iniciar Sesión</button>
+              <div className="card-footer bg-transparent border-top-0 d-flex justify-content-end">
+                <div className="align-items-right text-align-right float-right"> 
+                  <button className="btn btn-secondary me-2 btn-lg btn-xl" onClick={handleRegister}>Registro</button>
+                  <button className="btn btn-primary btn-lg btn-xl" onClick={handleLogin}>Iniciar Sesión</button>
               </div>
             </div>
           </div>
