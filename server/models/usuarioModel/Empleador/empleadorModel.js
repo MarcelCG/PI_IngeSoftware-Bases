@@ -40,13 +40,14 @@ async function getByCedula(cedula_empleador) {
     const result = await pool
       .request()
       .input('cedula_empleador', sql.NVarChar, cedula_empleador)
-      .query('SELECT u.cedula,'
-        + ' u.nombre, u.primer_apellido, u.segundo_apellido,'
-        + ' u.correo1, em.nombre AS \'nombre_empresa\''
-        + ' FROM Usuario u, Empleador e, Empresa em '
-        + ' WHERE u.cedula=@cedula_empleador'
-        + ' AND u.activo=1'
-        + ' AND e.cedula_empleador=em.cedula_empleador');
+      .query(`SELECT u.cedula,
+              u.nombre, u.primer_apellido, u.segundo_apellido,
+              u.correo1, em.nombre AS \'nombre_empresa\'
+              FROM Usuario u, Empleador e, Empresa em 
+              WHERE u.cedula=@cedula_empleador
+              AND u.activo=1
+              AND e.cedula_empleador=em.cedula_empleador
+              AND u.cedula=e.cedula_empleador`);
     if (result.recordset.length > 0) {
       // Si se encontró un empleado, se retorna
       return result.recordset[0];

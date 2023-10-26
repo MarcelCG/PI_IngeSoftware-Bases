@@ -7,6 +7,7 @@ import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarEmpleadorPorCedula from '../componentes/Empleador/VisualizarEmpleador';
+import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
 import { MenuEmpleador, MenuEmpleado } from './menu';
 import { useAutent } from '../contexto/ContextoAutenticacion';
 
@@ -33,6 +34,9 @@ function App() {
       break;
       case '/app/perfil':
         titulo = 'Información del Usuario';
+      break;
+      case '/app/solicitudes':
+        titulo = 'Lista de Solicitudes';
       break;
     default:
       titulo = '';
@@ -61,6 +65,7 @@ function App() {
               <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
               <Route path="/perfil" element={<VisualizarEmpleadorPorCedula/>}/>
               <Route path="/empresa" element={<VisualizarEmpresa/>}/>
+              <Route path="/solicitudes" element={<Solicitudes/>}/>
             </Routes>
         </div>
           </main>

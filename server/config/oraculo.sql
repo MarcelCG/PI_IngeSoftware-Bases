@@ -1,4 +1,4 @@
-    USE ElEquipo
+USE ElEquipo
 
 CREATE TABLE Usuario (
     cedula VARCHAR(255) PRIMARY KEY,
@@ -66,6 +66,7 @@ CREATE TABLE Solicitud (
     hora_de_inicio TIME (0),
     horas_solicitadas INT,
     estado VARCHAR(255) NOT NULL,
+    comentarios VARCHAR(255),
     FOREIGN KEY (cedula_empleado) REFERENCES Empleado(cedula_empleado),
     FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa)
 );
