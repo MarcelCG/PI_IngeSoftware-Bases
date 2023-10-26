@@ -90,8 +90,8 @@ const Solicitudes = () => {
     });
 
     function formatoFecha(fecha) {
-        fecha.setDate(fecha.getDate() + 1); // Advance the date by one day
-      
+        fecha.setDate(fecha.getDate() + 1);
+        
         const year = fecha.getFullYear();
         const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
         const day = fecha.getDate().toString().padStart(2, '0');
@@ -137,7 +137,7 @@ const Solicitudes = () => {
         return fechaNueva;
     }
 
-    function getClassForEstado(estado) {
+    function obtenerEstiloPorEstado(estado) {
 		switch (estado) {
             case 'Aprobada':
 			    return 'bg-success';
@@ -158,7 +158,7 @@ const Solicitudes = () => {
         abrirModalSolicitud,
         modalID,
         botonRef,
-        getClassForEstado,
+        obtenerEstiloPorEstado,
         esEmpleador
     };
   

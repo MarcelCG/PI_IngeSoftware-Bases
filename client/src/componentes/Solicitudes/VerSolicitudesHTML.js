@@ -14,7 +14,7 @@ export const VerSolicitudesHTML = (props) => {
         abrirModalSolicitud,
         modalID,
         botonRef,
-        getClassForEstado,
+        obtenerEstiloPorEstado,
         esEmpleador
 	} = props;
 
@@ -108,7 +108,7 @@ export const VerSolicitudesHTML = (props) => {
 																: `${solicitud.fecha_inicio} - ${solicitud.fecha_final}`}</td>
                                     <td className="col--5 text-center">
 										<span style={{ fontSize: '1rem'}}
-										 className={`badge rounded-pill  ${getClassForEstado(solicitud.estado)} `}>
+										 className={`badge rounded-pill  ${obtenerEstiloPorEstado(solicitud.estado)} `}>
 											{ solicitud.estado }</span>
 									</td>
                                     { esEmpleador === true ? (
