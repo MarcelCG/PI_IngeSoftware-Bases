@@ -87,6 +87,20 @@ async function aprobarSolicitud (id, estado) {
   }
 }
 
+async function rechazarSolicitud (id, estado) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('id', sql.BigInt, id)
+      .input('estado', sql.NVarChar, estado)
+      .execute('ActualizarEstadoSolicitud')
+    return result.rowsAffected > 0;;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Función para obtener solicitudes por cédula del empleado
 async function getSolicitudByCedula(cedula_empleado) {
     try {
@@ -147,5 +161,6 @@ module.exports = {
   getSolicitudByEmpresa,
   getSolicitudByCedulaAndEmpresa,
   aprobarSolicitud,
+  rechazarSolicitud,
   // Agregar otras funciones relacionadas con las solicitudes según sea necesario
 };

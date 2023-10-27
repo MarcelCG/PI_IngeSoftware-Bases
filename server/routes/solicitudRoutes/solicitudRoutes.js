@@ -10,6 +10,6 @@ router.get('/byCedula/:cedula_empleado', SolicitudController.getSolicitudByCedul
 router.get('/byEmpresa/:cedula_empresa', SolicitudController.getSolicitudByEmpresa);
 router.get('/searchSolicitudes/:cedula_empleado/:cedula_empresa', SolicitudController.getSolicitudByCedulaAndEmpresa)
 router.post('/aprobar/:id', SolicitudController.aprobarSolicitud);
-router.get('/rechazar/:id', SolicitudController.rechazarSolictud);
+router.post('/rechazar/:id', SolicitudController.rechazarSolictud);
 
 module.exports = router;
