@@ -21,25 +21,28 @@ export const FooterConfirmar = (props) => {
     console.log(`Componente footer tiene ${accion}`);
 
     const realizarAccion = () => {
+        let url = '';
         if (accion === 'Aprobar') {
-            console.log('Se va a aprobar');
-            try {
-                axios.post(`${aprobarSolicitudURL}${solicitud.id}`).then((response) => {
-                    console.log('Solicitud POST exitosa:', response.data);
-                    toast.success('Solicitud actualizada correctamente');
-                }).catch((error) => {
-                    if (error.response && error.response.status === 404) {
-                        console.error('Error',error.response.data.error, error);
-                        toast.error('Hubo un error al actualizar, por favor recargue e intente de nuevo');
-                    } else {
-                        console.error('Error en la solicitud POST:', error);
-                    }
-                })
-            } 
-            catch (error) {
-                console.error('Error al aprobar la solicitud:', error);
-                toast.error('Hubo un error al actualizar, por favor intente de nuevo más tarde');
-            }
+            url = aprobarSolicitudURL;
+        } else if (accion === 'Rechazar') {
+            url = rechazarSolicitudURL;
+        }
+        try {
+            axios.post(`${url}${solicitud.id}`).then((response) => {
+                console.log('Solicitud POST exitosa:', response.data);
+                toast.success('Solicitud actualizada correctamente');
+            }).catch((error) => {
+                if (error.response && error.response.status === 404) {
+                    console.error('Error',error.response.data.error, error);
+                    toast.error('Hubo un error al actualizar, por favor recargue e intente de nuevo');
+                } else {
+                    console.error('Error en la solicitud POST:', error);
+                }
+            })
+        } 
+        catch (error) {
+            console.error('Error al aprobar la solicitud:', error);
+            toast.error('Hubo un error al actualizar, por favor intente de nuevo más tarde');
         }
     }
     return (

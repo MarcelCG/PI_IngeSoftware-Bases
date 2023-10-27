@@ -9,7 +9,7 @@ export const FooterModalSolicitudEmpleador = (props) =>{
 
   return (
   <div>
-    <button className="btn-danger me-2">Rechazar</button>
+    <button className="btn-danger me-2" onClick={()=>abrirModal('Rechazar', solicitud)}>Rechazar</button>
     <button className="btn-primary me-2" onClick={()=>abrirModal('Aprobar', solicitud)}>Aprobar</button>
   </div>
   );
