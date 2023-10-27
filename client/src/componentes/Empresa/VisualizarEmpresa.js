@@ -52,14 +52,11 @@ function VisualizarEmpresa() {
 
   // Llama a la función para cargar los datos del empleado cuando se carga el componente (Base de datos)
   return (
-    <div className="container mt-4">
+    <div className="container mt-2">
       <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card mb-3">
-            <div className="card-header  titulo-ventana">
-              <h5 className="text-center mb-0">{datosEmpresa.nombre}</h5>
-            </div>
-            <div className="card-body">
+        <div>
+          <div className="mb-3">
+            <div className="card-body p-0">
               <p><strong>Nombre:</strong> {datosEmpresa.nombre}</p>
               <p><strong>Cédula Juridica:</strong> {datosEmpresa.cedula_juridica}</p>
               <p><strong>Telefono:</strong> {datosEmpresa.telefono}</p>

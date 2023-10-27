@@ -20,30 +20,43 @@ export const setModal = (setModalValores, props) => {
 
 export const Modal = (props) => {
 
-  const {modalID, titulo, tituloEstilos, componente, boton, funcion, tamanio} = props;
+  const {modalID, titulo, tituloEstilos, componente, boton, funcion, tamanio, footer} = props;
 
   useEffect(() => { }, [componente]);
 
+
   return (
-    <div className={`modal fade ${tamanio}`} id={modalID} tabIndex="-1" aria-labelledby="" aria-hidden="true">
-      <div className="modal-dialog modal-dialog-scrollable ">
-        <div className="modal-content ">
-          {titulo &&
-          <div className={`modal-header ${tituloEstilos}`}>
-            <h1 className="modal-title fs-5 ">{titulo}</h1>
-            <button className="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-          </div>}
-          {tamanio === "modal-lg" ? (
-            <>{componente}</>):(
-            <div className="modal-body">
-              {componente}
+    <div className={`modal fade ${tamanio}`} id={modalID} tabIndex="-1" aria-labelledby={modalID} aria-hidden="true">
+      <div className="modal-dialog modal-dialog-scrollable">
+        <div className="modal-content">
+          {titulo && (
+            <div className={`modal-header ${tituloEstilos}`}>
+              <h1 className="modal-title fs-5">{titulo}</h1>
+              <button className="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
             </div>)}
-          {boton &&
+          {tamanio === "modal-lg" ? (
+            <> {componente} </>
+          ) : (
+            <div className="modal-body">{componente}</div>
+          )}
           <div className="modal-footer">
-            <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>boton</button>
-          </div>}
+            {footer ? (
+              footer
+            ) : (
+              <div>
+                <button type="button" className="btn btn-primary btn-sm" data-bs-dismiss="modal">
+                  Cerrar
+                </button>
+                {boton && (
+                  <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>
+                    {boton}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

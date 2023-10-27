@@ -1,6 +1,4 @@
 const Empresa = require('../../models/empresaModel/empresasModel');
-const EmpresaCorreo = require('../../models/empresaModel/correosEmpresasModel');
-const EmpresaTel = require('../../models/empresaModel/telefonosEmpresaModel');
 
 // Obtener todas las empresas
 async function getAllEmpresas(req, res) {
@@ -65,9 +63,25 @@ async function getEmpresaByCedula(req, res){
 
 async function getEmpresaByCedulaEmpleador(req, res){
   const {cedula_empleador} = req.params;
-
+    console.log('Se llega al controlador');
     try {
       const success = await Empresa.getEmpresaByCedulaEmpleador(cedula_empleador);
+      console.log('Se pasa del modelo')
+      if(success != null){
+        res.status(200).json(success);
+      } else {
+        res.status(404).json({error: "Empresa no encontrada"});
+      }
+    } catch (error) {
+      res.status(500).json({error: error.message});
+    }
+  }
+
+async function obtenerEmpresaPorCedulaEmpleado(req, res){
+  const {cedula_empleado} = req.params;
+
+    try {
+      const success = await Empresa.obtenerEmpresaPorCedulaEmpleado(cedula_empleado);
       if(success != null){
         res.status(200).json(success);
       } else {
@@ -107,4 +121,5 @@ module.exports = {
   getEmpresaByCedula,
   getEmpresaByCedulaEmpleador,
   getEmpresaInfo,
+  obtenerEmpresaPorCedulaEmpleado,
 };
