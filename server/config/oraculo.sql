@@ -89,7 +89,7 @@ CREATE TABLE Libres (
 );
 
 DROP TRIGGER InsertarLibre
-GO
+GO;
 CREATE TRIGGER InsertarLibre 
 ON Libres
 INSTEAD OF INSERT
@@ -153,3 +153,26 @@ BEGIN
     CLOSE libsInsertados;
     DEALLOCATE libsInsertados;
 END;
+GO;
+
+CREATE PROC obtenerDatosEmpleador @cedula_empleador varchar(255)
+AS
+BEGIN
+	SELECT u.cedula,u.nombre, u.primer_apellido, 
+	u.segundo_apellido,u.correo1, u. correo2,
+	u.telefono1, u.telefono2, em.nombre AS 'nombre_empresa'
+	FROM Usuario u
+	INNER JOIN Empresa em ON em.cedula_empleador = u.cedula AND u.cedula = @cedula_empleador
+END;
+GO;
+
+CREATE PROC obtenerDatosEmpleado @cedula_empleado varchar(255), @cedula_empresa varchar(255)
+AS
+BEGIN
+	SELECT u.cedula,u.nombre, u.primer_apellido, 
+	u.segundo_apellido,u.correo1, u. correo2,
+	u.telefono1, u.telefono2, em.fecha_contratacion, em.rol
+	FROM Usuario u
+	INNER JOIN Empleado em ON em.cedula_empleado = u.cedula AND u.cedula = @cedula_empleado AND em.cedula_empresa = @cedula_empresa
+END;
+GO;

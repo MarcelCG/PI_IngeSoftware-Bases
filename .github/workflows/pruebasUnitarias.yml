@@ -8,6 +8,7 @@ on:
       - Buscar-Empleado
       - calcular-tiempos
       - visualizar-solicitudes  
+      - Visualizar-Empleado  
 
 jobs:
   client-tests:

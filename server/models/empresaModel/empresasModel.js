@@ -58,6 +58,26 @@ async function getEmpresaByCedula(cedula_juridica){
   }
 }
 
+async function obtenerEmpresaPorCedulaEmpleado(cedula_empleado){
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+    .request()
+    .input('cedula_empleado', sql.NVarChar, cedula_empleado)
+    .query('SELECT * FROM Empresa WHERE cedula_juridica = '
+      + '(SELECT cedula_empresa FROM Empleado WHERE cedula_empleado = @cedula_empleado)');
+
+    if(result.recordset.length > 0) {
+      return result.recordset[0];
+    } else {
+      return null;
+    }
+      
+  } catch (error) {
+    throw(error);
+  }
+}
+
 async function getEmpresaByCedulaEmpleador(cedula_empleador){
   try {
     const pool = await sql.connect(dbConfig);
@@ -82,4 +102,5 @@ module.exports = {
   createEmpresa,
   getEmpresaByCedula,
   getEmpresaByCedulaEmpleador,
+  obtenerEmpresaPorCedulaEmpleado,
 };

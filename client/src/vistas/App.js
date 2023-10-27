@@ -5,16 +5,14 @@ import AddPolicy from '../componentes/Politicas/AddPolicy';
 import AddEmployee from '../componentes/Empleado/agregarEmpleado';
 import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
-import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
-import VisualizarEmpleadorPorCedula from '../componentes/Empleador/VisualizarEmpleador';
+import VisualizarPerfil from './perfil';
 import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
 import { MenuEmpleador, MenuEmpleado } from './menu';
 import { useAutent } from '../contexto/ContextoAutenticacion';
 
 function App() {
   const {usuarioAutenticado} = useAutent();
-  const empresa = usuarioAutenticado?.cedula_empresa; 
-  const esEmpleador = empresa ? true : false;
+  const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
 
   let titulo;
 
@@ -63,8 +61,7 @@ function App() {
               <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
               <Route path="/empleados" element={<ListOfEmployees/>}/>
               <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
-              <Route path="/perfil" element={<VisualizarEmpleadorPorCedula/>}/>
-              <Route path="/empresa" element={<VisualizarEmpresa/>}/>
+              <Route path="/perfil" element={<VisualizarPerfil/>}/>
               <Route path="/solicitudes" element={<Solicitudes/>}/>
             </Routes>
         </div>
