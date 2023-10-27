@@ -2,7 +2,7 @@ import axios from 'axios';
 import {VerSolicitudesHTML} from './VerSolicitudesHTML.js'
 import {ModalSolicitud} from './modalSolicitud.js';
 import { FooterModalSolicitudEmpleador } from './footerModalSolicitud.js';
-import { ModalConfirmar, FooterConfirmar } from './gestionarSolicitudes.js';
+import { ModalConfirmar, GestionarSolicitudes } from './gestionarSolicitudes.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useAutent } from '../../contexto/ContextoAutenticacion.js';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -53,7 +53,7 @@ const Solicitudes = () => {
         setSolicitudValores({
             titulo: "Confirmar",
             componente: <ModalConfirmar/>,
-            footerPersonalizado:<FooterConfirmar accion={accion} solicitud={solicitud}/>
+            footerPersonalizado:<GestionarSolicitudes accion={accion} solicitud={solicitud}/>
         })
     }
 

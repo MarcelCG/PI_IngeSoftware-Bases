@@ -15,22 +15,24 @@ export const ModalConfirmar = (props) => {
   );
 }
 
-export const FooterConfirmar = (props) => {
+export const GestionarSolicitudes = (props) => {
     const {accion, solicitud} = props;
-    console.log(solicitud);
-    console.log(`Componente footer tiene ${accion}`);
 
     const realizarAccion = () => {
         let url = '';
+        let estado = '';
         if (accion === 'Aprobar') {
             url = aprobarSolicitudURL;
+            estado = 'Aprobada';
         } else if (accion === 'Rechazar') {
             url = rechazarSolicitudURL;
+            estado = 'Rechazada';
         }
         try {
             axios.post(`${url}${solicitud.id}`).then((response) => {
                 console.log('Solicitud POST exitosa:', response.data);
-                toast.success('Solicitud actualizada correctamente');
+                solicitud.estado = estado;
+                toast.success(`Solicitud ${estado.toLowerCase()} correctamente`);
             }).catch((error) => {
                 if (error.response && error.response.status === 404) {
                     console.error('Error',error.response.data.error, error);
