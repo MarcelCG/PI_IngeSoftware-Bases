@@ -92,7 +92,7 @@ async function getEmpleadoByCedulaAndEmpresa(req, res) {
     try {
       const { cedula_empleado, cedula_empresa } = req.params; // Obtiene la cedula de los parámetros de la URL
       // Llama a la función getByCedulaAndEmpresa en el modelo de Empleado
-      const empleado = await Empleado.getByCedula(cedula_empleado, cedula_empresa);
+      const empleado = await Empleado.getByCedulaAndEmpresa(cedula_empleado, cedula_empresa);
   
       if (empleado !== null) {
         // Si se encontró un empleado, lo retornamos

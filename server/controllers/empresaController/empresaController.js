@@ -1,6 +1,4 @@
 const Empresa = require('../../models/empresaModel/empresasModel');
-const EmpresaCorreo = require('../../models/empresaModel/correosEmpresasModel');
-const EmpresaTel = require('../../models/empresaModel/telefonosEmpresaModel');
 
 // Obtener todas las empresas
 async function getAllEmpresas(req, res) {
@@ -18,14 +16,22 @@ async function createEmpresa(req, res) {
     const {
       cedula_juridica,
       nombre,
-      cedula_empleador
+      cedula_empleador,
+      telefono1,
+      telefono2,
+      correo1,
+      correo2
     } = req.body;
 
     // Llama a la función createPolitica que inserta en la tabla "Politica"
     const success = await Empresa.createEmpresa(
-     cedula_juridica,
+      cedula_juridica,
       nombre,
-      cedula_empleador
+      cedula_empleador,
+      telefono1,
+      telefono2,
+      correo1,
+      correo2
     );
 
     if (success) {
@@ -57,9 +63,25 @@ async function getEmpresaByCedula(req, res){
 
 async function getEmpresaByCedulaEmpleador(req, res){
   const {cedula_empleador} = req.params;
-
+    console.log('Se llega al controlador');
     try {
       const success = await Empresa.getEmpresaByCedulaEmpleador(cedula_empleador);
+      console.log('Se pasa del modelo')
+      if(success != null){
+        res.status(200).json(success);
+      } else {
+        res.status(404).json({error: "Empresa no encontrada"});
+      }
+    } catch (error) {
+      res.status(500).json({error: error.message});
+    }
+  }
+
+async function obtenerEmpresaPorCedulaEmpleado(req, res){
+  const {cedula_empleado} = req.params;
+
+    try {
+      const success = await Empresa.obtenerEmpresaPorCedulaEmpleado(cedula_empleado);
       if(success != null){
         res.status(200).json(success);
       } else {
@@ -73,18 +95,15 @@ async function getEmpresaByCedulaEmpleador(req, res){
 async function getEmpresaInfo(req, res) {
   try {
     const { empresa } = req.params;
-    const [empresaData, empresaCorreoData, empresaTelData] = await Promise.all([
-      Empresa.getEmpresaByCedula(empresa),
-      EmpresaCorreo.getByEmpresa(empresa),
-      EmpresaTel.getByEmpresa(empresa),
+    const [empresaData] = await Promise.all([
+      Empresa.getEmpresaByCedula(empresa)
     ]);
 
     if (empresaData) {
       const empresaInfo = {
         ...empresaData,
-        correo: empresaCorreoData,
-        telefono: empresaTelData,
       };
+      console.log(empresaInfo)
       res.status(200).json({ data: empresaInfo });
     } else {
       res.status(404).json({ error: 'Empresa no encontrada' });
@@ -128,4 +147,5 @@ module.exports = {
   getEmpresaByCedulaEmpleador,
   getEmpresaInfo,
   editarEmpresa,
+  obtenerEmpresaPorCedulaEmpleado,
 };

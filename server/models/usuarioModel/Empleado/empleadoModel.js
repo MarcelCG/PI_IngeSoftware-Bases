@@ -31,14 +31,13 @@ async function getAllByEmpresa(cedula_empresa) {
                   .query('SELECT u.cedula,'
                       + ' CONCAT(u.nombre, \' \', u.primer_apellido, \' \', u.segundo_apellido)'
                       + ' AS nombre_completo,'
-                      + ' c.correo,'
+                      + ' u.correo1 AS \'correo\','
                       + ' e.rol,'
                       + ' e.fecha_contratacion'
-                      + ' FROM Usuario u, Empleado e, CorreosUsuarios c '
+                      + ' FROM Usuario u, Empleado e'
                       + ' WHERE u.cedula=e.cedula_empleado'
                       + ' AND u.activo=1'
-                      + ' AND c.cedula_usuario=u.cedula'
-                      + ' AND cedula_empresa = @cedula_empresa');
+                      + ' AND e.cedula_empresa = @cedula_empresa');
     return result.recordset;
   } catch (error) {
     throw error;
@@ -123,7 +122,7 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
         .request()
         .input('cedula_empleado', sql.NVarChar, cedula_empleado)
         .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-        .query('SELECT * FROM Empleado WHERE cedula_empresa = @cedula_empresa AND cedula_empleado = @cedula_empleado');
+        .query('EXEC obtenerDatosEmpleado @cedula_empleado, @cedula_empresa');
       if (result.recordset.length > 0) {
         // Si se encontró un empleado, se retorna
         return result.recordset[0];

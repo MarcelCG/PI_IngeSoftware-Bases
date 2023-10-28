@@ -1,16 +1,19 @@
 import React from "react";
 import axios from 'axios';
 import {useForm} from 'react-hook-form'
-import { useParams } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import 'react-toastify/dist/ReactToastify.css';
-import "bootstrap/dist/js/bootstrap.bundle.min";
+import { useNavigate } from 'react-router-dom';
+import { useAutent } from "../../contexto/ContextoAutenticacion";
 import { ToastContainer, toast } from 'react-toastify';
+import { URLApi } from '../Compartido/Constantes';
 
-const URI = 'http://localhost:5000/api/registrarEmpleado/';
+const URI = URLApi+'registrarEmpleado/';
 
 const AddEmployee = () => {
-  const {empresa} = useParams();
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado.cedula_empresa;
+
+  const navegar = useNavigate();
+  
   const {register, handleSubmit, 
     formState: {errors},
     watch,
@@ -28,23 +31,39 @@ const AddEmployee = () => {
       reset();
     }
     catch (error) {
-      console.log("Error: ", error);
+        console.log(error)
+        if (error.response && error.response.status === 409
+            && error.response.data 
+            && error.response.data.message === 'Empleado ya existe') {
+            console.error(error.response.data.error, error);
+            // Muestra una notificación de error
+            toast.error('Ya existe un usuario con la cedula digitada', {
+                position: toast.POSITION.TOP_CENTER
+            });
+        } else {
+            console.error('Error en la solicitud POST:', error);
+            // Muestra una notificación de error
+            toast.error('Hubo un error inesperado al agregar el empleado, trate de nuevo', {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
     }
   });
 
     return (
       <>
-        <div className='container col-5 position-static'>
+        <div className='container col-6 position-static ventana'>
           <div className='card border-dark shadow m-3'>
-                <div className='card-header'>
+                <div className='card-header titulo-ventana'>
                     <h3 className='mt-2'>Registrar Empleado</h3>
                 </div>
                 <div className='card-body'>
                     <form className='px-4 row py-3' onSubmit={onSubmit}>
                         <div className='col-6'>
                             <div className='mt-2'>
-                                <label htmlFor="cedula">Numero de Cedula</label>
+                                <label htmlFor="cedula">Número de Cédula:</label>
                                 <input type="text" 
+                                    className={`form-control ${errors.cedula ? ' is-invalid' : ''}`}
                                     {...register("cedula", {
                                         required: {
                                             value: true,
@@ -56,11 +75,12 @@ const AddEmployee = () => {
                                         }
                                     })} placeholder='1-2345-6789'
                                 />
-                                { errors.cedula && <span>{errors.cedula.message}</span>}
                             </div>
+                            { errors.cedula && <span className="text-danger">{errors.cedula.message}</span>}
                             <div className='mt-2'>
-                                <label htmlFor="contrasena">Contraseña</label>
+                                <label htmlFor="contrasena">Contraseña:</label>
                                 <input type="password"
+                                    className={`form-control ${errors.contrasena ? ' is-invalid' : ''}`}
                                     {...register("contrasena", {
                                         required: {
                                             value: true,
@@ -73,11 +93,12 @@ const AddEmployee = () => {
                                         }
                                     })}
                                 />
-                                { errors.contrasena && <span>{errors.contrasena.message}</span>}
                             </div>
+                            { errors.contrasena && <span className="text-danger">{errors.contrasena.message}</span>}
                             <div className='mt-2'>
-                                <label htmlFor="nombre">Nombre</label>
+                                <label htmlFor="nombre">Nombre:</label>
                                 <input type="text"
+                                    className={`form-control ${errors.nombre ? ' is-invalid' : ''}`}
                                     {...register("nombre", {
                                         required: {
                                             value: true,
@@ -95,11 +116,12 @@ const AddEmployee = () => {
                                         }
                                     })}
                                 />
-                                { errors.nombre && <span>{errors.nombre.message}</span>}
                             </div>
+                            { errors.nombre && <span className="text-danger">{errors.nombre.message}</span>}
                             <div className='mt-2'>
-                                <label htmlFor="primer_apellido">Primer Apellido</label>
+                                <label htmlFor="primer_apellido">Primer Apellido:</label>
                                 <input type="text"
+                                    className={`form-control ${errors.primer_apellido ? ' is-invalid' : ''}`}
                                     {...register("primer_apellido", {
                                         required: {
                                             value: true,
@@ -117,11 +139,12 @@ const AddEmployee = () => {
                                         }
                                     })}
                                 />
-                                { errors.primer_apellido && <span>{errors.primer_apellido.message}</span>}
                             </div>
+                            { errors.primer_apellido && <span className="text-danger">{errors.primer_apellido.message}</span>}
                             <div className='mt-2'>
-                                <label htmlFor="segundo_apellido">Segundo Apellido</label>
+                                <label htmlFor="segundo_apellido">Segundo Apellido:</label>
                                 <input type="text"
+                                    className={`form-control ${errors.segundo_apellido ? ' is-invalid' : ''}`}
                                     {...register("segundo_apellido", {
                                         required: {
                                             value: true,
@@ -139,11 +162,12 @@ const AddEmployee = () => {
                                         }
                                     })}
                                 />
-                                { errors.segundo_apellido && <span>{errors.segundo_apellido.message}</span>} 
                             </div>
+                            { errors.segundo_apellido && <span className="text-danger">{errors.segundo_apellido.message}</span>} 
                             <div className='mt-2'>
-                                <label htmlFor="rol">Rol</label>
+                                <label htmlFor="rol">Rol:</label>
                                     <input type="text"
+                                    className={`form-control ${errors.rol ? ' is-invalid' : ''}`}
                                     {...register("rol", {
                                         required: {
                                             value: true,
@@ -161,13 +185,14 @@ const AddEmployee = () => {
                                         }
                                     })}
                                 />
-                                { errors.rol && <span>{errors.rol.message}</span>}
                             </div>
+                            { errors.rol && <span className="text-danger">{errors.rol.message}</span>}
                         </div>
                         <div className='col-6'>
                             <div className='mt-2'>
-                                <label htmlFor="telefono1">Numero de telefono</label>
+                                <label htmlFor="telefono1">Número de teléfono:</label>
                                     <input type="text"
+                                    className={`form-control ${errors.telefono1 ? ' is-invalid' : ''}`}
                                     {...register("telefono1", {
                                         required: {
                                             value: true,
@@ -179,11 +204,12 @@ const AddEmployee = () => {
                                         }
                                     })}
                                 />
-                                { errors.telefono1 && <span>{errors.telefono1.message}</span>}
-                            </div>                      
+                            </div>
+                            { errors.telefono1 && <span className="text-danger">{errors.telefono1.message}</span>}                      
                             <div className='mt-2'>
-                                <label htmlFor="telefono2">Numero de telefono</label>
+                                <label htmlFor="telefono2">Número de teléfono opcional:</label>
                                     <input type="text"
+                                    className={`form-control ${errors.telefono2 ? ' is-invalid' : ''}`}
                                     {...register("telefono2", {
                                         pattern: {
                                             value: /^[24678][0-9]{3}-[0-9]{4}$/,
@@ -198,11 +224,12 @@ const AddEmployee = () => {
                                         }
                                     })} placeholder='Opcional*'
                                 />
-                                { errors.telefono2 && <span>{errors.telefono2.message}</span>}
-                            </div>      
+                            </div>
+                            { errors.telefono2 && <span className="text-danger">{errors.telefono2.message}</span>}      
                             <div className='mt-2'>
-                                <label htmlFor="correo1">Correo</label>
+                                <label htmlFor="correo1">Correo:</label>
                                     <input type="email"
+                                    className={`form-control ${errors.correo1 ? ' is-invalid' : ''}`}
                                     {...register("correo1", {
                                     required: {    
                                         value: true,
@@ -214,11 +241,12 @@ const AddEmployee = () => {
                                     }
                                     })}
                                 />
-                                { errors.correo1 && <span>{errors.correo1.message}</span>}
-                            </div> 
+                            </div>
+                            { errors.correo1 && <span className="text-danger">{errors.correo1.message}</span>} 
                             <div className='mt-2'>
-                                <label htmlFor="correo2">Correo</label>
+                                <label htmlFor="correo2">Correo opcional:</label>
                                     <input type="email"
+                                    className={`form-control ${errors.correo2 ? ' is-invalid' : ''}`}
                                     {...register("correo2", {
                                     pattern: {
                                         value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
@@ -233,26 +261,28 @@ const AddEmployee = () => {
                                     }
                                     })} placeholder='Opcional*'
                                 />
-                                { errors.correo2 && <span>{errors.correo2.message}</span>}
-                            </div>   
+                            </div> 
+                            { errors.correo2 && <span className="text-danger">{errors.correo2.message}</span>}  
                             <div className='mt-2'>
-                                <label htmlFor="fecha_contratacion">Fecha de Contratacion</label>
+                                <label htmlFor="fecha_contratacion">Fecha de Contratación:</label>
                                 <input type="date"
+                                    className={`form-control ${errors.fecha_contratacion ? ' is-invalid' : ''}`}
                                     {...register("fecha_contratacion", {
                                         required: true
                                     })}
                                 />
-                                { errors.fecha_contratacion && <span>La fecha de contratacion es requerida</span>}
-                            </div>    
-                            <div className='mt-2'>
-                                <label htmlFor="empleador">Empleador</label>
-                                <input type="text" disabled/>
                             </div>
+                            { errors.fecha_contratacion && <span className="text-danger">La fecha de contratación es requerida</span>}
                         </div>
                         <div className='d-flex justify-content-end mt-3'>
                             <div className='align-items-right text-align-right float-right'>
-                                <button type='button' onClick={() => reset()} className='btn btn-danger me-2'>Cancelar</button>
-                                <button className='btn btn-success' type='submit'>Agregar</button>
+                                <button type='button' 
+                                    onClick={() => {
+                                        reset();
+                                        navegar('/app/empleados');
+                                    }} 
+                                    className='btn btn-danger me-2'>Cancelar</button>
+                                <button className='btn btn-primary' type='submit'>Agregar</button>
                             </div>
                         </div>
                     </form>

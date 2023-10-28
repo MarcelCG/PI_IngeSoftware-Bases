@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useAutent } from '../../contexto/ContextoAutenticacion';
 import 'bootstrap/dist/css/bootstrap.css';
+import {URLApi} from '../Compartido/Constantes';
 import axios from 'axios';
 
 function VisualizarEmpresa() {
-  const { empresa } = useParams();
+  const {usuarioAutenticado} = useAutent();
+  const empresa = usuarioAutenticado.cedula_empresa;
   // Se definen los valores iniciales para los atributos de la empresa
   const [datosEmpresa, setDatosDeEmpresa] = useState({
     nombre: "",
@@ -16,7 +18,7 @@ function VisualizarEmpresa() {
   useEffect(() => {
   async function cargarDatosEmpresa() {
       try {
-        const response = await axios.get(`http://localhost:5000/api/empresa/getEmpresaInfo/${empresa}`);
+        const response = await axios.get(`${URLApi}empresa/getEmpresaInfo/${empresa}`);
         
         if (response.status === 200) {
 
@@ -26,8 +28,8 @@ function VisualizarEmpresa() {
           setDatosDeEmpresa({
             nombre: data.nombre,
             cedula_juridica: data.cedula_juridica,
-            telefono: data.telefono[1]?.telefono || '',
-            correo: data.correo[1]?.correo || '',
+            telefono: data.telefono1,
+            correo: data.correo1
           });
         } else if (response.status === 404) {
           throw new Error('Empresa no encontrada');
@@ -50,14 +52,11 @@ function VisualizarEmpresa() {
 
   // Llama a la función para cargar los datos del empleado cuando se carga el componente (Base de datos)
   return (
-    <div className="container mt-4">
+    <div className="container mt-2">
       <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card mb-3">
-            <div className="card-header" style={{ backgroundColor: '#4f709c', color: '#ffffff' }}>
-              <h5 className="text-center mb-0">Información de la empresa</h5>
-            </div>
-            <div className="card-body">
+        <div>
+          <div className="mb-3">
+            <div className="card-body p-0">
               <p><strong>Nombre:</strong> {datosEmpresa.nombre}</p>
               <p><strong>Cédula Juridica:</strong> {datosEmpresa.cedula_juridica}</p>
               <p><strong>Telefono:</strong> {datosEmpresa.telefono}</p>
