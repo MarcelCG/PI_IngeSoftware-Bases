@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
-import 'bootstrap/dist/css/bootstrap.css';
 import { URLApi } from '../Compartido/Constantes';
 import axios from 'axios';
 
@@ -15,7 +14,10 @@ function VisualizarEmpleadorPorCedula() {
     primer_apellido: "",
     segundo_apellido: "",
     correo1: "",
+    correo2: "",
     cedula: "",
+    telefono1: "",
+    telefono2: "",
     nombre_empresa: ""
   });
 
@@ -42,35 +44,21 @@ function VisualizarEmpleadorPorCedula() {
   }, [cedulaEmpleador]);
 
   return (
-    <div className="container">
-      <h2 className="text-center mb-4">Información del Empleador</h2>
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-header">
-              <h5 className="mb-0">Datos Personales</h5>
-            </div>
-            <div className="card-body">
-              <p><strong>Nombre: </strong>{datosEmpleador.nombre}</p>
-              <p><strong>Primer Apellido: </strong>{datosEmpleador.primer_apellido}</p>
-              <p><strong>Segundo Apellido: </strong>{datosEmpleador.segundo_apellido}</p>
-              <p><strong>Correo: </strong>{datosEmpleador.correo1}</p>
-              <p><strong>Cédula: </strong> {datosEmpleador.cedula}</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-header">
-              <h5 className="mb-0">Datos de la Empresa</h5>
-            </div>
-            <div className="card-body">
-              <p><strong>Nombre de la Empresa: </strong>{datosEmpleador.nombre_empresa}</p>
-            </div>
-          </div>
-        </div>
+    <div>
+      <div className="card-body">
+        <p><strong>Nombre: </strong>{datosEmpleador.nombre}</p>
+        <p><strong>Primer Apellido: </strong>{datosEmpleador.primer_apellido}</p>
+        <p><strong>Segundo Apellido: </strong>{datosEmpleador.segundo_apellido}</p>
+        <p><strong>Cédula: </strong> {datosEmpleador.cedula}</p>
+        <p><strong>Correos: </strong>{datosEmpleador.correo1} &nbsp;
+          {datosEmpleador.correo2 ? datosEmpleador.correo2 : ''}
+        </p>
+        <p><strong>Teléfonos: </strong>{datosEmpleador.telefono1} &nbsp;
+          {datosEmpleador.telefono2 ? datosEmpleador.telefono2 : ''}
+        </p>
       </div>
     </div>
+          
   );
 }
 

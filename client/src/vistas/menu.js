@@ -31,7 +31,7 @@ export function MenuEmpleador() {
     { to: '/app', label: 'Inicio' },
     { to: '/app/empleados', label: 'Empleados' },
     { to: '/app/politicas', label: 'Políticas' },
-    { to: '/app/empresa', label: 'Empresa' },
+    { to: '/app/solicitudes', label: 'Solicitudes'}
   ];
 
   return (
@@ -43,7 +43,8 @@ export function MenuEmpleado() {
 
   const enlaces = [
     { to: '/app', label: 'Inicio' },
-    { to: '/app/perfil', label: 'Perfil' },
+    { to: '/app/politicas', label: 'Políticas' },
+    { to: '/app/solicitudes', label: 'Solicitudes'}
   ];
 
   return (

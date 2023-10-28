@@ -1,0 +1,207 @@
+// Importa boostrap
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+$color-primario: #243A69;
+$color-secundario: #5b88a5;
+$color-blanco: #FFFFFF;
+$color-rojo: #990000;
+$color-rojo-secundario: #660000;
+$color-gris: #f4f4f2;
+
+.btn-primary {
+    @extend .btn; // Utiliza las propiedades base de .btn de Bootstrap
+    background-color: $color-secundario !important; // Cambia el color de fondo
+    border-color: $color-secundario !important; // Cambia el color del borde
+    color: $color-blanco !important; // Cambia el color del texto
+    
+    &:hover {
+      background-color: $color-primario !important; // Cambia el color de fondo al pasar el mouse
+      border-color: $color-primario !important; // Cambia el color del borde al pasar el mouse
+    }
+  }
+
+.page-link{
+    background-color: $color-secundario !important;
+    color: $color-blanco !important;
+}
+
+.active .page-link {
+    background-color: $color-primario !important;
+}
+
+.btn-danger {
+    @extend .btn; // Utiliza las propiedades base de .btn de Bootstrap
+    background-color: $color-rojo !important; // Cambia el color de fondo
+    border-color: $color-rojo !important; // Cambia el color del borde
+    color: $color-blanco !important; // Cambia el color del texto
+
+    &:hover {
+        background-color: $color-rojo-secundario !important; // Cambia el color de fondo al pasar el mouse
+        border-color: $color-rojo-secundario !important; // Cambia el color del borde al pasar el mouse
+    }
+}
+
+.btn-close {
+  color: $color-blanco !important;
+}
+
+/* Estilos generales para la aplicación */
+.App {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+  }
+  
+  header {
+    background-color: $color-blanco; /* Fondo azul */
+    color: $color-blanco; /* Texto blanco */
+    padding: 16px;
+    text-align: center;
+  }
+  
+  button {
+    background-color: #2d3645; /* Fondo azul */
+    color: $color-blanco; /* Texto blanco */
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #4f709c; /* Fondo azul oscuro al pasar el mouse */
+  }
+  
+  /* Estilos para el menú lateral */
+  .menu {
+    background-color: $color-primario; /* Fondo azul */
+    color: $color-blanco; /* Texto blanco */
+    position: fixed;
+    align-items: center;
+    height: 3rem;
+    margin-bottom: 5rem;
+    z-index: 100;
+  }
+  
+  .menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu li {
+    padding: 8px 16px;
+    display: inline-block;
+  }
+  
+  /* Estilos para los enlaces del menú */
+  .menu a {
+    text-decoration: none;
+    color: $color-blanco; /* Texto blanco */
+    font-weight: bold;
+  }
+  
+  .menu li:hover {
+    background-color: #4f709c; /* Texto azul oscuro al pasar el mouse */
+  }
+  
+  .menu img {
+    height: 3rem;
+  }
+  
+  .menu .perfil{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .menu .perfil .img-fluid {
+    max-height: 2rem;
+    margin-right: 5px;
+  }
+  
+  /* Estilos para el contenido principal */
+  .content {
+    margin-left: 220px; /* Espacio para el menú lateral */
+    padding: 16px;
+  }
+  
+  /* App.css */
+  .bg-fondo  {
+    background-color: $color-blanco;
+  }
+
+  .ventana {
+    margin-top: 3.5rem;
+  }
+
+  .titulo-ventana{
+  background-color: $color-secundario !important;
+    color: $color-blanco !important;
+    text-align: center;
+  }
+
+  .titulo-pagina{
+    height: 3rem;
+    width: 100vw;
+    margin: 0;
+    position: relative;
+    left: 0;
+    margin-top: 3rem;
+    background-color: $color-secundario;
+    color: $color-blanco;
+    z-index: 50;
+  }
+  
+  .mt-titulo {
+    margin-top: 6rem;
+  }
+
+  .busqueda {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    height: 3rem;
+    margin-top: 1rem;
+  }
+  
+  .busqueda .icono, .busqueda .campo, .busqueda .opciones{
+    height: 3rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .continuar {
+    height: 3rem;
+    display: flex; /* Hacer que el contenedor sea un contenedor flexible */
+    align-items: center; /* Centrar verticalmente los elementos hijos */
+    justify-content: center; /* Centrar horizontalmente los elementos hijos */
+    margin-top: 1rem !important;
+  }
+
+  .busqueda .opciones {
+    background-color: $color-gris;
+    text-align: center;
+  }
+  
+  .busqueda .icono {
+    margin-top: 0; /* Asegura que el ícono no tenga margen superior */
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0 ;
+  }
+
+  .busqueda .opciones {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px ;
+  }
+
+  footer{
+    height: 2rem;
+    margin-top: auto;
+    vertical-align: middle;
+    background-color: $color-primario;
+    color: $color-blanco;
+    font-weight: bold;
+  }
+  

@@ -122,7 +122,7 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
         .request()
         .input('cedula_empleado', sql.NVarChar, cedula_empleado)
         .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-        .query('SELECT * FROM Empleado WHERE cedula_empresa = @cedula_empresa AND cedula_empleado = @cedula_empleado');
+        .query('EXEC obtenerDatosEmpleado @cedula_empleado, @cedula_empresa');
       if (result.recordset.length > 0) {
         // Si se encontró un empleado, se retorna
         return result.recordset[0];

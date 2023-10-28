@@ -82,10 +82,60 @@ async function createLibre(cedula_empleado, titulo_politica, cedula_empresa, dia
     }
 }
 
+async function actualizarTodos(nuevosLibres, cedula_empresa) {
+  try {
+    if (!nuevosLibres || nuevosLibres.length === 0) {
+      return 0;
+    }
+    const pool = await sql.connect(dbConfig);
+    const request = pool.request();
+    const valores = nuevosLibres.map(Lib =>`(
+      '${Lib.cedula_empleado}',
+      '${Lib.titulo_politica}',
+      '${cedula_empresa}',
+      `+Lib.dias_libres_disponibles+`,
+      `+0+`,
+      '${Lib.ultima_actualizacion}')`
+    );
+   const query = `
+     INSERT INTO Libres (
+         cedula_empleado,
+         titulo_politica,
+         cedula_empresa,
+         dias_libres_disponibles,
+         dias_libres_utilizados,
+         ultima_actualizacion)
+     VALUES
+         ${valores.join(', ')}
+   `;
+    const empleadosModificados = await request.query(query);
+    return empleadosModificados;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+// Obtener registros de la tabla Libres por cédula de empleado
+async function obtenerPorEmpresa(cedula_empresa) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const result = await pool
+          .request()
+          .input('cedula_empresa', sql.NVarChar, cedula_empresa)
+          .query('SELECT * FROM Libres WHERE cedula_empresa = @cedula_empresa');
+      return result.recordset;
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getAll,
     getByEmpleado,
     getByPolitica,
     getByEmpleadoAndPolitica,
-    createLibre
+    createLibre,
+    obtenerPorEmpresa,
+    actualizarTodos
 };
