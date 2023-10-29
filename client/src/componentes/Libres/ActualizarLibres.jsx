@@ -12,7 +12,7 @@ export const ActualizarTiempoLibre = () => {
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa; 
   const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
-  const esPrimeroDelMes = true;/*new Date().getDate() === 20;*/
+  const esPrimeroDelMes = new Date().getDate() === 1;
 
 	const cargarDatos = async() => {
 		setCargando(true);

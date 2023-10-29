@@ -97,27 +97,31 @@ async function getEmpresaByCedulaEmpleador(cedula_empleador){
   }
 }
 
-async function editarEmpresa(cedula_juridica, nuevosDatosEmpresa) {
+async function editarEmpresa(empresa) {
   try {
     const pool = await sql.connect(dbConfig);
-    const resultado = await pool
-      .request()
-      .input('cedula_juridica', sql.VarChar, cedula_juridica)
-      .input('nombre', sql.VarChar, nuevosDatosEmpresa.nombre)
-      .input('cedula_empleador', sql.VarChar, nuevosDatosEmpresa.cedula_empleador)
-      .query(`
-        UPDATE Empresa
-        SET
-          nombre = @nombre,
-          cedula_empleador = @cedula_empleador
-        WHERE cedula_juridica = @cedula_juridica
-      `);
-    return resultado.rowsAffected > 0;
+    const request = pool.request();
+    request.input('nombre', sql.NVarChar, empresa.nombre);
+    request.input('correo1', sql.NVarChar, empresa.correo1);
+    request.input('correo2', sql.NVarChar, empresa.correo2);
+    request.input('telefono1', sql.NVarChar, empresa.telefono1);
+    request.input('telefono2', sql.NVarChar, empresa.telefono2);
+    request.input('cedula_juridica', sql.NVarChar, empresa.cedula_juridica);
+    const query = `
+      UPDATE Empresa SET
+      nombre = @nombre,
+      correo1 = @correo1,
+      correo2 = @correo2,
+      telefono1 = @telefono1,
+      telefono2 = @telefono2
+      WHERE cedula_juridica = @cedula_juridica
+    `;
+    const result = await request.query(query);
+    return result.rowsAffected > 0;
   } catch (error) {
     throw error;
   }
-}
-
+};
 
 module.exports = {
   getAll,
