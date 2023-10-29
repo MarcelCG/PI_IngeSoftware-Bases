@@ -36,12 +36,11 @@ export const Modal = (props) => {
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </div>)}
-          {tamanio === "modal-lg" ? (
-            <> {componente} </>
-          ) : (
-            <> {componente} </>
-            // <div className="modal-body">{componente}</div>
-          )}
+          
+          {tamanio === "modal-lg" ? 
+          ( <> {componente} </>) : 
+          ( <div className="modal-body">{componente}</div>)}
+
           <div className="modal-footer">
             {footer ? (
               footer
