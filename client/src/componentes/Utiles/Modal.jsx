@@ -37,7 +37,7 @@ export const Modal = (props) => {
                 footerPersonalizado
               ) : (
                 <div>
-                  <button type="button" className="btn btn-primary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" className="btn-primary" data-bs-dismiss="modal">Cerrar</button>
                   {boton && (
                   <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>{boton}</button>
                   )}
