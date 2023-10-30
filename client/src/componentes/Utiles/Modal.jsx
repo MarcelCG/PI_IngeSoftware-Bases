@@ -20,7 +20,7 @@ export const setModal = (setModalValores, props) => {
 
 export const Modal = (props) => {
 
-  const {modalID, titulo, tituloEstilos, componente, boton, funcion, tamanio, footer} = props;
+  const {modalID, titulo, tituloEstilos, componente, boton, funcion, tamanio, footerPersonalizado} = props;
 
  // useEffect(() => { }, [componente]);
 

@@ -7,6 +7,7 @@ import {faTrash, faPlus, faEye }
 import React, {useState} from "react";
 import FiltrarSolicitudes from './filtrarSolicitudes.js'
 import { Link } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 export const VerSolicitudesHTML = (props) => {
 	const {
@@ -151,6 +152,7 @@ export const VerSolicitudesHTML = (props) => {
                     </nav>
             </div>
         </div>
+        <ToastContainer/>
     </div>
 	);
 }
