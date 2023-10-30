@@ -10,5 +10,6 @@ router.get('/byCedulaEmpleador/:cedula_empleador', EmpresaController.getEmpresaB
 router.get('/porCedulaEmpleado/:cedula_empleado', EmpresaController.obtenerEmpresaPorCedulaEmpleado);
 router.get('/getEmpresaInfo/:empresa', EmpresaController.getEmpresaInfo);
 router.put('/editar/:empresa', EmpresaController.editarEmpresa);
+router.post('/borrar/:cedula_juridica', EmpresaController.borrarEmpresa);
 
 module.exports = router;
