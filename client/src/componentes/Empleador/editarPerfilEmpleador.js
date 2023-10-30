@@ -8,58 +8,27 @@ import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import EditarEmpleadoHTML from './editarEmpleadoHTML';
+import EditarPerfilEmpleadorHTML from './editarPerfilEmpleadorHTML';
 
-
-const EditarEmpleado = () => {
+const EditarPerfilEmpleador = () => {
 
   const { cedula } = useParams();
   const navigate = useNavigate();
 
-  const [datosEmpleado, setDatosEmpleado] = useState({
-    cedula: "",
-    contrasena: "",
+  const [datosEmpleador, setDatosEmpleador] = useState({
     nombre: "",
     primer_apellido: "",
     segundo_apellido: "",
-    rol: "",
-    telefono1: "",
-    telefono2: "",
     correo1: "",
-    correo2: "",
-    fecha_contratacion: ""
+    correo2:"",
+    cedula: "",
+    telefono1:"",
+    telefono2:"",
+    nombre_empresa: ""
   });
 
-  const URIInfoEmpleados = URLApi+`empleados/byCedula/${cedula}`;
   const URIInfoUsuarios = URLApi+`usuario/byCedula/${cedula}`;
-  const URIActualizarDatos = URLApi+`editarEmpleado/`;
 
-// Función para obtener la primera parte de los datos (de la tabla EMPLEADO).
-const obtenerInfoEmpleado = async () => {
-    try {
-      const respuesta = await axios.get(URIInfoEmpleados);
-      const datosEmpleado = respuesta.data;
-
-      // Se da formato a la fecha obtenida de la base de datos.
-      const fechaContratacion = new Date(datosEmpleado.fecha_contratacion);
-      const año = fechaContratacion.getUTCFullYear();
-      const mes = fechaContratacion.getUTCMonth() + 1;
-      const dia = fechaContratacion.getUTCDate();
-      const fechaContratacionFormateada = `${año}-${mes.toString().padStart(2, 
-        '0')}-${dia.toString().padStart(2, '0')}`;
-      reset();
-
-      // Actualiza el estado con los datos de la tabla EMPLEADO.
-      setDatosEmpleado((prevData) => ({ ...prevData, ...datosEmpleado, 
-        fecha_contratacion: fechaContratacionFormateada }));
-
-      reset();
-
-    } catch (error) {
-      console.error('Error al obtener datos del empleado de la tabla EMPLEADO:', error);
-    } 
-  };
-  
   // Función para obtener la primera parte de los datos (de la tabla USUARIO).
   const obtenerInfoUsuarios = async () => {
     try {
@@ -67,7 +36,7 @@ const obtenerInfoEmpleado = async () => {
       const datos = respuesta.data;
 
       // Actualiza el estado con los datos de la tabla USUARIO.
-      setDatosEmpleado((prevData) => ({ ...prevData, ...datos }));
+      setDatosEmpleador((prevData) => ({ ...prevData, ...datos }));
 
       reset();
 
@@ -78,7 +47,6 @@ const obtenerInfoEmpleado = async () => {
 
   // Llamado a las funciones para obtener datos del empleado.
   useEffect(() => {
-    obtenerInfoEmpleado();
     obtenerInfoUsuarios();
   }, []);
 
@@ -92,20 +60,20 @@ const obtenerInfoEmpleado = async () => {
     mode: 'onSubmit',
   });
 
+  const URIActualizarDatos = URLApi + `editarEmpleador/`;
+
   const onSubmit = handleSubmit(async (data) => {
 
     // Realiza la solicitud de actualización de datos del empleado con los nuevos valores.
     try {
-      
+        console.log(data);
         data.cedula=cedula;
         const respuesta = await axios.post(URIActualizarDatos, data);
-        console.log('Solicitud POST exitosa:', respuesta.data);
-
         toast.success('Empleado editado con éxito', {
-          position: toast.POSITION.TOP_RIGHT
+            position: toast.POSITION.TOP_RIGHT
         });
         setTimeout(() => {
-          navigate(-1);
+            navigate(-1);
         }, 3000);
 
     } catch (error) {
@@ -120,17 +88,17 @@ const obtenerInfoEmpleado = async () => {
   const handleCancelClick = () => {
     navigate(-1);
   };
-
     return (
-      <EditarEmpleadoHTML 
+      <EditarPerfilEmpleadorHTML 
       onSubmit = {handleSubmit(onSubmit)}
-      datosEmpleado = {datosEmpleado}
+      datosEmpleador = {datosEmpleador}
       register = {register}
       errors = {errors}
       watch = {watch}
-      handleCancelClick = {handleCancelClick}
+      handleCancelClick ={handleCancelClick}
       />
     )
 }
 
-export default EditarEmpleado;
+export default EditarPerfilEmpleador;
+

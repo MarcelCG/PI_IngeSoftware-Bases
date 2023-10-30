@@ -1,45 +1,27 @@
 import React from "react";
 import { ToastContainer} from 'react-toastify';
-import { Link } from 'react-router-dom';
 
-const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handleCancelClick}) => {
+const EditarPerfilEmpleadorHTML  = ({datosEmpleador,onSubmit,register,errors,watch,handleCancelClick}) => {
     return (
         <>
         <div className="mt-titulo">
             <div className='container col-5 position-static mt-5'>
             <div className='card border-dark shadow m-3'>
                     <div className='card-header'>
-                        <h3 className='mt-2'>Editar Empleado</h3>
+                        <h3 className='mt-2'>Editar Empleador</h3>
                     </div>
                     <div className='card-body'>
                         <form className='px-4 row py-3' onSubmit={onSubmit}>
                             <div className='col-6'>
                                 <div className='mt-2'>
                                     <label htmlFor="cedula">Numero de Cedula</label>
-                                    <input type="text" defaultValue={datosEmpleado.cedula}
+                                    <input type="text" defaultValue={datosEmpleador.cedula}
                                         disabled
                                     />
                                 </div>
                                 <div className='mt-2'>
-                                    <label htmlFor="contrasena">Contraseña</label>
-                                    <input type="password" defaultValue={datosEmpleado.contrasena}
-                                        {...register("contrasena", {
-                                            required: {
-                                                value: true,
-                                                message: "La contraseña es requerida"
-                                            },
-                                            minLength: {
-                                                value: 6,
-                                                message: "La contraseña debe tener "
-                                                        + "minimo 6 caracteres"
-                                            }
-                                        })}
-                                    />
-                                    { errors.contrasena && <span>{errors.contrasena.message}</span>}
-                                </div>
-                                <div className='mt-2'>
                                     <label htmlFor="nombre">Nombre</label>
-                                    <input type="text" defaultValue={datosEmpleado.nombre}
+                                    <input type="text" defaultValue={datosEmpleador.nombre}
                                         {...register("nombre", {
                                             required: {
                                                 value: true,
@@ -61,7 +43,7 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                 </div>
                                 <div className='mt-2'>
                                     <label htmlFor="primer_apellido">Primer Apellido</label>
-                                    <input type="text" defaultValue={datosEmpleado.primer_apellido}
+                                    <input type="text" defaultValue={datosEmpleador.primer_apellido}
                                         {...register("primer_apellido", {
                                             required: {
                                                 value: true,
@@ -83,7 +65,7 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                 </div>
                                 <div className='mt-2'>
                                     <label htmlFor="segundo_apellido">Segundo Apellido</label>
-                                    <input type="text" defaultValue={datosEmpleado.segundo_apellido}
+                                    <input type="text" defaultValue={datosEmpleador.segundo_apellido}
                                         {...register("segundo_apellido", {
                                             required: {
                                                 value: true,
@@ -103,33 +85,11 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                     />
                                     { errors.segundo_apellido && <span>{errors.segundo_apellido.message}</span>} 
                                 </div>
-                                <div className='mt-2'>
-                                    <label htmlFor="rol">Rol</label>
-                                        <input type="text" defaultValue={datosEmpleado.rol}
-                                        {...register("rol", {
-                                            required: {
-                                                value: true,
-                                                message: "El rol es requerido"
-                                            },
-                                            minLength: {
-                                                value: 2,
-                                                message: "El rol debe tener al "
-                                                        + "menos 2 caracteres"
-                                            },
-                                            maxLength: {
-                                                value: 30,
-                                                message: "El rol debe tener maximo "
-                                                + "30 caracteres"
-                                            }
-                                        })}
-                                    />
-                                    { errors.rol && <span>{errors.rol.message}</span>}
-                                </div>
                             </div>
                             <div className='col-6'>
                                 <div className='mt-2'>
                                     <label htmlFor="telefono1">Numero de telefono</label>
-                                        <input type="text" defaultValue={datosEmpleado.telefono1}
+                                        <input type="text" defaultValue={datosEmpleador.telefono1}
                                         {...register("telefono1", {
                                             required: {
                                                 value: true,
@@ -145,7 +105,7 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                 </div>                      
                                 <div className='mt-2'>
                                     <label htmlFor="telefono2">Numero de telefono opcional</label>
-                                        <input type="text" defaultValue={datosEmpleado.telefono2}
+                                        <input type="text" defaultValue={datosEmpleador.telefono2}
                                         {...register("telefono2", {
                                             pattern: {
                                                 value: /^[24678][0-9]{3}-[0-9]{4}$/,
@@ -164,7 +124,7 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                 </div>      
                                 <div className='mt-2'>
                                     <label htmlFor="correo1">Correo</label>
-                                        <input type="email" defaultValue={datosEmpleado.correo1}
+                                        <input type="email" defaultValue={datosEmpleador.correo1}
                                         {...register("correo1", {
                                         required: {    
                                             value: true,
@@ -180,7 +140,7 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                 </div> 
                                 <div className='mt-2'>
                                     <label htmlFor="correo2">Correo opcional</label>
-                                        <input type="email" defaultValue={datosEmpleado.correo2}
+                                        <input type="email" defaultValue={datosEmpleador.correo2}
                                         {...register("correo2", {
                                         pattern: {
                                             value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
@@ -197,15 +157,6 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                     />
                                     { errors.correo2 && <span>{errors.correo2.message}</span>}
                                 </div>   
-                                <div className='mt-2'>
-                                    <label htmlFor="fecha_contratacion">Fecha de Contratacion</label>
-                                    <input type="date" defaultValue={datosEmpleado.fecha_contratacion}
-                                        {...register("fecha_contratacion", {
-                                            required: true
-                                        })}
-                                    />
-                                    { errors.fecha_contratacion && <span>La fecha de contratacion es requerida</span>}
-                                </div>
                             </div>
                             <div className='d-flex justify-content-end mt-3'>
                                 <div className='align-items-right text-align-right float-right'>
@@ -223,4 +174,4 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
     );
 }
 
-export default EditarEmpleadoHTML;
+export default EditarPerfilEmpleadorHTML;
