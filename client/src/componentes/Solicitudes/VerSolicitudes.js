@@ -46,14 +46,14 @@ const Solicitudes = () => {
     const [solicitudValores, setSolicitudValores] = useState({
         titulo: "",
         componente: "",
-        footerPersonalizado: ""
+        footer: ""
     });
 
     const abrirModalConfirmar = (accion, solicitud) => {
         setSolicitudValores({
             titulo: "Confirmar",
             componente: <ModalConfirmar/>,
-            footerPersonalizado:<GestionarSolicitudes accion={accion} solicitud={solicitud}/>
+            footer:<GestionarSolicitudes accion={accion} solicitud={solicitud}/>
         })
     }
 
@@ -63,7 +63,7 @@ const Solicitudes = () => {
             ...solicitudValores,
             titulo: "Solicitud",
             componente: <ModalSolicitud {...solicitud}/>,
-            footerPersonalizado: (((esEmpleador === true) && (solicitud.estado === 'Pendiente')) ?
+            footer: (((esEmpleador === true) && (solicitud.estado === 'Pendiente')) ?
             <FooterModalSolicitudEmpleador abrirModalConfirmar={abrirModalConfirmar} solicitud={solicitud}/> : "")
         })
         botonRef.current.click();
