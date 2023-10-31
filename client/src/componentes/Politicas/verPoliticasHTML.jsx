@@ -27,19 +27,19 @@ export const VerPoliticasHTML = (props) => {
 	<div className="container">
 	  {cargando ? (
 	    <div>
-	    <ActualizarTiempoLibre />
-	    <Modal{...props}/>
+		<ActualizarTiempoLibre />
+		<Modal{...props}/>
 	    <div ref={botonRef} 
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
             <div className="row mb-4 col-12 d-flex p-1 align-items-center">
+				<div className="col-10">
+					<BuscarPoliticas politicas={politicas} filtrarPoliticas={filtrarPoliticas} />
+				</div>
                 <Link to="/app/politicas/addPoliticas" className="btn-primary col-2 continuar">
                     <FontAwesomeIcon icon={faPlus} />Agregar
                 </Link>
             </div>
-		<div className="mb-3">
-			<BuscarPoliticas politicas={politicas} filtrarPoliticas={filtrarPoliticas} />
-        </div>
 	      <table className="table table-hover mt-titulo">
 	        <thead>
 	          <tr>

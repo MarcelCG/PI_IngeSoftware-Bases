@@ -8,8 +8,6 @@ function BuscarPoliticas({ politicas, filtrarPoliticas }) {
     const [busqueda, buscar] = useState('');
     const [filtro, filtrarPor] = useState('titulo');
 
-    console.log(politicas);
-
     return (
         <div className="busqueda">
             <button type="submit" name='Buscar' className='btn btn-primary icono'
