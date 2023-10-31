@@ -1,12 +1,8 @@
 const UsuarioModel = require('../../models/usuarioModel/usuariosModel');
-const UsuarioCorreoModel = require('../../models/usuarioModel/correosUsuarioModel');
-const UsuarioTelModel = require('../../models/usuarioModel/telefonosUsuarioModel');
 
 const EmpleadorModel = require('../../models/usuarioModel/Empleador/empleadorModel');
 
 const EmpresaModel = require('../../models/empresaModel/empresasModel');
-const EmpresaCorreoModel = require('../../models/empresaModel/correosEmpresasModel');
-const EmpresaTelModel = require('../../models/empresaModel/telefonosEmpresaModel');
 
 async function RegistrarEmpleador(req, res) {
     try {

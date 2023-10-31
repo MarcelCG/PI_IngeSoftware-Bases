@@ -6,7 +6,10 @@ on:
       - main
       - desarrollo
       - Buscar-Empleado
-      - calcular-tiempos    
+      - calcular-tiempos
+      - visualizar-solicitudes  
+      - Visualizar-Empleado  
+      - Gestionar-Solicitudes
 
 jobs:
   client-tests:
