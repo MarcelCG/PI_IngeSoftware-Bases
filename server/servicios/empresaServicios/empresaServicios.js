@@ -8,6 +8,8 @@ async function editarEmpresa(empresa) {
 };
 
 async function borrarEmpresa(cedula_juridica) {
+  console.log("servicios: ", cedula_juridica);
+  EmpresaModel.borrarEmpresa(cedula_juridica);
 /* const estadoEdicion = await EmpresaModel.borrarEmpresa(cedula_juridica);
    empleados = EmpleadoModel.getallbyEmpresa(cedula_juridica)
    politica = PoliticasModel.getallbyEmpresa(cedula_juridica)

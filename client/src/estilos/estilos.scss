@@ -142,6 +142,11 @@ $color-gris: #f4f4f2;
     text-align: center;
   }
 
+  .titulo-ventana-rojo{
+    @extend .titulo-ventana;
+    background-color: $color-rojo !important;
+  }
+
   .titulo-pagina{
     height: 3rem;
     width: 100vw;

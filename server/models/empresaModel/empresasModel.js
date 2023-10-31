@@ -39,7 +39,6 @@ async function createEmpresa(cedula_juridica, nombre, cedula_empleador,
     throw error;
   }
 }
-
 async function getEmpresaByCedula(cedula_juridica){
   try {
     const pool = await sql.connect(dbConfig);
@@ -123,8 +122,18 @@ async function editarEmpresa(empresa) {
   }
 };
 
+async function borrarEmpresa(cedula_juridica) {
+  try {
+    console.log("model: ", cedula_juridica);
+  }
+  catch(error) {
+
+  }
+};
+
 module.exports = {
   getAll,
+  borrarEmpresa,
   createEmpresa,
   getEmpresaByCedula,
   getEmpresaByCedulaEmpleador,

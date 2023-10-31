@@ -19,8 +19,6 @@ export const setModal = (setModalValores, props) => {
 }
 
 export const Modal = (props) => {
-<<<<<<< HEAD
-
   const {modalID, titulo, tituloEstilos, componente, boton, funcion, tamanio, footer} = props;
 
   return (
@@ -33,25 +31,18 @@ export const Modal = (props) => {
               <button className="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
                 <FontAwesomeIcon icon={faTimes} />
               </button>
-            </div>)}
+            </div>
+          )}
           {tamanio === "modal-lg" ? 
           ( <> {componente} </>) : 
           ( <div className="modal-body">{componente}</div>)}
+          {footer && (
             <div className="modal-footer">
-            {footer ? (
-              footer
-            ) : (
-              <div>
-                {boton && (
-                  <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>
-                    {boton}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+              {footer}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
-}
+};

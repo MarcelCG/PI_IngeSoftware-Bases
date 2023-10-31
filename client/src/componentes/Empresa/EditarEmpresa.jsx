@@ -93,7 +93,9 @@ export const EditarEmpresa = ({ datosEmpresa, botonRef, setModalValores, setDato
 		let errorDesc = "ERROR: Vuelva a intentar mas tarde";
 	  try {
 	  	const empresa = {...formulario};
-	  	const respuesta = await axios.put(`${URLApi}empresa/editar/${empresa}`, {empresa});
+	  	const url = URLApi+`empresa/editar${empresa}`;
+	  	console.log("URL: ", url);
+	  	const respuesta = await axios.put(url, {empresa});
 	  	const exito = 200;
 	  	if(respuesta.status === exito){
 	  		botonRef.current.click();
