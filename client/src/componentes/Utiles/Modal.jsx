@@ -19,11 +19,9 @@ export const setModal = (setModalValores, props) => {
 }
 
 export const Modal = (props) => {
+<<<<<<< HEAD
 
   const {modalID, titulo, tituloEstilos, componente, boton, funcion, tamanio, footer} = props;
-
- // useEffect(() => { }, [componente]);
-  console.log(tituloEstilos);
 
   return (
     <div className={`modal fade ${tamanio}`} id={modalID} tabIndex="-1" aria-labelledby={modalID} aria-hidden="true">
@@ -36,12 +34,10 @@ export const Modal = (props) => {
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </div>)}
-
           {tamanio === "modal-lg" ? 
           ( <> {componente} </>) : 
           ( <div className="modal-body">{componente}</div>)}
-
-          <div className="modal-footer">
+            <div className="modal-footer">
             {footer ? (
               footer
             ) : (

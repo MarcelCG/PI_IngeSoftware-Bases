@@ -27,5 +27,6 @@ async function borrarEmpresa(cedula_juridica) {
 
 
 module.exports = {
-  editarEmpresa
+  editarEmpresa,
+  borrarEmpresa
 };

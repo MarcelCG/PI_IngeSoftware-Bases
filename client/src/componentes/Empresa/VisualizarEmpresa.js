@@ -57,8 +57,10 @@ function VisualizarEmpresa() {
   }
   cargarDatosEmpresa(); 
 }, [empresa]);
+
   const desabilitado = false;
   const props = {desabilitado, setDatosDeEmpresa, datosEmpresa, botonRef, setModalValores, ...modalValores};
+
   return (
     <div className="container mt-2">
       {cargando && (

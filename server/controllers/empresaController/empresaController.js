@@ -148,5 +148,6 @@ module.exports = {
   getEmpresaByCedulaEmpleador,
   getEmpresaInfo,
   editarEmpresa,
+  borrarEmpresa,
   obtenerEmpresaPorCedulaEmpleado,
 };
