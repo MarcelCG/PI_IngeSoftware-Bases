@@ -73,14 +73,42 @@ async function getSolicitudById(id) {
   }
 }
 
+async function aprobarSolicitud (id, estado) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('id', sql.BigInt, id)
+      .input('estado', sql.NVarChar, estado)
+      .execute('ActualizarEstadoSolicitud')
+    return result.rowsAffected > 0;;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function rechazarSolicitud (id, estado) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('id', sql.BigInt, id)
+      .input('estado', sql.NVarChar, estado)
+      .execute('ActualizarEstadoSolicitud')
+    return result.rowsAffected > 0;;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Función para obtener solicitudes por cédula del empleado
 async function getSolicitudByCedula(cedula_empleado) {
     try {
       const pool = await sql.connect(dbConfig);
       const result = await pool
         .request()
-        .input('cedula_empleado', sql.NVarChar, cedula_empleado)
-        .query('SELECT * FROM Solicitud WHERE cedula_empleado = @cedula_empleado');
+        .input('cedula', sql.NVarChar, cedula_empleado)
+        .execute('ObtenerSolicitudesDeEmpleado')
       return result.recordset;
     } catch (error) {
       throw error;
@@ -94,7 +122,7 @@ async function getSolicitudByCedula(cedula_empleado) {
       const result = await pool
         .request()
         .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-        .query('SELECT * FROM Solicitud WHERE cedula_empresa = @cedula_empresa');
+        .execute(`ObtenerSolicitudesDeEmpresa`);
       return result.recordset;
     } catch (error) {
       throw error;
@@ -132,5 +160,7 @@ module.exports = {
   getSolicitudByCedula,
   getSolicitudByEmpresa,
   getSolicitudByCedulaAndEmpresa,
+  aprobarSolicitud,
+  rechazarSolicitud,
   // Agregar otras funciones relacionadas con las solicitudes según sea necesario
 };

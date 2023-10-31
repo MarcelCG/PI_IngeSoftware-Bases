@@ -1,4 +1,5 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
+const Servicio = require('../../servicios/solicitudServicios/solicitudServicios')
 
 // Obtener todas las solicitudes
 async function getAllSolicitudes(req, res) {
@@ -40,6 +41,42 @@ async function createSolicitud(req, res) {
       res.status(201).json({ message: 'Solicitud creada exitosamente' });
     } else {
       res.status(500).json({ message: 'No se pudo crear la solicitud' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function aprobarSolicitud(req, res) {
+  try {
+    const { id } = req.params; // Obtiene el ID de los parámetros de la URL
+    // Llama al servicio de solicitudes
+    const accion = Servicio.aprobarSolicitud(id);
+
+    if (accion) {
+      // Si se pudo aprobar la solicitud, mensaje de exito
+      res.status(200).json('Solicitud aprobada correctamente');
+    } else {
+      // Si no se aprobó una solicitud con ese ID, respondemos con un mensaje de error
+      res.status(404).json({ error: 'Error al aprobar solicitud, recargue la página e intente de nuevo' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function rechazarSolictud(req,res) {
+  try {
+    const { id } = req.params; // Obtiene el ID de los parámetros de la URL
+    // Llama al servicio de solicitudes
+    const accion = Servicio.rechazarSolictud(id);
+
+    if (accion) {
+      // Si se pudo aprobar la solicitud, mensaje de exito
+      res.status(200).json('Solicitud rechazada correctamente');
+    } else {
+      // Si no se aprobó una solicitud con ese ID, respondemos con un mensaje de error
+      res.status(404).json({ error: 'Error al rechazar solicitud, recargue la página e intente de nuevo' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -126,4 +163,6 @@ module.exports = {
   getSolicitudByCedula,
   getSolicitudByEmpresa,
   getSolicitudByCedulaAndEmpresa,
+  aprobarSolicitud,
+  rechazarSolictud,
 };
