@@ -112,6 +112,27 @@ async function getByTituloAndCedula(titulo, cedula_empresa) {
   }
 }
 
+//Funcion que realiza la consulta a la base de datos.
+async function borrarPolitica(titulo,cedula_empresa) {
+  try {
+    //Se trata de establecer la conexion y hacer la consulta.
+    const exito = await sql.connect(dbConfig);
+    const resultado = await exito
+      .request()
+      .input('tituloConsulta', sql.NVarChar, titulo)
+      .input('cedula_empresaConsulta', sql.NVarChar, cedula_empresa)
+      .query('EXEC BorrarPolitica @titulo=@tituloConsulta ,@cedula_empresa=@cedula_empresaConsulta');
+    //Se devuelve al cantidad de lineas modificadas
+    if (resultado.recordset.length > 0) {
+      return resultado.recordset[0];
+    } else {
+      return null;
+    }
+    //En caso de no poder establecer la conexion devuelve el error.
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 module.exports = {
@@ -120,4 +141,5 @@ module.exports = {
   getByTitulo,
   getByCedulaEmpresa,
   getByTituloAndCedula,
+  borrarPolitica
 };
