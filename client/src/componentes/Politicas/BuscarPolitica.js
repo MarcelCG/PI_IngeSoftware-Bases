@@ -1,4 +1,5 @@
 import React from "react";
+import { ajustarFecha } from "./verPolitica";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
@@ -6,6 +7,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 function BuscarPoliticas({ politicas, filtrarPoliticas }) {
     const [busqueda, buscar] = useState('');
     const [filtro, filtrarPor] = useState('titulo');
+
+    console.log(politicas);
 
     return (
         <div className="busqueda">
@@ -38,12 +41,18 @@ function filtrarPolitica({ politicas, filtrarPoliticas, busqueda, filtro }) {
     busqueda = busqueda.trim();
     if (politicas && Array.isArray(politicas)) {
         const politicasFiltradas = politicas.filter((politica) => {
+            // Si la búsqueda está vacía, mostrar todos los resultados
+            if (busqueda === '') {
+                return true;
+            }
             if (filtro === 'titulo') {
                 return politica.titulo.includes(busqueda);
             } else if (filtro === 'fecha_inicio') {
-                return politica.fecha_inicio.includes(busqueda);
+                // Comprobar si la fecha de inicio incluye la fecha de búsqueda
+                return (ajustarFecha(politica.fecha_inicio).startsWith(busqueda));
             } else if (filtro === 'dias_a_dar') {
-                return politica.dias_a_dar.includes(busqueda);
+                // Convertir 'busqueda' a número para la comparación con 'dias_a_dar'
+                return politica.dias_a_dar === parseFloat(busqueda);
             }
             return true; // Si el filtro no coincide con ninguno, no aplicar ningún filtro
         });
@@ -51,6 +60,15 @@ function filtrarPolitica({ politicas, filtrarPoliticas, busqueda, filtro }) {
     } else {
         console.error('Hubo un error al buscar politicas: politicas');
     }
+}
+
+// Función para convertir la fecha a formato ISO
+function convertirAFechaISO(fecha) {
+    // Suponiendo que la fecha viene en formato "dd/mm/yyyy"
+    const partes = fecha.split('/');
+    const fechaISO = new Date(partes[2], partes[1] - 1, partes[0]).toISOString();
+    console.log(`Fecha en ISO: ${fechaISO}`);
+    return fechaISO;
 }
 
 export default BuscarPoliticas;

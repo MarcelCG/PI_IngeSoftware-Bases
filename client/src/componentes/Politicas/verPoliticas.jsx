@@ -16,6 +16,7 @@ export const VerPoliticas = () => {
       try {
         const respuesta = await axios.get(
           `${URLApi}politicas/byCedula/${empresa}`);
+          setPoliticas(respuesta.data);
           filtrarPoliticas(respuesta.data);
         setCargando(true);
       } catch (error) {
