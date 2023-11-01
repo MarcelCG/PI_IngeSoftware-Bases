@@ -196,7 +196,16 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                         })} placeholder='Opcional*'
                                     />
                                     { errors.correo2 && <span>{errors.correo2.message}</span>}
-                                </div>   
+                                </div> 
+                                <div className='mt-2'>
+                                    <label htmlFor="fecha_contratacion">Fecha de Contratacion</label>
+                                    <input type="date" defaultValue={datosEmpleado.fecha_contratacion}
+                                        {...register("fecha_contratacion", {
+                                            required: true
+                                        })}
+                                    />
+                                    { errors.fecha_contratacion && <span>La fecha de contratacion es requerida</span>}
+                                </div>  
                             </div>
                             <div className='d-flex justify-content-end mt-3'>
                                 <div className='align-items-right text-align-right float-right'>
