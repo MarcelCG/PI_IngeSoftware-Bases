@@ -1,4 +1,15 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
+const Empleado = require('../../models/usuarioModel/Empleado/empleadoModel')
+const Correo = require('../correoServicios/correoServicios');
+
+const fs = require('fs');
+const handlebars = require('handlebars');
+const path = require('path');
+
+const rutaPlantilla = path.join(__dirname, 'correo.handlebars');
+const ruta = fs.readFileSync(rutaPlantilla, 'utf8');
+const plantilla = handlebars.compile(ruta);
+
 
 async function aprobarSolicitud(id) {
     try {
@@ -6,9 +17,22 @@ async function aprobarSolicitud(id) {
         const solicitud = await Solicitud.getSolicitudById(id);
 
         if (solicitud != null) {
+            const empleado = 
+                await Empleado.getByCedulaAndEmpresa(solicitud.cedula_empleado, solicitud.cedula_empresa);
+            
+            if (empleado == null) {
+                console.error('No se encontró el empleado');
+                return false;
+            }
+
             const accion = await Solicitud.aprobarSolicitud(id, 'Aprobada');
 
             if (accion) {
+                const datos = {
+                    nombre: empleado.nombre,
+                    estado: 'Aprobada'
+                }
+                Correo.enviarCorreo(plantilla, datos, empleado.correo1, 'Solicitud Aprobada');
                 return true;
             } else {
                 console.error('Error Inesperado al actualizar el estado');
@@ -30,6 +54,20 @@ async function rechazarSolictud(id) {
         const solicitud = await Solicitud.getSolicitudById(id);
 
         if (solicitud != null) {
+            const empleado = 
+                await Empleado.getByCedulaAndEmpresa(solicitud.cedula_empleado, solicitud.cedula_empresa);
+            
+            if (empleado == null) {
+                console.error('No se encontró el empleado');
+                return false;
+            }
+
+            const datos = {
+                nombre: empleado.nombre,
+                estado: 'Rechazada'
+            }
+            Correo.enviarCorreo(plantilla, datos, empleado.correo1, 'Solicitud Rechazada');
+
             const accion = await Solicitud.rechazarSolicitud(id, 'Rechazada');
 
             if (accion) {

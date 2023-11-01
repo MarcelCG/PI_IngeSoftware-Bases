@@ -6,6 +6,7 @@ import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus }
 from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import { ActualizarTiempoLibre } from '../Libres/ActualizarLibres'
+import BuscarPoliticas from './BuscarPolitica';
 
 export const VerPoliticasHTML = (props) => {
 	const {
@@ -18,6 +19,8 @@ export const VerPoliticasHTML = (props) => {
 		abrirModalPolitica,
 		numeros,
 		esEmpleador,
+		politicas,
+		filtrarPoliticas,
 		manejoEditarPolitica
 	} = props;
 
@@ -25,12 +28,15 @@ export const VerPoliticasHTML = (props) => {
 	<div className="container">
 	  {cargando ? (
 	    <div>
-	    <ActualizarTiempoLibre />
-	    <Modal{...props}/>
+		<ActualizarTiempoLibre />
+		<Modal{...props}/>
 	    <div ref={botonRef} 
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
             <div className="row mb-4 col-12 d-flex p-1 align-items-center">
+				<div className="col-10">
+					<BuscarPoliticas politicas={politicas} filtrarPoliticas={filtrarPoliticas} />
+				</div>
                 <Link to="/app/politicas/addPoliticas" className="btn-primary col-2 continuar">
                     <FontAwesomeIcon icon={faPlus} />Agregar
                 </Link>
