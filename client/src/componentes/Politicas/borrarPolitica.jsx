@@ -54,8 +54,7 @@ export const BorrarPolitica = ({ politica, botonRef, setPolValores }) => {
       componente: <div>¿Está seguro de que desea borrar la politica "<strong>{politica.titulo}</strong>"?</div>,
       modalID:"modalPol",
       tituloEstilos: "titulo-ventana-rojo",
-      boton:"Borrar",
-      funcion: BorrarPoliticaAPI
+      footer: <div><button className='btn-primary' onClick={BorrarPoliticaAPI}>Borrar</button></div>
     });
     botonRef.current.click();
   };
