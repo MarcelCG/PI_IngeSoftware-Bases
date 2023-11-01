@@ -9,14 +9,15 @@ router.use('/usuario', UsuariosRoutes);
 router.use('/registro', registroRoutes);
 
 //-----empleador-----//
-const EmpleadorRoutes = require('./usuarioRoutes/empleadorRoutes/empleadorRoutes');;
+const EmpleadorRoutes = require('./usuarioRoutes/empleadorRoutes/empleadorRoutes');
 router.use('/empleador', EmpleadorRoutes);
-
 //-----empleado------//
+const editarEmpleadoRutas = require('./usuarioRoutes/empleadoRoutes/editarEmpleadoRutas');
 const empleadoRoutes = require('./usuarioRoutes/empleadoRoutes/empleadoRoutes');
 const registroEmpleado = require('./usuarioRoutes/empleadoRoutes/registroEmpleadoRoutes');
 router.use('/registrarEmpleado', registroEmpleado);
 router.use('/empleados', empleadoRoutes);
+router.use('/editarEmpleado', editarEmpleadoRutas);
 
 //-----empresa-----//
 const EmpresasRoutes = require('./empresaRoutes/empresaRoutes');

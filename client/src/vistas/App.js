@@ -5,6 +5,8 @@ import AddPolicy from '../componentes/Politicas/AddPolicy';
 import AddEmployee from '../componentes/Empleado/agregarEmpleado';
 import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
+import EditarEmpleado from '../componentes/Empleado/editarEmpleado';
+import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarPerfil from './perfil';
 import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
 import { MenuEmpleador, MenuEmpleado } from './menu';
@@ -61,6 +63,8 @@ function App() {
               <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
               <Route path="/empleados" element={<ListOfEmployees/>}/>
               <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
+              <Route path="/empresa" element={<VisualizarEmpresa/>}/>
+              <Route path="/empleados/editar/:cedula" element={<EditarEmpleado />} />
               <Route path="/perfil" element={<VisualizarPerfil/>}/>
               <Route path="/solicitudes" element={<Solicitudes/>}/>
             </Routes>

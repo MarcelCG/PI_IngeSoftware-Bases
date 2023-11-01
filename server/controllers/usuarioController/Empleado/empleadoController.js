@@ -125,8 +125,6 @@ async function getEmpleadoConCedulaYEmpresa(req, res) {
   }
 }
 
-// Otros controladores para operaciones adicionales con Empleados pueden ser agregados aquí
-
 module.exports = {
   getAllEmpleados,
   getAllEmpleadosByEmpresa,

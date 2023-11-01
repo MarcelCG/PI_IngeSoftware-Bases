@@ -11,4 +11,5 @@ router.get('/viewByCedula/:cedula_empleado', EmpleadoController.getEmpleadoConCe
 router.get('/byEmpresa/:cedula_empresa', EmpleadoController.getEmpleadoByEmpresa);
 router.get('/buscarEmpleado/:cedula_empleado/:cedula_empresa', EmpleadoController.getEmpleadoByCedulaAndEmpresa)
 
+
 module.exports = router;

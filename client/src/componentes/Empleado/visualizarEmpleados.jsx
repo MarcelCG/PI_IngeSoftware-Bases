@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrash, faChevronRight, faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
 import { URLApi } from '../Compartido/Constantes';
 import BuscarEmpleados from './buscarEmpleados';
-import {Modal} from '../Utiles/Modal'
-import {ModalAgregarEmpleado} from './agregarEmpleado'
+import { Link } from 'react-router-dom';
+import {Modal} from '../Utiles/Modal';
+import {ModalAgregarEmpleado} from './agregarEmpleado';
 const empleadoURI = URLApi + 'empleados/allByEmpresa/';
+
 
 const ListOfEmployees = () => {
     const {usuarioAutenticado} = useAutent(); 
@@ -73,8 +75,11 @@ const ListOfEmployees = () => {
                                     <td className="col--5">{ empleado.correo }</td>
                                     <td className="col--5">{ empleado.rol }</td>
                                     <td className="col--5 acciones">
-                                        <button className="btn-primary me-2"><FontAwesomeIcon icon={faPenToSquare} /></button>
-                                        <button className="btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
+                                        <Link to={`/app/empleados/editar/${empleado.cedula}`} className="btn btn-primary me-2">
+                                            <FontAwesomeIcon className='editar' icon={faPenToSquare} />
+                                        </Link>
+                                        <button className="btn btn-danger"><FontAwesomeIcon className='borrar' icon={faTrash} /></button>
+
                                     </td>
                                 </tr>
                             ))}
