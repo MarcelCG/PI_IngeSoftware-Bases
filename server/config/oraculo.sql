@@ -56,7 +56,7 @@ CREATE TABLE Politica (
 );
 
 CREATE TABLE Solicitud (
-    id BIGINT PRIMARY KEY,
+    id BIGINT PRIMARY KEY IDENTITY(1, 1),
     cedula_empleado VARCHAR(255) NOT NULL,
     titulo_politica VARCHAR(255) NOT NULL,
     cedula_empresa VARCHAR(255) NOT NULL,
@@ -176,3 +176,14 @@ BEGIN
 	INNER JOIN Empleado em ON em.cedula_empleado = u.cedula AND u.cedula = @cedula_empleado AND em.cedula_empresa = @cedula_empresa
 END;
 GO;
+
+CREATE TRIGGER bajarLibresPorSolicitud
+ON Solicitud
+AFTER INSERT
+AS
+UPDATE Libres
+SET dias_libres_disponibles=(dias_libres_disponibles-i.dias_libres_solicitados)
+FROM inserted i, Libres l
+WHERE i.cedula_empleado=l.cedula_empleado
+AND i.cedula_empresa=l.cedula_empresa
+AND i.titulo_politica=l.titulo_politica
