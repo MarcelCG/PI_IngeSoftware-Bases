@@ -150,6 +150,24 @@ async function getSolicitudByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
 
+async function obtenerLibresPorPolitica(cedula_empleado) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const resultado = await pool
+      .request()
+      .input('cedula_empleado', sql.NVarChar, cedula_empleado)
+      .query(`SELECT l.titulo_politica,
+              l.dias_libres_disponibles
+              FROM Libres l, Usuario u
+              WHERE l.cedula_empleado=@cedula_empleado
+              AND l.cedula_empleado=u.cedula
+              AND u.activo=1`);
+      return resultado.recordset;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Otras funciones relacionadas con las solicitudes pueden ser agregadas aquí
 
 // Exportar el modelo
@@ -162,5 +180,6 @@ module.exports = {
   getSolicitudByCedulaAndEmpresa,
   aprobarSolicitud,
   rechazarSolicitud,
+  obtenerLibresPorPolitica
   // Agregar otras funciones relacionadas con las solicitudes según sea necesario
 };

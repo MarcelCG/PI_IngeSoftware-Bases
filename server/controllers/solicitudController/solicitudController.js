@@ -156,6 +156,22 @@ async function getSolicitudByCedulaAndEmpresa(req, res) {
     }
   }
 
+  async function obtenerLibresPorPolitica(req, res) {
+    try {
+      const { cedula_empleado } = req.params;
+      // Llama a la función getSolicitudByCedulaEmpleado en el modelo de Solicitud
+      const libres = await Solicitud.obtenerLibresPorPolitica(cedula_empleado);
+  
+      if (libres.length > 0) {
+        res.status(200).json(libres);
+      } else {
+        res.status(404).json({ message: 'No se encontraron libres por politica para este empleado' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
 module.exports = {
   getAllSolicitudes,
   createSolicitud,
@@ -165,4 +181,5 @@ module.exports = {
   getSolicitudByCedulaAndEmpresa,
   aprobarSolicitud,
   rechazarSolictud,
+  obtenerLibresPorPolitica
 };
