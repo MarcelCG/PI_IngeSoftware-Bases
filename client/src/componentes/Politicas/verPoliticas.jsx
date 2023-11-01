@@ -16,7 +16,8 @@ export const VerPoliticas = () => {
       try {
         const respuesta = await axios.get(
           `${URLApi}politicas/byCedula/${empresa}`);
-        setPoliticas(respuesta.data);
+          setPoliticas(respuesta.data);
+          filtrarPoliticas(respuesta.data);
         setCargando(true);
       } catch (error) {
         setCargando(true);
@@ -27,7 +28,8 @@ export const VerPoliticas = () => {
 
   const modalID = "modalPol";
   const botonRef = useRef(null);
-  const [Politicas, setPoliticas] = useState([]);
+  const [politicas, setPoliticas] = useState([]);
+  const [politicasFiltradas, filtrarPoliticas] = useState([]); 
   const [cargando, setCargando]   = useState(true);
   const [paginaActual, actualizarPagina] = useState(1);
   const [polValores, setPolValores] = useState({
@@ -39,8 +41,8 @@ export const VerPoliticas = () => {
   const politicasPorPag = 5;
   const ultimoInd = paginaActual * politicasPorPag;
   const primerInd = ultimoInd - politicasPorPag;
-  const politicasAct = Politicas.slice(primerInd, ultimoInd);
-  const numPag = Math.ceil(Politicas.length/politicasPorPag);
+  const politicasAct = politicasFiltradas.slice(primerInd, ultimoInd);
+  const numPag = Math.ceil(politicasFiltradas.length/politicasPorPag);
   const numeros = [...Array(numPag +1).keys()].slice(1)
 
   const abrirModalPolitica = (politica) => {
@@ -61,7 +63,9 @@ export const VerPoliticas = () => {
     botonRef,
     abrirModalPolitica,
     numeros,
-    esEmpleador
+    esEmpleador,
+    politicas,
+    filtrarPoliticas
   };
 
   return ( <VerPoliticasHTML {...props}/> );
