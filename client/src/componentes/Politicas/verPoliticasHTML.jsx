@@ -7,6 +7,7 @@ import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus } from '@
 import { Link } from 'react-router-dom';
 import { ActualizarTiempoLibre } from '../Libres/ActualizarLibres'
 import { ModalAgregarPol } from "./AddPolicy";
+import BuscarPoliticas from './BuscarPolitica';
 
 export const VerPoliticasHTML = (props) => {
 	const {
@@ -17,18 +18,28 @@ export const VerPoliticasHTML = (props) => {
 		botonRef,
 		abrirModalPolitica,
 		numeros,
-		esEmpleador
+		esEmpleador,
+		politicas,
+		filtrarPoliticas
 	} = props;
 
 	return (
 	<div className="container">
 	  {cargando ? (
 	    <div>
-	    <ActualizarTiempoLibre />
-	    <Modal{...props}/>
-	    <div ref={botonRef} data-bs-toggle="modal" data-bs-target={`#${props.modalID}`}/>
+		<ActualizarTiempoLibre />
+		<Modal{...props}/>
+	    <div ref={botonRef} 
+	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
-	      <ModalAgregarPol botonRef={botonRef} setPolValores={props.setPolValores} />
+            <div className="row mb-4 col-12 d-flex p-1 align-items-center">
+				<div className="col-10">
+					<BuscarPoliticas politicas={politicas} filtrarPoliticas={filtrarPoliticas} />
+				</div>
+                <Link to="/app/politicas/addPoliticas" className="btn-primary col-2 continuar">
+                    <FontAwesomeIcon icon={faPlus} />Agregar
+                </Link>
+            </div>
 	      <table className="table table-hover mt-titulo">
 	        <thead>
 	          <tr>

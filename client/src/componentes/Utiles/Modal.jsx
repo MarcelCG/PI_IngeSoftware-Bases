@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import React, { useState, useEffect } from 'react';
+
 /* ---------------------------------------------------------------------------------------------------------------------
   │Explicacion:                                                                                                          │
   │  - Este en un template de Modal que podemos usar para no tener que escribir el codigo muchas veces                   │
@@ -19,10 +20,9 @@ export const setModal = (setModalValores, props) => {
 }
 
 export const Modal = (props) => {
-
+  console.log(props);
   const {modalID, titulo, tituloEstilos, componente, boton, funcion, tamanio, footer} = props;
-
-  useEffect(() => { }, [componente]);
+ // useEffect(() => { }, [componente]);
 
 
   return (
@@ -31,7 +31,7 @@ export const Modal = (props) => {
         <div className="modal-content">
           {titulo && (
             <div className={`modal-header ${tituloEstilos}`}>
-              <h1 className="modal-title fs-5">{titulo}</h1>
+              <h1 className="modal-title">{titulo}</h1>
               <button className="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
                 <FontAwesomeIcon icon={faTimes} />
               </button>
@@ -39,7 +39,8 @@ export const Modal = (props) => {
           {tamanio === "modal-lg" ? (
             <> {componente} </>
           ) : (
-            <div className="modal-body">{componente}</div>
+            <> {componente} </>
+            // <div className="modal-body">{componente}</div>
           )}
           <div className="modal-footer">
             {footer ? (
