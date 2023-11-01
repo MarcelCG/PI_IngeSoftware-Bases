@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrash, faChevronRight, faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
 import { URLApi } from '../Compartido/Constantes';
 import BuscarEmpleados from './buscarEmpleados';
-import {Modal} from '../Utiles/Modal'
-import {ModalAgregarEmpleado} from './agregarEmpleado'
+import { Link } from 'react-router-dom';
+import {Modal} from '../Utiles/Modal';
+import {ModalAgregarEmpleado} from './agregarEmpleado';
 const empleadoURI = URLApi + 'empleados/allByEmpresa/';
+
 
 const ListOfEmployees = () => {
     const {usuarioAutenticado} = useAutent(); 
