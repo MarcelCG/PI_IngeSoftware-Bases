@@ -31,7 +31,6 @@ test("ModalSolicitud muestra correctamente la informacion de la solicitud", () =
   expect(politica).toBeInTheDocument();
   expect(horaInicio).toBeInTheDocument();
   expect(horaFin).toBeInTheDocument();
-  // Agrega más expectativas según tus necesidades
 });
 
 test("FiltrarSolicitudes filtra las solicitudes correctamente", async() => {
