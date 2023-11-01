@@ -53,9 +53,9 @@ export const VerPoliticasHTML = (props) => {
 	        </thead>
 	        <tbody>
 	          {politicasAct.map((politica, index) => (
-	            <tr key={index}
-	              onClick={()=> abrirModalPolitica(politica)}>
-	              <td><button className="btn">{politica.titulo}</button></td>
+	            <tr key={index}>
+	              <td><button onClick={()=> abrirModalPolitica(politica)}
+	              className="btn">{politica.titulo}</button></td>
 	              <td>{ajustarFecha(politica.fecha_inicio)}</td>
 	              <td>{politica.dias_a_dar}</td>
 	              {esEmpleador && <td>
