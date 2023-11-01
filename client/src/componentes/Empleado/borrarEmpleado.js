@@ -36,7 +36,10 @@ export const BorrarEmpleado = ({ empleado, botonRef, setEmpleadoValores }) => {
             toast.success('Empleado eliminado con éxito', {
                 position: toast.POSITION.TOP_RIGHT
                 });
-            window.location.reload();
+            botonRef.current.click();
+            setTimeout(() => {
+                window.location.reload();
+              }, 2250);
         }else{
             toast.error('Hubo un error inesperado al eliminar el empleado, inténtelo de nuevo', {
                 position: toast.POSITION.TOP_CENTER
