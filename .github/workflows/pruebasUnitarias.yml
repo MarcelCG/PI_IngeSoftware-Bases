@@ -11,6 +11,7 @@ on:
       - Visualizar-Empleado  
       - Gestionar-Solicitudes
       - Buscar-Politica
+      - Servicio-Correos
 
 jobs:
   client-tests:
