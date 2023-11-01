@@ -15,26 +15,26 @@ async function getAllSolicitudes(req, res) {
 async function createSolicitud(req, res) {
   try {
     const {
-      id,
       cedula_empleado,
       titulo,
       cedula_empresa,
-      dias_libres_solicitados,
-      fecha_solicitud,
       inicio_fechas_solicitadas,
-      estado,
+      dias_solicitados,
+      hora_inicio,
+      horas_solicitadas,
+      comentarios
     } = req.body;
 
     // Llama a la función createSolicitud que inserta en la tabla "Solicitud"
     const success = await Solicitud.createSolicitud(
-      id,
       cedula_empleado,
       titulo,
       cedula_empresa,
-      dias_libres_solicitados,
-      fecha_solicitud,
       inicio_fechas_solicitadas,
-      estado
+      dias_solicitados,
+      hora_inicio,
+      horas_solicitadas,
+      comentarios
     );
 
     if (success) {

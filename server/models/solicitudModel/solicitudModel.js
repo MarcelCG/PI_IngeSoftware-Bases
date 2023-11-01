@@ -14,37 +14,38 @@ async function getAll() {
 
 // Crear una nueva solicitud
 async function createSolicitud(
-  id,
   cedula_empleado,
   titulo,
   cedula_empresa,
-  dias_libres_solicitados,
-  fecha_solicitud,
   inicio_fechas_solicitadas,
-  estado
+  dias_solicitados,
+  hora_inicio,
+  horas_solicitadas,
+  comentarios
 ) {
   try {
     const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
-      .input('id', sql.NVarChar, id)
       .input('cedula_empleado', sql.NVarChar, cedula_empleado)
       .input('titulo', sql.NVarChar, titulo)
       .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-      .input('dias_libres_solicitados', sql.Decimal(5, 2), dias_libres_solicitados)
-      .input('fecha_solicitud', sql.Date, fecha_solicitud)
       .input('inicio_fechas_solicitadas', sql.Date, inicio_fechas_solicitadas)
-      .input('estado', sql.NVarChar, estado)
+      .input('dias_solicitados', sql.Decimal(5, 2), dias_solicitados)
+      .input('hora_inicio', sql.NVarChar, hora_inicio)
+      .input('horas_solicitadas', sql.Int, horas_solicitadas)
+      .input('comentarios', sql.NVarChar, comentarios)
       .query(
         `INSERT INTO Solicitud (
-          id, cedula_empleado, titulo, cedula_empresa,
-          dias_libres_solicitados, fecha_solicitud,
-          inicio_fechas_solicitadas, estado
+        cedula_empleado, titulo_politica, cedula_empresa,
+        fecha_solicitud, inicio_fechas_solicitadas,
+        dias_libres_solicitados, hora_de_inicio, horas_solicitadas,
+        estado, comentarios
         )
         VALUES (
-          @id, @cedula_empleado, @titulo, @cedula_empresa,
-          @dias_libres_solicitados, @fecha_solicitud,
-          @inicio_fechas_solicitadas, @estado
+          @cedula_empleado, @titulo, @cedula_empresa,
+          GETDATE(), @inicio_fechas_solicitadas, @dias_solicitados,
+          @hora_inicio, @horas_solicitadas, 'Pendiente', @comentarios
         )`
       );
     return result.rowsAffected > 0;
