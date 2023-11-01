@@ -20,10 +20,7 @@ export const setModal = (setModalValores, props) => {
 }
 
 export const Modal = (props) => {
-  console.log(props);
   const {modalID, titulo, tituloEstilos, componente, boton, funcion, tamanio, footer} = props;
- // useEffect(() => { }, [componente]);
-
 
   return (
     <div className={`modal fade ${tamanio}`} id={modalID} tabIndex="-1" aria-labelledby={modalID} aria-hidden="true">
@@ -31,35 +28,22 @@ export const Modal = (props) => {
         <div className="modal-content">
           {titulo && (
             <div className={`modal-header ${tituloEstilos}`}>
-              <h1 className="modal-title">{titulo}</h1>
+              <h1 className="modal-title fs-5">{titulo}</h1>
               <button className="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
                 <FontAwesomeIcon icon={faTimes} />
               </button>
-            </div>)}
-          {tamanio === "modal-lg" ? (
-            <> {componente} </>
-          ) : (
-            <> {componente} </>
-            // <div className="modal-body">{componente}</div>
+            </div>
           )}
-          <div className="modal-footer">
-            {footer ? (
-              footer
-            ) : (
-              <div>
-                <button type="button" className="btn btn-primary btn-sm" data-bs-dismiss="modal">
-                  Cerrar
-                </button>
-                {boton && (
-                  <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>
-                    {boton}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+          {tamanio === "modal-lg" ? 
+          ( <> {componente} </>) : 
+          ( <div className="modal-body">{componente}</div>)}
+          {footer && (
+            <div className="modal-footer">
+              {footer}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
-}
+};

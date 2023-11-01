@@ -126,6 +126,7 @@ async function getEmpleadoConCedulaYEmpresa(req, res) {
   }
 }
 
+
 async function borrarEmpleado(solicitud, respuesta) {
   try {
     const { cedula } = solicitud.body; 
@@ -147,6 +148,7 @@ async function borrarEmpleado(solicitud, respuesta) {
 }
 
 // Otros controladores para operaciones adicionales con Empleados pueden ser agregados aquí
+
 
 module.exports = {
   getAllEmpleados,

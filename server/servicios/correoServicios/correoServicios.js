@@ -24,7 +24,6 @@ const enviarCorreo = async (plantillaHTML, datos, direccion, asunto) => {
         // Enviar el correo
         await transporter.sendMail(mailOptions);
     } catch (error) {
-        console.error('Error al enviar el correo: ', error);
     }
 }
 

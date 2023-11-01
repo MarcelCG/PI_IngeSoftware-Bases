@@ -12,6 +12,7 @@ import {ModalAgregarEmpleado} from './agregarEmpleado'
 
 const empleadoURI = URLApi + 'empleados/allByEmpresa/';
 
+
 const ListOfEmployees = () => {
 
     const botonRef = useRef(null);
@@ -93,7 +94,9 @@ const ListOfEmployees = () => {
                                     <td className="col--5">{ empleado.correo }</td>
                                     <td className="col--5">{ empleado.rol }</td>
                                     <td className="col--5 acciones">
-                                        <button className="btn-primary me-2"><FontAwesomeIcon icon={faPenToSquare} /></button>
+                                        <Link to={`/app/empleados/editar/${empleado.cedula}`} className="btn btn-primary me-2">
+                                            <FontAwesomeIcon className='editar' icon={faPenToSquare} />
+                                        </Link>
                                         <BorrarEmpleado empleado={empleado} botonRef={botonRef} setEmpleadoValores={setEmpleadoValores} />
                                     </td>
                                 </tr>

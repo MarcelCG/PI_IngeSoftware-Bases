@@ -12,4 +12,5 @@ router.get('/byEmpresa/:cedula_empresa', EmpleadoController.getEmpleadoByEmpresa
 router.get('/buscarEmpleado/:cedula_empleado/:cedula_empresa', EmpleadoController.getEmpleadoByCedulaAndEmpresa);
 router.post('/borrar',EmpleadoController.borrarEmpleado);
 
+
 module.exports = router;

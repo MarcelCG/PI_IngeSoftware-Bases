@@ -7,6 +7,7 @@ const PoliticaServicios = require('../politicaServicios/politicaServicios');
 const EmpleadoServicios = require('../usuarioServicios/empleadoServicios/empleadoServicios');
 
 async function actualizarTodos(cedula_empresa) {
+  const estado = -1;
   try {
     const [Empleados, Libres, Politicas] = await Promise.all([
       EmpleModel.getAllByEmpresa(cedula_empresa),
@@ -29,11 +30,11 @@ async function actualizarTodos(cedula_empresa) {
     if (cantEmpleados >= 0) {
       return cantEmpleados;
     } else {
-      return -1;
+      return estado;
     }
   } catch (error) {
     console.error("Error al Actualizar", error);
-    return -1;
+    return estado;
   }
 }
 
