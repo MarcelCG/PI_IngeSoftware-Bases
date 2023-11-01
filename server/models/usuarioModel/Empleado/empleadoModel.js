@@ -180,6 +180,26 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
       return consulta_exitosa;
     }
   }
+  async function correoEmpleado(cedula_empleado) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const result = await pool
+        .request()
+        .input('cedulaEmpleadoConsulta', sql.NVarChar, cedula_empleado)
+        .query(`SELECT correo1
+                FROM Usuario
+                WHERE cedula = @cedulaEmpleadoConsulta`);
+  
+      if (result.recordset.length > 0) {
+        const correos = result.recordset.map((row) => row.correo1);
+        return correos;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 
 // Exportar el modelo
 module.exports = {
@@ -190,5 +210,6 @@ module.exports = {
   getByEmpresa,
   getByCedulaAndEmpresa,
   getEmpleadoByCedulaYEmpresa,
-  borrarEmpleado
+  borrarEmpleado,
+  correoEmpleado
 };
