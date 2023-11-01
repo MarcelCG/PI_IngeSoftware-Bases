@@ -62,6 +62,7 @@ async function createPolitica(
 
 // Función para obtener una política por su título
 async function getByTitulo(titulo) {
+  console.log(titulo);
   try {
     const pool = await sql.connect(dbConfig);
     const result = await pool

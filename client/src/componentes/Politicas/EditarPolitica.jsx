@@ -41,32 +41,33 @@ function EditarPolitica(props) {
   };
 
   useEffect(() => {
-    axios.get(`${politicas}/${empresa}/${titulo}`)
+    // Realiza una solicitud GET para obtener los datos de la política
+    axios.get(`${URLApi}editarPolitica/${titulo}`)
       .then((response) => {
-          const datosPolitica = response.data;
-          console.log("Datos de la política:", datosPolitica);
-          // Establece los datos de la política cuando están disponibles
-           setDatosPolitica(datosPolitica);
-           // Rellena el formulario con los datos de la política
-           setValue("titulo", datosPolitica.titulo);
-           setValue("periodo", datosPolitica.periodo);
-           setValue("unidadPeriodo", "1/24");
-           setValue("fecha_inicio", datosPolitica.inicia_desde_contrato ? "" : datosPolitica.fecha_inicio);
-           setValue("fecha_final", datosPolitica.fecha_final);
-           setValue("desdeContrato", datosPolitica.inicia_desde_contrato);
-           setValue("díasADar", datosPolitica.dias_a_dar);
-           setValue("unidadDíasADar", "1/24");
-           setValue("incrementativo", !datosPolitica.incrementativo);
-           setValue("díasAIncrementar", datosPolitica.dias_a_incrementar);
-           setValue("unidadIncremento", "1/24");
-           setValue("acumulativo", datosPolitica.acumulativo);
-           setValue("descripcion", datosPolitica.descripcion);
-         })
+        const datosPolitica = response.data;
+        console.log("Datos de la política:", datosPolitica);
+        // Establece los datos de la política cuando están disponibles
+        setDatosPolitica(datosPolitica);
+        // Rellena el formulario con los datos de la política
+        setValue("titulo", datosPolitica.titulo);
+        setValue("periodo", datosPolitica.periodo);
+        setValue("unidadPeriodo", "1/24");
+        setValue("fecha_inicio", datosPolitica.inicia_desde_contrato ? "" : datosPolitica.fecha_inicio);
+        setValue("fecha_final", datosPolitica.fecha_final);
+        setValue("desdeContrato", datosPolitica.inicia_desde_contrato);
+        setValue("díasADar", datosPolitica.dias_a_dar);
+        setValue("unidadDíasADar", "1/24");
+        setValue("incrementativo", !datosPolitica.incrementativo);
+        setValue("díasAIncrementar", datosPolitica.dias_a_incrementar);
+        setValue("unidadIncremento", "1/24");
+        setValue("acumulativo", datosPolitica.acumulativo);
+        setValue("descripcion", datosPolitica.descripcion);
+      })
       .catch((error) => {
         console.error('Error al obtener los datos de la política', error);
         toast.error('Hubo un error al obtener los datos de la política');
       });
-  }, [empresa, titulo, setValue]);
+  }, [titulo, setValue]);
 
   const enviarFormulario = (datos) => {
     const datosFormulario = transformarDatosAntesDeEnviar(datos);

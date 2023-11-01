@@ -149,6 +149,7 @@ async function editarPolitica(req, res) {
 
     // Verifica si existe una política con el título especificado
     const politicaExistente = await Politica.getByTitulo(titulo);
+    console.log (politicaExistente);
 
     if (politicaExistente) {
       // Llama a la función para actualizar la política
