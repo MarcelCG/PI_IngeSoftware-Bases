@@ -36,7 +36,6 @@ export const VerPolitica = (politica) => {
   );
 };
 
-
 export const ajustarFecha = (fecha) => {
   const nuevaFecha = new Date(fecha);
   const anho = nuevaFecha.getFullYear();

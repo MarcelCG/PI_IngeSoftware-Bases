@@ -53,10 +53,16 @@ export const VerPoliticas = () => {
   };
 
     // Función para abrir el formulario de edición
-    const manejoEditarPolitica = (politica) => {
-      // Llama a la función para editar la política pasando la política como argumento
-      EditarPolitica(politica);
-    };
+ // Función para abrir el formulario de edición
+const manejoEditarPolitica = (politica) => {
+  if (politica && politica.titulo) {
+    // Llama a la función para editar la política pasando la política como argumento
+    EditarPolitica(politica);
+  } else {
+    // Manejar el caso en el que 'politica' no sea válido
+    console.error('El objeto de política no es válido');
+  }
+};
 
   let props = {
     ...polValores,

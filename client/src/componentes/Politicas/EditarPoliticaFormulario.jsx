@@ -94,7 +94,6 @@ export const FormPolitica = ({ formData, setForm, errForm, setErrForm, navigatio
       placeholder: 'Descripción',
       required: true,
     },
-    // Agrega más campos según tu modelo
   ];
 
   const nextClick = (e) => {
