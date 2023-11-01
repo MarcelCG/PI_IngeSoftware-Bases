@@ -176,3 +176,43 @@ BEGIN
 	INNER JOIN Empleado em ON em.cedula_empleado = u.cedula AND u.cedula = @cedula_empleado AND em.cedula_empresa = @cedula_empresa
 END;
 GO;
+
+GO
+CREATE PROCEDURE BorrarEmpresa(@cedula_empresa VARCHAR(255))
+AS
+BEGIN
+    -- 1. Borrar Politicas
+    DECLARE @titulo_politica VARCHAR(255);
+    DECLARE PoliticasCursos CURSOR FOR
+    SELECT titulo
+    FROM Politica WHERE cedula_empresa = @cedula_empresa
+
+    OPEN PoliticasCursos;
+    FETCH NEXT FROM PoliticasCursos INTO @titulo_politica
+    WHILE @@FETCH_STATUS = 0
+    BEGIN 
+        BorrarPolitica(@titulo_politica, @cedula_empresa)
+        FETCH NEXT FROM PoliticasCursos INTO @titulo_politica
+    END
+    CLOSE PoliticasCursos;
+    DEALLOCATE PoliticasCursos;
+    -- 2. Borrar Empleados
+    DECLARE @cedula_empleado VARCHAR(255);
+    DECLARE EmpleadosCursos CURSOR FOR
+    SELECT cedula_empleado
+    FROM Empleado WHERE cedula_empresa = @cedula_empresa
+
+    OPEN EmpleadosCursos;
+    FETCH NEXT FROM EmpleadosCursos INTO @cedula_empleado
+    WHILE @@FETCH_STATUS = 0
+    BEGIN 
+        BorrarEmpleado(@cedula_empleado)
+        FETCH NEXT FROM EmpleadosCursos INTO @cedula_empleado
+    END
+    CLOSE EmpleadosCursos;
+    DEALLOCATE EmpleadosCursos;
+    --3.Borrar Empresa y Empleador
+    UPDATE Empresa SET activa = 0 WHERE cedula_juridica = @cedula_empresa
+    UPDATE Empleador SET activa = 0 WHERE cedula_empleador = (SELECT cedula_empleador FROM Empresa WHERE cedula_juridica = @cedula_empresa)
+
+END;  
