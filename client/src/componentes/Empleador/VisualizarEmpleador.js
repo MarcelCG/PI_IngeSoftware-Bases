@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import { URLApi } from '../Compartido/Constantes';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -57,9 +56,6 @@ function VisualizarEmpleadorPorCedula() {
         <p><strong>Teléfonos: </strong>{datosEmpleador.telefono1} &nbsp;
           {datosEmpleador.telefono2 ? datosEmpleador.telefono2 : ''}
         </p>
-        <div className="text-center">
-          <Link to={`editarEmpleador/${datosEmpleador.cedula}`} className="btn btn-primary">Editar</Link>
-        </div>
       </div>
     </div>
           
