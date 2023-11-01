@@ -162,6 +162,7 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
       throw error;
     }
   }
+
   async function editarEmpleado(
     cedula_empleado,
     rol,
@@ -190,6 +191,32 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
 
+
+  //Funcion que devuelve los correos de los empleados que tienen una politica vigente
+  async function correoEmpleadosPorPolitica(titulo, cedula_empresa) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const result = await pool
+        .request()
+        .input('tituloPolitica', sql.NVarChar, titulo)
+        .input('cedulaEmpresa', sql.NVarChar, cedula_empresa)
+        .query(`SELECT DISTINCT u.correo1 
+                FROM Usuario u 
+                INNER JOIN Libres l ON u.cedula = l.cedula_empleado 
+                WHERE l.titulo_politica = @tituloPolitica AND l.cedula_empresa = @cedulaEmpresa`);
+  
+      if (result.recordset.length > 0) {
+        const correos = result.recordset.map((row) => row.correo1);
+        return correos;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+
 // Exportar el modelo
 module.exports = {
   getAll,
@@ -199,5 +226,6 @@ module.exports = {
   getByEmpresa,
   getByCedulaAndEmpresa,
   getEmpleadoByCedulaYEmpresa,
-  editarEmpleado
+  editarEmpleado,
+  correoEmpleadosPorPolitica
 };

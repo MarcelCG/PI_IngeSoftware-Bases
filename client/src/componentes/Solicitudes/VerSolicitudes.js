@@ -2,6 +2,7 @@ import axios from 'axios';
 import {VerSolicitudesHTML} from './VerSolicitudesHTML.js'
 import {ModalSolicitud} from './modalSolicitud.js';
 import { FooterModalSolicitudEmpleador } from './footerModalSolicitud.js';
+import { ModalConfirmar, GestionarSolicitudes } from './gestionarSolicitudes.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useAutent } from '../../contexto/ContextoAutenticacion.js';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,8 +17,7 @@ const Solicitudes = () => {
     const {usuarioAutenticado} = useAutent();
     const empresa = usuarioAutenticado.cedula_empresa;
     const cedula = usuarioAutenticado.cedula;
-    const esEmpleador = empresa ? true : false;
-
+    const esEmpleador = usuarioAutenticado.esEmpleador ? true : false;
 
     useEffect(() => {
         let solicitudURI = "";
@@ -40,13 +40,22 @@ const Solicitudes = () => {
     }, [empresa]);
     const [solicitudes, setSolicitudes] = useState([]);
 
+
     const modalID = "modalSolicitud";
     const botonRef = useRef(null);
     const [solicitudValores, setSolicitudValores] = useState({
         titulo: "",
         componente: "",
-        footerPersonalizado: ""
+        footer: ""
     });
+
+    const abrirModalConfirmar = (accion, solicitud) => {
+        setSolicitudValores({
+            titulo: "Confirmar",
+            componente: <ModalConfirmar/>,
+            footer:<GestionarSolicitudes accion={accion} solicitud={solicitud}/>
+        })
+    }
 
     const abrirModalSolicitud = (solicitud) => {
         solicitud["esEmpleador"] = esEmpleador;
@@ -54,7 +63,8 @@ const Solicitudes = () => {
             ...solicitudValores,
             titulo: "Solicitud",
             componente: <ModalSolicitud {...solicitud}/>,
-            footerPersonalizado: (esEmpleador === true ? <FooterModalSolicitudEmpleador {...solicitud}/> : "")
+            footer: (((esEmpleador === true) && (solicitud.estado === 'Pendiente')) ?
+            <FooterModalSolicitudEmpleador abrirModalConfirmar={abrirModalConfirmar} solicitud={solicitud}/> : "")
         })
         botonRef.current.click();
     };
