@@ -35,8 +35,7 @@ function AgregarSolicitud() {
 
   const {register, handleSubmit, 
     formState: {errors},
-    reset,
-    clearErrors
+    reset
 	} = useForm()
 
   const onSubmit = handleSubmit(async (data) => {
@@ -44,8 +43,11 @@ function AgregarSolicitud() {
     console.log(datosConFormato);
     axios.post(agregarSolicitud, datosConFormato).then((respuesta) => {
         console.log('Solicitud POST exitosa:', respuesta.data);
-        toast.success('Solicitud agregada con éxito');
         reset();
+        toast.success('Solicitud agregada con éxito');
+        setTimeout(function(){
+          window.location.reload();
+        }, 3000); 
       }).catch((error) => {
         console.error('Error en la solicitud POST:', error);
         toast.error('Hubo un error inesperado al agregar la solicitud, trate de nuevo');
@@ -93,7 +95,6 @@ function AgregarSolicitud() {
 		register,
 		handleSubmit,
 		errors,
-		clearErrors,
     onSubmit
   }
 

@@ -6,8 +6,7 @@ export const FormularioSolicitud = (props) => {
 		handleCancel,
 		register,
 		onSubmit,
-		errors,
-		clearErrors
+		errors
 	} = props;
 
 	const solicitar2Horas = ["08:00", "08:30", "09:00", "09:30",
@@ -202,3 +201,5 @@ export const FormularioSolicitud = (props) => {
         </div>
     )
 }
+
+export default FormularioSolicitud;
