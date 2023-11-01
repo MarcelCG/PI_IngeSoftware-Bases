@@ -10,6 +10,7 @@ on:
       - visualizar-solicitudes  
       - Visualizar-Empleado  
       - Gestionar-Solicitudes
+      - Servicio-Correos
 
 jobs:
   client-tests:
