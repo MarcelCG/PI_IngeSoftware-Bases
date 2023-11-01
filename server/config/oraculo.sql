@@ -176,3 +176,32 @@ BEGIN
 	INNER JOIN Empleado em ON em.cedula_empleado = u.cedula AND u.cedula = @cedula_empleado AND em.cedula_empresa = @cedula_empresa
 END;
 GO;
+
+CREATE PROCEDURE ActualizarPolitica
+    @titulo VARCHAR(255),
+    @cedula_empresa VARCHAR(255),
+    @periodo DECIMAL(5, 2),
+    @fecha_final DATE,
+    @inicia_desde_contrato BIT,
+    @dias_a_dar DECIMAL(5, 2),
+    @incrementativo BIT,
+    @dias_a_incrementar DECIMAL(5, 2),
+    @acumulativo BIT,
+    @activo BIT,
+    @descripcion VARCHAR(255)
+AS
+BEGIN
+    UPDATE Politica
+    SET
+        cedula_empresa = @cedula_empresa,
+        periodo = @periodo,
+        fecha_final = @fecha_final,
+        inicia_desde_contrato = @inicia_desde_contrato,
+        dias_a_dar = @dias_a_dar,
+        incrementativo = @incrementativo,
+        dias_a_incrementar = @dias_a_incrementar,
+        acumulativo = @acumulativo,
+        activo = @activo,
+        descripcion = @descripcion
+    WHERE titulo = @titulo;
+END

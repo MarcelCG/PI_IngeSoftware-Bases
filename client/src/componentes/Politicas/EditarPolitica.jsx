@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { useForm, setValue } from "react-hook-form";
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { useAuth } from "../../context/ContextoAutenticacion"; // Asumiendo que se llama useAuth
+import { useAutent } from "../../contexto/ContextoAutenticacion"; // Asumiendo que se llama useAutent
 import EditarPoliticaFormulario from "./EditarPoliticaFormulario";
 import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,13 +11,12 @@ import 'react-toastify/dist/ReactToastify.css';
 // URL para el manejo de políticas
 const politicas = URLApi + 'politicas';
 
-function EditarPolitica() {
+function EditarPolitica(props) {
 
   // Cédula de la empresa que inició sesión
-  const { usuarioAutenticado } = useAuth(); 
+  const { usuarioAutenticado } = useAutent(); 
   const empresa = usuarioAutenticado.cedula_empresa;
   const { titulo } = props.match.params; // Obtenemos el título de la política desde las props
-
   // Configuración del formulario usando react-hook-form
   const { register, handleSubmit, formState: { errors }, clearErrors } = useForm();
 
