@@ -15,8 +15,8 @@ export const BorrarEmpresaFooter = ({datosEmpresa, borrar, alternarModal}) => {
 	return(
 		<div className="container">
 			<div className='row justify-content-around'>
-				<button className="btn btn-secondary col-4">Atras</button>
-				<button className="btn btn-secondary col-4" onClick={borrar}>Siguiente</button>
+				<button className="btn btn-secondary col-4" onClick={alternarModal}>Atras</button>
+				<button className="btn btn-danger col-4" onClick={borrar}>Borrar</button>
 			</div>
 		</div>
 	);
