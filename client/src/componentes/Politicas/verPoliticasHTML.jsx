@@ -1,11 +1,12 @@
 import {Modal} from '../Utiles/Modal'
 import {ajustarFecha} from './verPolitica'
-import React from "react";
+import {BorrarPolitica} from './borrarPolitica'
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus }
-from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import { ActualizarTiempoLibre } from '../Libres/ActualizarLibres'
+import { ModalAgregarPol } from "./AddPolicy";
 import BuscarPoliticas from './BuscarPolitica';
 
 export const VerPoliticasHTML = (props) => {
@@ -13,7 +14,6 @@ export const VerPoliticasHTML = (props) => {
 		paginaActual,
 		politicasAct,
 		actualizarPagina,
-		modalID,
 		cargando,
 		botonRef,
 		abrirModalPolitica,
@@ -30,7 +30,7 @@ export const VerPoliticasHTML = (props) => {
 		<ActualizarTiempoLibre />
 		<Modal{...props}/>
 	    <div ref={botonRef} 
-	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
+	      data-bs-toggle="modal" data-bs-target={`#${props.modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
             <div className="row mb-4 col-12 d-flex p-1 align-items-center">
 				<div className="col-10">
@@ -46,24 +46,24 @@ export const VerPoliticasHTML = (props) => {
 	            <th scope="col">&nbsp;&nbsp;&nbsp;Titulo </th>
 	            <th scope="col">Inicio</th>
 	            <th scope="col">Dias a dar</th>
-				<th scope="col">Acciones</th>
-	            {esEmpleador && <th scope="col"></th>}
+							{esEmpleador &&
+							<th scope="col">Acciones</th>}
 	          </tr>
 	        </thead>
 	        <tbody>
 	          {politicasAct.map((politica, index) => (
-	            <tr key={index}
-	              onClick={()=> abrirModalPolitica(politica)}>
-	              <td><button className="btn">{politica.titulo}</button></td>
+	            <tr key={index}>
+	              <td style={{ cursor: 'pointer'}} onClick={()=> abrirModalPolitica(politica)}>
+	              	{politica.titulo}
+	              </td>
 	              <td>{ajustarFecha(politica.fecha_inicio)}</td>
 	              <td>{politica.dias_a_dar}</td>
-	              {esEmpleador && <td>
+	              {esEmpleador &&
+	              <td>
 	                <button className="btn-primary me-2">
 	                  <FontAwesomeIcon icon={faPenToSquare} />
 	                </button>
-	                <button className="btn-danger">
-	                  <FontAwesomeIcon icon={faTrash} />
-	                </button>
+	                <BorrarPolitica politica={politica} botonRef={botonRef} setPolValores={props.setPolValores} />
 	              </td>}
 	            </tr>
 	          ))}
@@ -87,9 +87,7 @@ export const VerPoliticasHTML = (props) => {
 	            </li>
 	          ))}
 				<li className="page-item">
-					<button className="page-link"
-						onClick={() => 
-							actualizarPagina(paginaActual < numeros.length ? paginaActual+1 : numeros.length)}>
+					<button className="page-link" onClick={() => actualizarPagina(paginaActual < numeros.length ? paginaActual+1 : numeros.length)}>
 							<FontAwesomeIcon icon={faChevronRight} />
 					</button>
 				</li>
