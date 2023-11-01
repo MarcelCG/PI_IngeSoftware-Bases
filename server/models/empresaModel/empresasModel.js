@@ -124,10 +124,16 @@ async function editarEmpresa(empresa) {
 
 async function borrarEmpresa(cedula_juridica) {
   try {
-    console.log("model: ", cedula_juridica);
+    const pool = await sql.connect(dbConfig);
+    const request = pool.request();
+    request.input('cedula_juridica', sql.NVarChar, cedula_juridica);
+    const query = 'EXEC BorrarEmpresa @cedula_juridica';
+    const resultado = await request.query(query);
+    
+    return true;
   }
   catch(error) {
-
+    return false;
   }
 };
 

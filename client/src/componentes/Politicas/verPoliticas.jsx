@@ -10,7 +10,7 @@ export const VerPoliticas = () => {
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa; 
   const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
-
+  
   useEffect(() => {
     async function cargarPoliticas() {
       try {

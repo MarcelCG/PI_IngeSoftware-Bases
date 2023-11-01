@@ -63,8 +63,29 @@ async function getByCedula(cedula) {
     }
 }
 
+// Obtener un usuario por su cedulaj
+async function CedulaActivo(cedula) {
+    try {
+        const piscina = await sql.connect(dbConfig);
+        const resultado = await piscina
+            .request()
+            .input('cedula', sql.NVarChar, cedula)
+            .query('SELECT * FROM Usuario WHERE cedula = @cedula AND activo = 1');
+        if (resultado.recordset.length > 0) {
+            return resultado.recordset[0];
+        } else {
+            return null;
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getAll,
     createUsuario,
-    getByCedula
+    getByCedula,
+    CedulaActivo
 };
+
+

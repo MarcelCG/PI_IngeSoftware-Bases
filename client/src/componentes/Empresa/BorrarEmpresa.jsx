@@ -1,8 +1,5 @@
 import axios from 'axios';
-import _ from "lodash";
-import EditarEmpresaHTML from './EditarEmpresaHTML'
-import React, { useState } from 'react'
-import {handleSubmit} from '../Registro/FormInput'
+import React from 'react'
 import { URLApi } from '../Compartido/Constantes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
@@ -15,10 +12,8 @@ export const BorrarEmpresa = ({ datosEmpresa, botonRef, setModalValores }) => {
 	const borrar = async() => {
 		let estatusDescrip = "ERROR: Vuelva a intentar mas tarde";
 	  try {
-	  
-	  	const url = URLApi+'empresa/borrar';
 	  	const cedula_juridica = datosEmpresa.cedula_juridica;
-	  	const respuesta = await axios.post(url, {cedula_juridica});
+	  	const respuesta = await axios.post(`${URLApi}empresa/borrar`, { cedula_juridica: cedula_juridica });
 
 	  	const exito = 200;
 	  	if(respuesta.status === exito){

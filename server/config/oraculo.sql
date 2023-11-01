@@ -215,4 +215,4 @@ BEGIN
     UPDATE Empresa SET activa = 0 WHERE cedula_juridica = @cedula_empresa
     UPDATE Empleador SET activa = 0 WHERE cedula_empleador = (SELECT cedula_empleador FROM Empresa WHERE cedula_juridica = @cedula_empresa)
 
-END;  
+END;        
