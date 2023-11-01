@@ -1,4 +1,5 @@
 const Empleado = require('../../../models/usuarioModel/Empleado/empleadoModel');
+const empleadoServicios = require ('../../../servicios/usuarioServicios/empleadoServicios/empleadoServicios')
 
 // Obtener todos los empleados
 async function getAllEmpleados(req, res) {
@@ -125,6 +126,26 @@ async function getEmpleadoConCedulaYEmpresa(req, res) {
   }
 }
 
+async function borrarEmpleado(solicitud, respuesta) {
+  try {
+    const { cedula } = solicitud.body; 
+    const empleadoEncontrado = await Empleado.getByCedula(cedula);
+
+    if (empleadoEncontrado) {
+      const exito = await empleadoServicios.borrarEmpleado(cedula);
+      if (exito){
+        respuesta.status(200).json(exito);
+      } else{
+        respuesta.status(500).json({error: 'No se pudo eliminar el empleado'});
+      }
+    } else {
+      respuesta.status(404).json({ error: 'Empleado no encontrado' });
+    }
+  } catch (error) {
+     respuesta.status(500).json({ error: error.message });
+  }
+}
+
 // Otros controladores para operaciones adicionales con Empleados pueden ser agregados aquí
 
 module.exports = {
@@ -134,5 +155,6 @@ module.exports = {
   getEmpleadoByCedula,
   getEmpleadoByEmpresa,
   getEmpleadoByCedulaAndEmpresa,
-  getEmpleadoConCedulaYEmpresa
+  getEmpleadoConCedulaYEmpresa,
+  borrarEmpleado
 };

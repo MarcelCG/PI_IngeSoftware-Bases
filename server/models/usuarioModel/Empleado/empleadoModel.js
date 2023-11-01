@@ -163,6 +163,23 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
   
+  async function borrarEmpleado(cedulaEmpleado) {
+    let consulta_exitosa = null;
+    try {
+      const exito = await sql.connect(dbConfig);
+      const resultado = await exito
+        .request()
+        .input('cedula_empleadoConsulta', sql.NVarChar, cedulaEmpleado)
+        .query('EXEC BorrarEmpleado @cedula_empleado=@cedula_empleadoConsulta');
+    
+      consulta_exitosa= 5;
+      return consulta_exitosa;
+    } catch (error) {
+      // Manejar errores
+      console.error("Error al ejecutar la consulta:", error);
+      return consulta_exitosa;
+    }
+  }
 
 // Exportar el modelo
 module.exports = {
@@ -173,4 +190,5 @@ module.exports = {
   getByEmpresa,
   getByCedulaAndEmpresa,
   getEmpleadoByCedulaYEmpresa,
+  borrarEmpleado
 };
