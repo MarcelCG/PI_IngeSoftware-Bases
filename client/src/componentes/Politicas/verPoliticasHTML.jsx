@@ -30,7 +30,7 @@ export const VerPoliticasHTML = (props) => {
 		<ActualizarTiempoLibre />
 		<Modal{...props}/>
 	    <div ref={botonRef} 
-	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
+	      data-bs-toggle="modal" data-bs-target={`#${props.modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
             <div className="row mb-4 col-12 d-flex p-1 align-items-center">
 				<div className="col-10">
