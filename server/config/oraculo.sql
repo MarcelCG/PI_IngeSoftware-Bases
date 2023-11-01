@@ -88,6 +88,7 @@ CREATE TABLE Libres (
     FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa)
 );
 
+-- Jeremy
 DROP TRIGGER InsertarLibre
 GO;
 CREATE TRIGGER InsertarLibre 
@@ -155,6 +156,7 @@ BEGIN
 END;
 GO;
 
+-- Creados por Richard C03200
 CREATE PROC obtenerDatosEmpleador @cedula_empleador varchar(255)
 AS
 BEGIN
@@ -177,6 +179,7 @@ BEGIN
 END;
 GO;
 
+-- Jeremy :>
 GO
 CREATE PROCEDURE BorrarEmpresa(@cedula_empresa VARCHAR(255))
 AS
@@ -216,3 +219,36 @@ BEGIN
     UPDATE Empleador SET activa = 0 WHERE cedula_empleador = (SELECT cedula_empleador FROM Empresa WHERE cedula_juridica = @cedula_empresa)
 
 END;        
+
+CREATE PROC ActualizarEstadoSolicitud @id bigInt, @estado varchar(255)
+AS
+BEGIN
+	IF @estado = 'Rechazada'
+	BEGIN
+		DECLARE @cedulaEmpleado varchar(255)
+		DECLARE @cedulaEmpresa varchar(255)
+		DECLARE @diasSolicitados decimal(5,2)
+		DECLARE @politica varchar(255)
+
+		SELECT 
+            @cedulaEmpleado = cedula_empleado, 
+            @cedulaEmpresa = cedula_empresa, 
+            @diasSolicitados = dias_libres_solicitados, 
+            @politica = titulo_politica
+        FROM Solicitud
+        WHERE id = @id
+
+		UPDATE Libres
+        SET dias_libres_disponibles = dias_libres_disponibles + @diasSolicitados,
+		dias_libres_utilizados = dias_libres_utilizados - @diasSolicitados
+        WHERE cedula_empleado = @cedulaEmpleado 
+            AND cedula_empresa = @cedulaEmpresa 
+            AND titulo_politica = @politica
+
+	END
+
+	UPDATE Solicitud
+	SET estado = @estado
+	WHERE id = @id
+END;
+GO;
