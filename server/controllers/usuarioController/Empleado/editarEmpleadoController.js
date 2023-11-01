@@ -17,7 +17,7 @@ async function EditarUsuario(solicitud, respuesta) {
             correo2 = datos["correo2"];
         }
 
-        var success = await UsuarioModel.editarUsuario(
+        var exito = await UsuarioModel.editarUsuario(
             cedula_empleado,
             datos["contrasena"],
             datos["nombre"],
@@ -30,13 +30,13 @@ async function EditarUsuario(solicitud, respuesta) {
             true
         );
 
-        success += await EmpleadoModel.editarEmpleado(
+        exito += await EmpleadoModel.editarEmpleado(
             cedula_empleado,
             datos["rol"],
             datos["fecha_contratacion"]
         )
 
-        return success;
+        return exito;
     }
     catch (error) {
         return error;
@@ -51,8 +51,8 @@ async function EditarEmpleado(solicitud, respuesta) {
         const existeUsuario = await UsuarioModel.getByCedula(cedula);
 
         if (existeUsuario) {
-            const success = await EditarUsuario(solicitud, respuesta);
-            if (success) { 
+            const exito = await EditarUsuario(solicitud, respuesta);
+            if (exito) { 
                 respuesta.status(201).json({ message: 'Empleado editado exitosamente' });
             } else {
                 respuesta.status(500).json({ message: 'Hubo un error al editar al empleado' });
