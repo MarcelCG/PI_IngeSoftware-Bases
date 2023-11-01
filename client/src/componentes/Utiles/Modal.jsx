@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 /* ---------------------------------------------------------------------------------------------------------------------
   │Explicacion:                                                                                                          │
   │  - Este en un template de Modal que podemos usar para no tener que escribir el codigo muchas veces                   │
@@ -46,6 +47,9 @@ export const Modal = (props) => {
               footer
             ) : (
               <div>
+                <button type="button" className="btn btn-primary btn-sm" data-bs-dismiss="modal">
+                  Cerrar
+                </button>
                 {boton && (
                   <button type="button" className="btn btn-primary btn-sm" onClick={funcion}>
                     {boton}

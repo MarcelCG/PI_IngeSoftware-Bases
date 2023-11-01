@@ -86,7 +86,7 @@ async function getByCedulaEmpresa(cedula_empresa) {
     const result = await pool
       .request()
       .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-      .query('SELECT * FROM Politica WHERE cedula_empresa = @cedula_empresa');
+      .query('SELECT * FROM Politica WHERE cedula_empresa = @cedula_empresa AND activo = 1');
 
     return result.recordset;
   } catch (error) {
@@ -112,6 +112,25 @@ async function getByTituloAndCedula(titulo, cedula_empresa) {
   }
 }
 
+//Funcion que realiza la consulta a la base de datos.
+async function borrarPolitica(titulo,cedula_empresa) {
+  let consultaExitosa=false;
+  try {
+    //Se trata de establecer la conexion y hacer la consulta.
+    const exito = await sql.connect(dbConfig);
+    const resultado = await exito
+      .request()
+      .input('tituloConsulta', sql.NVarChar, titulo)
+      .input('cedula_empresaConsulta', sql.NVarChar, cedula_empresa)
+      .query('EXEC BorrarPolitica @titulo=@tituloConsulta ,@cedula_empresa=@cedula_empresaConsulta');
+    //Se devuelve al cantidad de lineas modificadas
+    consultaExitosa=true;
+    return consultaExitosa;
+    //En caso de no poder establecer la conexion devuelve el error.
+  } catch (error) {
+    throw error;
+  }
+}
 // Función para actualizar una política por su título (Mediante función almancenada en la base de datos)
 async function editarPolitica(titulo, actualizarDatosPolitica) {
   try {
@@ -145,5 +164,6 @@ module.exports = {
   getByTitulo,
   getByCedulaEmpresa,
   getByTituloAndCedula,
+  borrarPolitica,
   editarPolitica,
 };
