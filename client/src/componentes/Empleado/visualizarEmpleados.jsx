@@ -2,13 +2,14 @@ import axios from 'axios';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import React, {useState, useEffect, useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faPlus, faTrash, faChevronRight, faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom';
+import { faPenToSquare, faTrash, faChevronRight, faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
 import { URLApi } from '../Compartido/Constantes';
 import BuscarEmpleados from './buscarEmpleados';
-import {Modal} from '../Utiles/Modal'
-import {ModalAgregarEmpleado} from './agregarEmpleado'
+import { Link } from 'react-router-dom';
+import {Modal} from '../Utiles/Modal';
+import {ModalAgregarEmpleado} from './agregarEmpleado';
 const empleadoURI = URLApi + 'empleados/allByEmpresa/';
+
 
 const ListOfEmployees = () => {
     const {usuarioAutenticado} = useAutent(); 

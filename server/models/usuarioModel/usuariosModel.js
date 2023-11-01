@@ -101,6 +101,7 @@ async function editarUsuario(cedula, contrasena, nombre, primer_apellido, segund
 }
 
 
+
 async function editarPerfilEmpleador(cedula, nombre, primer_apellido, segundo_apellido,
     telefono1, telefono2, correo1, correo2) {
     try {
@@ -129,18 +130,37 @@ async function editarPerfilEmpleador(cedula, nombre, primer_apellido, segundo_ap
             cedula=@cedula;`
         );
         return resultado.rowsAffected > 0;
-    } catch (error) {
+          } catch (error) {
         throw error;
     }
 }
 
 
-
+// Obtener un usuario por su cedulaj
+async function CedulaActivo(cedula) {
+    try {
+        const piscina = await sql.connect(dbConfig);
+        const resultado = await piscina
+            .request()
+            .input('cedula', sql.NVarChar, cedula)
+            .query('SELECT * FROM Usuario WHERE cedula = @cedula AND activo = 1');
+        if (resultado.recordset.length > 0) {
+            return resultado.recordset[0];
+        } else {
+            return null;
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     getAll,
     createUsuario,
     editarUsuario,
     getByCedula,
-    editarPerfilEmpleador
+    editarPerfilEmpleador,
+    CedulaActivo
 };
+
+

@@ -1,7 +1,6 @@
 import React from "react";
 import axios from 'axios';
 import {useForm} from 'react-hook-form'
-import { useNavigate } from 'react-router-dom';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import { ToastContainer, toast } from 'react-toastify';
 import { URLApi } from '../Compartido/Constantes';
@@ -14,8 +13,6 @@ const AddEmployee = () => {
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa;
 
-  const navegar = useNavigate();
-  
   const {register, handleSubmit, 
     formState: {errors},
     watch,

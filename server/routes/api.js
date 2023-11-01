@@ -10,9 +10,11 @@ router.use('/registro', registroRoutes);
 
 //-----empleador-----//
 const EmpleadorRoutes = require('./usuarioRoutes/empleadorRoutes/empleadorRoutes');
+
 const editarEmpleadorRoutes = require('./usuarioRoutes/empleadorRoutes/editarEmpleadorRoutes');
 router.use('/empleador', EmpleadorRoutes);
 router.use('/editarEmpleador', editarEmpleadorRoutes);
+
 //-----empleado------//
 const editarEmpleadoRutas = require('./usuarioRoutes/empleadoRoutes/editarEmpleadoRutas');
 const empleadoRoutes = require('./usuarioRoutes/empleadoRoutes/empleadoRoutes');

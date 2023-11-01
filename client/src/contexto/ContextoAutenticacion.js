@@ -61,7 +61,6 @@ const obtenerDatosUsuario = async (username, autenticarUsuario) => {
     }
     return '';
   };
-  
 
 export function ProveedorAutenticacion(props){
     // Obtener el valor almacenado en sessionStorage, si existe
@@ -76,9 +75,8 @@ export function ProveedorAutenticacion(props){
         autenticarUsuario,
         logeado,
         logear,
-        obtenerDatosUsuario
+        obtenerDatosUsuario,
     }
-
     // Almacenar en sessionStorage cada vez que el contexto cambie
     useEffect(() => {
       sessionStorage.setItem('contextoAutenticacion', JSON.stringify({
