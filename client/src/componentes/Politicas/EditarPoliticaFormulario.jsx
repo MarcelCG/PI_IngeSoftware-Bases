@@ -5,14 +5,14 @@ class EditarPoliticaFormulario extends Component {
     const {
       onSubmit,
       cancelarFormulario,
-      setDisableStartDate,
-      disableStartDate,
-      disableIncremental,
-      setDisableIncremental,
+      setDesactivarFechaInicio,
+      desactivarFechaInicio,
+      desactivarIncremento,
+      setDesactivarIncremento,
       clearErrors,
       errors,
       register,
-      validationPatterns,
+      patronesValidacion,
       datosPolitica, // Los datos previos de la política
     } = this.props;
         // Se asegura de que datosPolitica esté definida
@@ -58,9 +58,9 @@ class EditarPoliticaFormulario extends Component {
           <input
             {...register("inicia_desde_contrato")}
             type="checkbox"
-            checked={disableStartDate}
+            checked={desactivarFechaInicio}
             onChange={(e) => {
-              setDisableStartDate(e.target.checked);
+              setDesactivarFechaInicio(e.target.checked);
               clearErrors("fecha_inicio");
             }}
           />
@@ -94,7 +94,7 @@ class EditarPoliticaFormulario extends Component {
             className={`campo ${errors.periodo ? "campoError" : ""}`}
             {...register("periodo", {
               required: "Este campo es obligatorio",
-              ...validationPatterns.periodo,
+              ...patronesValidacion.periodo,
             })}
             name="periodo"
             type="number"
@@ -123,19 +123,19 @@ class EditarPoliticaFormulario extends Component {
           <input
             className={`campo ${errors.dias_a_incrementar ? "campoError" : ""}`}
             {...register("dias_a_incrementar", {
-              required: !disableIncremental
+              required: !desactivarIncremento
                 ? "Este campo es obligatorio"
                 : false,
-              ...validationPatterns.dias_a_incrementar,
+              ...patronesValidacion.dias_a_incrementar,
             })}
             name="dias_a_incrementar"
             type="number"
-            disabled={disableIncremental}
+            disabled={desactivarIncremento}
             min={0}
             defaultValue={datosPolitica.dias_a_incrementar} // Rellenar con el dato previo
           />
 
-          <select className="drop" disabled={disableIncremental}>
+          <select className="drop" disabled={desactivarIncremento}>
             <option value="1/24">Horas</option>
             <option value="1">Días</option>
             <option value="7">Semanas</option>
@@ -154,9 +154,9 @@ class EditarPoliticaFormulario extends Component {
           <input
             {...register("incrementativo")}
             type="checkbox"
-            checked={disableIncremental}
+            checked={desactivarIncremento}
             onChange={(e) => {
-              setDisableIncremental(e.target.checked);
+              setDesactivarIncremento(e.target.checked);
               clearErrors("dias_a_incrementar");
             }}
           />
@@ -173,7 +173,7 @@ class EditarPoliticaFormulario extends Component {
             className={`campo ${errors.dias_a_dar ? "campoError" : ""}`}
             {...register("dias_a_dar", {
               required: "Este campo es obligatorio",
-              ...validationPatterns.dias_a_dar,
+              ...patronesValidacion.dias_a_dar,
             })}
             name="dias_a_dar"
             type="number"
