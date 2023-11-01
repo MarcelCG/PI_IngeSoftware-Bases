@@ -129,7 +129,6 @@ async function borrarEmpresa(cedula_juridica) {
     request.input('cedula_juridica', sql.NVarChar, cedula_juridica);
     const query = 'EXEC BorrarEmpresa @cedula_juridica';
     const resultado = await request.query(query);
-    
     return true;
   }
   catch(error) {

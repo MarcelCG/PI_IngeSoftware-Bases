@@ -129,7 +129,6 @@ async function editarEmpresa(req, res) {
 async function borrarEmpresa(req, res) {
   try {
     const { cedula_juridica } = req.body;
-
     const estado = await EmpresaServicios.borrarEmpresa(cedula_juridica);
     if (estado === true) {
       res.status(200).json({ message: 'Empresa borrada exitosamente' });

@@ -6,8 +6,21 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { BorrarEmpresaBody, BorrarEmpresaFooter } from './BorrarEmpresaHTML'
+import { useAutent } from '../../contexto/ContextoAutenticacion';
+import { useNavigate } from 'react-router-dom';
 
 export const BorrarEmpresa = ({ datosEmpresa, botonRef, setModalValores }) => {
+
+	const navegar = useNavigate();
+
+	const RedirigirInicio = () => {
+		// Clear the data stored in sessionStorage
+		sessionStorage.removeItem('contextoAutenticacion');
+		setTimeout(() => {
+    	navegar('/login');
+  	}, 	3000); 
+
+	};
 
 	const borrar = async() => {
 		let estatusDescrip = "ERROR: Vuelva a intentar mas tarde";
@@ -19,7 +32,7 @@ export const BorrarEmpresa = ({ datosEmpresa, botonRef, setModalValores }) => {
 	  	if(respuesta.status === exito){
 	  		alternarModal();
 		    estatusDescrip = "EXITO: La empresa ha sido eliminada, redirigiendo!";
-		    // redirigir
+		    
 		    toast.success(estatusDescrip);
 		  } else {
 		  	estatusDescrip = "ERROR: Vuelva a intentar mas tarde";
@@ -29,7 +42,8 @@ export const BorrarEmpresa = ({ datosEmpresa, botonRef, setModalValores }) => {
 	  catch (error) {
 	  	estatusDescrip = "ERROR: Vuelva a intentar mas tarde";
 	  	toast.error(estatusDescrip);
-		}
+	  }
+	  RedirigirInicio();
 	};
 
 	const alternarModal = () => {
