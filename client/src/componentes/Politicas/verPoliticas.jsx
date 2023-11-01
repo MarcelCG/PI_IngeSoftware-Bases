@@ -4,7 +4,7 @@ import {VerPolitica} from './verPolitica'
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import React, {useState, useEffect, useRef} from "react";
 import { URLApi } from '../Compartido/Constantes';
-import { EditarPolitica } from './EditarPolitica';
+import EditarPolitica from './EditarPolitica';
 
 export const VerPoliticas = () => {
 
@@ -53,16 +53,20 @@ export const VerPoliticas = () => {
   };
 
     // Función para abrir el formulario de edición
- // Función para abrir el formulario de edición
-const manejoEditarPolitica = (politica) => {
-  if (politica && politica.titulo) {
-    // Llama a la función para editar la política pasando la política como argumento
-    EditarPolitica(politica);
-  } else {
-    // Manejar el caso en el que 'politica' no sea válido
-    console.error('El objeto de política no es válido');
-  }
-};
+    const manejoEditarPolitica = (politica) => {
+      if (politica && politica.titulo) {
+        // Renderiza el componente EditarPolitica con las props
+        setPolValores({
+          ...polValores,
+          titulo: politica.titulo,
+          componente: <EditarPolitica match={{ params: { titulo: politica.titulo } }} />
+        });
+        botonRef.current.click();
+      } else {
+        // Manejar el caso en el que 'politica' no sea válido
+        console.error('El objeto de política no es válido');
+      }
+    };
 
   let props = {
     ...polValores,

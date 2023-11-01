@@ -18,7 +18,7 @@ export const VerPoliticasHTML = (props) => {
 		abrirModalPolitica,
 		numeros,
 		esEmpleador,
-    manejoEditarPolitica
+		manejoEditarPolitica
 	} = props;
 
 	return (
@@ -53,8 +53,8 @@ export const VerPoliticasHTML = (props) => {
 	              <td>{ajustarFecha(politica.fecha_inicio)}</td>
 	              <td>{politica.dias_a_dar}</td>
 	              {esEmpleador && <td>
-                  <button className="btn-primary me-2" onClick={() => politica && politica.titulo && manejoEditarPolitica(politica)}>
-                    <FontAwesomeIcon icon={faPenToSquare} />
+                    <button className="btn-primary me-2" onClick={() => manejoEditarPolitica(politica)}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
 	                <button className="btn-danger">
 	                  <FontAwesomeIcon icon={faTrash} />
