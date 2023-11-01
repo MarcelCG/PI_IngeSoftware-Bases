@@ -54,6 +54,7 @@ export const VerPoliticas = () => {
 
     // Función para abrir el formulario de edición
     const manejoEditarPolitica = (politica) => {
+      console.log('manejoEditarPolitica se ejecutó');
       if (politica && politica.titulo) {
         // Renderiza el componente EditarPolitica con las props
         setPolValores({
