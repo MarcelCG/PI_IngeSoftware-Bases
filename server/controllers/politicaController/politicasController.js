@@ -1,4 +1,5 @@
 const Politica = require('../../models/politicaModel/politicasModel');
+const serviciosPolitica = require('../../servicios/politicaServicios/politicaServicios')
 
 // Obtener todas las politicas
 async function getAllPoliticas(req, res) {
@@ -118,10 +119,34 @@ async function getPoliticaByTituloAndCedula(req, res) {
   }
 }
 
+//Funcion que verifica si existe la politica y llama al servicio de borrar politica
+async function borrarPolitica(solicitud, respuesta) {
+  try {
+    const { titulo, cedula_empresa } = solicitud.body;
+    // Llama a la función que verifica si existe la política
+    const politicaEncontrada = await Politica.getByTituloAndCedula(titulo, cedula_empresa);
+    // En caso de encontrarla, la trata de borrar
+    if (politicaEncontrada) {
+      const exito = await serviciosPolitica.borrarPolitica(titulo, cedula_empresa);
+      if (exito){
+        respuesta.status(200).json();
+      } else{
+        respuesta.status(500).json({error: 'No se pudo eliminar la política'});
+      }
+    } else {
+      respuesta.status(404).json({ error: 'Política no encontrada' });
+    }
+  // En caso contrario, devuelve el error
+  } catch (error) {
+     respuesta.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   getAllPoliticas,
   createPolitica,
   getPoliticaByTitulo,
   getPoliticaByCedulaEmpresa,
   getPoliticaByTituloAndCedula,
+  borrarPolitica
 };

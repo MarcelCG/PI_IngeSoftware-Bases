@@ -1,15 +1,20 @@
 import axios from 'axios';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faPlus, faTrash, faChevronRight, faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
-import { URLApi } from '../Compartido/Constantes';
 import BuscarEmpleados from './buscarEmpleados';
+import { URLApi } from '../Compartido/Constantes';
+import {BorrarEmpleado} from './borrarEmpleado';
+import { Modal } from '../Utiles/Modal';
+import {ModalAgregarEmpleado} from './agregarEmpleado'
 
 const empleadoURI = URLApi + 'empleados/allByEmpresa/';
 
+
 const ListOfEmployees = () => {
+
     const {usuarioAutenticado} = useAutent(); 
 
     const empresa = usuarioAutenticado.cedula_empresa;
@@ -33,28 +38,43 @@ const ListOfEmployees = () => {
     }, [empresa]);
 
     const [empleados, setEmpleado] = useState([]);
-    const [empleadosFiltrados, filtrarEmpleados] = useState([]);
+        const [modal, setModal] = useState({modalID:"modalEmpleado"});
+        const [empleadosFiltrados, filtrarEmpleados] = useState([]);
+        const botonRef = useRef(null);
+        const [currentPage, setCurrentPage] = useState(1);
+        const recordsPerPage = 5;
+        const lastIndex = currentPage * recordsPerPage;
+        const firstIndex = lastIndex - recordsPerPage;
+        const records = empleadosFiltrados.slice(firstIndex, lastIndex);
+        const npage = Math.ceil(empleadosFiltrados.length/recordsPerPage);
+        const numbers = [...Array(npage +1).keys()].slice(1)
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const recordsPerPage = 5;
-    const lastIndex = currentPage * recordsPerPage;
-    const firstIndex = lastIndex - recordsPerPage;
-    const records = empleadosFiltrados.slice(firstIndex, lastIndex);
-    const npage = Math.ceil(empleadosFiltrados.length/recordsPerPage);
-    const numbers = [...Array(npage +1).keys()].slice(1)
+    const [EmpleadoValores, setEmpleadoValores] = useState({
+      titulo: "",
+      componente: "",
+      modalID:"modalEmpleado"
+    });
+
+    let props = {
+      ...EmpleadoValores,
+      BorrarEmpleado,
+      botonRef,
+      setEmpleadoValores,
+      setEmpleado
+    };
 
     return(
         <div className='container'>
+            <Modal{...props}/>
+            <div ref={botonRef} data-bs-toggle="modal" data-bs-target={`#${props.modalID}`}/>
             <div className="row mb-4 col-12 d-flex p-1 align-items-center">
                 <div className='col-10'>
                     <BuscarEmpleados empleados={empleados} filtrarEmpleados={filtrarEmpleados}/>
                 </div>
-                <Link to="/app/empleados/addEmpleados" className="btn-primary col-2 continuar">
-                    <FontAwesomeIcon icon={faPlus} />Agregar
-                </Link>
+                <ModalAgregarEmpleado botonRef={botonRef} setModalValores={setModal} />
             </div>
             <div className="table-responsive mb-4">
-                    <table className="table">
+                    <table className="table ">
                         <thead>
                             <tr>
                                 <th className="col--5" scope="col">Cedula</th>
@@ -72,8 +92,10 @@ const ListOfEmployees = () => {
                                     <td className="col--5">{ empleado.correo }</td>
                                     <td className="col--5">{ empleado.rol }</td>
                                     <td className="col--5 acciones">
-                                        <button className="btn-primary me-2"><FontAwesomeIcon icon={faPenToSquare} /></button>
-                                        <button className="btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
+                                        <Link to={`/app/empleados/editar/${empleado.cedula}`} className="btn btn-primary me-2">
+                                            <FontAwesomeIcon className='editar' icon={faPenToSquare} />
+                                        </Link>
+                                        <BorrarEmpleado empleado={empleado} botonRef={botonRef} setEmpleadoValores={setEmpleadoValores} />
                                     </td>
                                 </tr>
                             ))}

@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import {EditarEmpresa} from './EditarEmpresa'
+import {Modal} from '../Utiles/Modal'
+import React, { useState, useEffect, useRef } from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import 'bootstrap/dist/css/bootstrap.css';
 import {URLApi} from '../Compartido/Constantes';
 import axios from 'axios';
+import { BorrarEmpresa } from './BorrarEmpresa'
 
 function VisualizarEmpresa() {
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa;
-  // Se definen los valores iniciales para los atributos de la empresa
   const [datosEmpresa, setDatosDeEmpresa] = useState({
     nombre: "",
     cedula_juridica: "",
-    telefono: "",
-    correo: "",
+    telefono1: "",
+    telefono2: "",
+    correo1: "",
+    correo2: "",
   });
 
+  const [modalValores, setModalValores] = useState({modalID:"modalEmpresa"})
+  const botonRef = useRef(null);
+  const [cargando, setCargando] = useState(false);
   useEffect(() => {
   async function cargarDatosEmpresa() {
       try {
@@ -23,48 +30,70 @@ function VisualizarEmpresa() {
         if (response.status === 200) {
 
           const data = response.data.data;
-          console.log(data);
           // Actualiza el estado con los datos específicos del JSON de respuesta
           setDatosDeEmpresa({
             nombre: data.nombre,
             cedula_juridica: data.cedula_juridica,
-            telefono: data.telefono1,
-            correo: data.correo1
+            telefono1: data.telefono1,
+            telefono2: data.telefono2,
+            correo1: data.correo1,
+            correo2: data.correo2
           });
+          setCargando(true);
         } else if (response.status === 404) {
           throw new Error('Empresa no encontrada');
         } else {
           throw new Error('Error en el servidor');
         }
+      setCargando(true);
     } catch (error) {
-      // Maneja errores y actualiza el estado de acuerdo a la respuesta
+      setCargando(true);
       if (error.message === 'Empresa no encontrada') {
         setDatosDeEmpresa({ error: 'Empresa no encontrada' });
       } else {
         setDatosDeEmpresa({ error: 'Error en el servidor' });
       }
-      console.error('Error al cargar datos de la empresa:', error);
     }
   }
-
-  cargarDatosEmpresa(); // Llama a la función aquí dentro del efecto
+  cargarDatosEmpresa(); 
 }, [empresa]);
 
-  // Llama a la función para cargar los datos del empleado cuando se carga el componente (Base de datos)
+  const desabilitado = false;
+  const props = {desabilitado, setDatosDeEmpresa, datosEmpresa, botonRef, setModalValores, ...modalValores};
+
   return (
     <div className="container mt-2">
+      {cargando && (
+        <>
+          <Modal {...props} />
+          <div ref={botonRef} data-bs-toggle="modal" data-bs-target={`#${modalValores.modalID}`} />
+        </>
+      )}
       <div className="row justify-content-center">
-        <div>
-          <div className="mb-3">
-            <div className="card-body p-0">
-              <p><strong>Nombre:</strong> {datosEmpresa.nombre}</p>
-              <p><strong>Cédula Juridica:</strong> {datosEmpresa.cedula_juridica}</p>
-              <p><strong>Telefono:</strong> {datosEmpresa.telefono}</p>
-              <p><strong>Correo Informativo:</strong> {datosEmpresa.correo}</p>
-            </div>
+        <div className="mb-3">
+          <div className="card-body p-0">
+            <p><strong>Nombre:</strong> {datosEmpresa.nombre}</p>
+            <p><strong>Cédula Jurídica:</strong> {datosEmpresa.cedula_juridica}</p>
+            <p><strong>Teléfono:</strong> {datosEmpresa.telefono1}</p>
+            <p><strong>Teléfono adicional:</strong> {datosEmpresa.telefono2||" - "}</p>
+            <p><strong>Correo Informativo:</strong> {datosEmpresa.correo1}</p>
+            <p><strong>Correo Informativo adicional:</strong> {datosEmpresa.correo2||" - "}</p>
           </div>
         </div>
       </div>
+      {cargando ? (
+        <div className="row mb-2">
+        <div className="col-auto me-auto">
+           <BorrarEmpresa {...props} />
+        </div>
+        <div className="col-auto">
+           <EditarEmpresa {...props} />
+        </div>
+        </div>
+      ) : (
+        <>
+        </>
+      )}
     </div>
   );
 }
