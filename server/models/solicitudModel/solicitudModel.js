@@ -48,7 +48,7 @@ async function createSolicitud(
           @hora_inicio, @horas_solicitadas, 'Pendiente', @comentarios
         )`
       );
-    return result.rowsAffected > 0;
+    return result.rowsAffected[0] > 0;
   } catch (error) {
     throw error;
   }
@@ -159,10 +159,12 @@ async function obtenerLibresPorPolitica(cedula_empleado) {
       .input('cedula_empleado', sql.NVarChar, cedula_empleado)
       .query(`SELECT l.titulo_politica,
               l.dias_libres_disponibles
-              FROM Libres l, Usuario u
+              FROM Libres l, Usuario u, Politica p
               WHERE l.cedula_empleado=@cedula_empleado
               AND l.cedula_empleado=u.cedula
-              AND u.activo=1`);
+              AND u.activo=1
+              AND p.activo=1
+			        AND p.titulo=l.titulo_politica`);
       return resultado.recordset;
   } catch (error) {
     throw error;
