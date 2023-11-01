@@ -72,7 +72,7 @@ async function getUsuarioByCedula(req, res) {
 async function loginUser(req, res) {
     try {
         const { username, password } = req.body;
-        const usuario = await Usuario.getByCedula(username);
+        const usuario = await Usuario.CedulaActivo(username);
 
         if (!usuario) {
             return res.status(401).json({ error: 'Usuario no encontrado' });

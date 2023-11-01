@@ -12029,6 +12029,10 @@ button:hover {
   background-color: #990000 !important;
 }
 
+.titulo-ventana-rojo {
+  background-color: #990000 !important;
+}
+
 .titulo-pagina {
   height: 3rem;
   width: 100vw;

@@ -126,7 +126,23 @@ async function editarEmpresa(req, res) {
   }
 }
 
+async function borrarEmpresa(req, res) {
+  try {
+    const { cedula_juridica } = req.body;
+    const estado = await EmpresaServicios.borrarEmpresa(cedula_juridica);
+    if (estado === true) {
+      res.status(200).json({ message: 'Empresa borrada exitosamente' });
+    } else {
+      res.status(400).json({ message: 'Ha ocurrido un error' });
+    }
+  }
+  catch(error) {
+    res.status(400).json({ message: 'Ha ocurrido un error' });
+  }
+};
+
 module.exports = {
+  borrarEmpresa,
   getAllEmpresas,
   createEmpresa,
   getEmpresaByCedula,

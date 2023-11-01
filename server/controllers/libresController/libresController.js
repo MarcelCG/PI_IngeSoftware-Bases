@@ -88,7 +88,6 @@ async function actualizarTodos(req, res) {
     try {
         const {cedula_empresa} = req.params;
         const empleadosActualizados = await LibresServicio.actualizarTodos(cedula_empresa);
-        console.log()
         if (empleadosActualizados >= 0) {
            res.status(200).json(empleadosActualizados);
         } else {
