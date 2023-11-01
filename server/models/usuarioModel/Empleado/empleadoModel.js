@@ -163,7 +163,8 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
 
-  async function empleadosPorPolitica(titulo, cedula_empresa) {
+  //Funcion que devuelve los correos de los empleados que tienen una politica vigente
+  async function correoEmpleadosPorPolitica(titulo, cedula_empresa) {
     try {
       const pool = await sql.connect(dbConfig);
       const result = await pool
@@ -196,5 +197,5 @@ module.exports = {
   getByEmpresa,
   getByCedulaAndEmpresa,
   getEmpleadoByCedulaYEmpresa,
-  empleadosPorPolitica
+  correoEmpleadosPorPolitica
 };

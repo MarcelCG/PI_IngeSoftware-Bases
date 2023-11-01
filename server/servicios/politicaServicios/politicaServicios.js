@@ -16,39 +16,32 @@ function vigente(Politica) {
 
 // Función que genera el contenido HTML del correo
 function generarPlantillaHTML(titulo) {
-
-  // Luego, construye el HTML del correo con los datos.
   const contenidoHTML = `
     <html>
       <body>
-        <p>La política "${titulo}" ha sido desactivada. Mantendrás los días acumulados hasta ahora, pero no acumularás más.</p>
+        <p>La política "${titulo}" ha sido desactivada. 
+        Mantendrás los días acumulados hasta ahora, pero no acumularás más.</p>
       </body>
     </html>
   `;
-
   return contenidoHTML;
 }
-
+//Funcion que envia un correo a los empleados afectados por el borrado de la politica
 async function notificarEmpleados(titulo, cedula_empresa) {
-
   try {
-    const listaCorreos = await modeloEmpleados.empleadosPorPolitica(titulo, cedula_empresa);
+    const listaCorreos = await modeloEmpleados.correoEmpleadosPorPolitica(titulo, cedula_empresa);
     for (const correo of listaCorreos) {
-      const mensaje = `La política "${titulo}" ha sido desactivada. Mantendrás los días acumulados hasta ahora, pero no acumularás más.`;
+      const mensaje = `La política "${titulo}" ha sido desactivada. 
+      Mantendrás los días acumulados hasta ahora, pero no acumularás más.`;
       const asunto = 'Desactivación de Política';
-
-      // Utiliza la función enviarCorreo con los parámetros adecuados.
       await correoServicios.enviarCorreo(generarPlantillaHTML, titulo, correo, asunto);
     }
-
     const exito = await modeloPolitica.borrarPolitica(titulo, cedula_empresa);
     return exito;
   } catch (error) {
     return error;
   }
 }
-
-
 
 //Funcion que llama al modelo para borrar al empleado
 async function borrarPolitica(titulo, cedula_empresa) {
