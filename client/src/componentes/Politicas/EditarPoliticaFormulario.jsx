@@ -15,6 +15,10 @@ class EditarPoliticaFormulario extends Component {
       validationPatterns,
       datosPolitica, // Los datos previos de la política
     } = this.props;
+        // Se asegura de que datosPolitica esté definida
+        if (!datosPolitica) {
+          return <p>Cargando...</p>;
+        }
 
     return (
       <form onSubmit={onSubmit}>
