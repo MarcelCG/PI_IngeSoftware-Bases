@@ -63,7 +63,6 @@ async function getByCedula(cedula) {
     }
 }
 
-
 async function editarUsuario(cedula, contrasena, nombre, primer_apellido, segundo_apellido,
     telefono1, telefono2, correo1, correo2, activo) {
     try {
@@ -92,6 +91,41 @@ async function editarUsuario(cedula, contrasena, nombre, primer_apellido, segund
             correo1=@correo1, 
             correo2=@correo2, 
             activo=@activo
+          WHERE 
+            cedula=@cedula;`
+        );
+        return resultado.rowsAffected > 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+async function editarPerfilEmpleador(cedula, nombre, primer_apellido, segundo_apellido,
+    telefono1, telefono2, correo1, correo2) {
+    try {
+        const pool = await sql.connect(dbConfig);
+        const resultado = await pool
+        .request()
+        .input('cedula', sql.NVarChar, cedula)
+        .input('nombre', sql.NVarChar, nombre)
+        .input('primer_apellido', sql.NVarChar, primer_apellido)
+        .input('segundo_apellido', sql.NVarChar, segundo_apellido)
+        .input('telefono1', sql.NVarChar, telefono1)
+        .input('telefono2', sql.NVarChar, telefono2)
+        .input('correo1', sql.NVarChar, correo1)
+        .input('correo2', sql.NVarChar, correo2)
+        .query(
+        `UPDATE Usuario 
+          SET  
+            nombre=@nombre,
+            primer_apellido=@primer_apellido,
+            segundo_apellido=@segundo_apellido,
+            telefono1=@telefono1, 
+            telefono2=@telefono2, 
+            correo1=@correo1, 
+            correo2=@correo2
           WHERE 
             cedula=@cedula;`
         );
@@ -125,6 +159,7 @@ module.exports = {
     createUsuario,
     editarUsuario,
     getByCedula,
+    editarPerfilEmpleador,
     CedulaActivo
 };
 
