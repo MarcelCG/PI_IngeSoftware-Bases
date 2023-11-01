@@ -4,7 +4,7 @@ import {VerPolitica} from './verPolitica'
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import React, {useState, useEffect, useRef} from "react";
 import { URLApi } from '../Compartido/Constantes';
-import {editarPolitica} from './EditarPolitica';
+import { EditarPolitica } from './EditarPolitica';
 
 export const VerPoliticas = () => {
 
@@ -55,7 +55,7 @@ export const VerPoliticas = () => {
     // Función para abrir el formulario de edición
     const manejoEditarPolitica = (politica) => {
       // Llama a la función para editar la política pasando la política como argumento
-      editarPolitica(politica);
+      EditarPolitica(politica);
     };
 
   let props = {
