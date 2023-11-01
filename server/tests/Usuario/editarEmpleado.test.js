@@ -49,4 +49,4 @@ describe('editar empleado', () => {
 
     expect(respuesta).toBe(1);
   });
-});
+}, 0);
