@@ -2,7 +2,6 @@ const UsuarioModel = require('../../../models/usuarioModel/usuariosModel.js');
 
 async function editarPerfilEmpleador(solicitud, respuesta) {
     try {
-        
         const datos = solicitud.body;
 
         let telefono2 = null;
@@ -26,8 +25,8 @@ async function editarPerfilEmpleador(solicitud, respuesta) {
             datos["correo1"],
             correo2
         );
-        console.log("exito: ");
-        console.log(exito);
+
+        
         return exito;
     }
     catch (error) {
@@ -37,15 +36,12 @@ async function editarPerfilEmpleador(solicitud, respuesta) {
 
 async function EditarEmpleador(solicitud, respuesta) {
     try {
-        console.log("perrito");
         const datos = solicitud.body;
         const cedula = datos["cedula"];
         const existeUsuario = await UsuarioModel.getByCedula(cedula);
 
         if (existeUsuario) {
-            console.log("existe");
             const exito = await editarPerfilEmpleador(solicitud, respuesta);
-            console.log(exito);
             if (exito) { 
                 respuesta.status(201).json({ message: 'Empleado editado exitosamente' });
             } else {
