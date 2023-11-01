@@ -1,8 +1,11 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
+const Empleado = require('../../models/usuarioModel/Empleado/empleadoModel')
 const Servicio = require('../../servicios/solicitudServicios/solicitudServicios')
 
 // Mock del módulo Solicitud
 jest.mock('../../models/solicitudModel/solicitudModel');
+
+jest.mock('../../models/usuarioModel/Empleado/empleadoModel');
 
 describe('solicitudModel', () => {
   describe('aprobarSolicitud', () => {
@@ -13,6 +16,8 @@ describe('solicitudModel', () => {
 
       // Mockear aprobarSolicitud para que devuelva un resultado simulado
       Solicitud.aprobarSolicitud.mockResolvedValue(true);
+
+      Empleado.getByCedulaAndEmpresa.mockResolvedValue({nombre: 'Jhon', correo1: 'jhon123@gmail.com'});
 
       const id = 1;
 
@@ -46,6 +51,8 @@ describe('solicitudModel', () => {
 
       // Mockear aprobarSolicitud para que devuelva un resultado simulado
       Solicitud.rechazarSolicitud.mockResolvedValue(true);
+
+      Empleado.getByCedulaAndEmpresa.mockResolvedValue({nombre: 'Jhon', correo1: 'jhon123@gmail.com'});
 
       const id = 1;
 

@@ -8,6 +8,7 @@ import BuscarEmpleados from './buscarEmpleados';
 import { URLApi } from '../Compartido/Constantes';
 import {BorrarEmpleado} from './borrarEmpleado';
 import { Modal } from '../Utiles/Modal';
+import {ModalAgregarEmpleado} from './agregarEmpleado'
 
 const empleadoURI = URLApi + 'empleados/allByEmpresa/';
 
@@ -38,15 +39,16 @@ const ListOfEmployees = () => {
     }, [empresa]);
 
     const [empleados, setEmpleado] = useState([]);
-    const [empleadosFiltrados, filtrarEmpleados] = useState([]);
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const recordsPerPage = 5;
-    const lastIndex = currentPage * recordsPerPage;
-    const firstIndex = lastIndex - recordsPerPage;
-    const records = empleadosFiltrados.slice(firstIndex, lastIndex);
-    const npage = Math.ceil(empleadosFiltrados.length/recordsPerPage);
-    const numbers = [...Array(npage +1).keys()].slice(1)
+        const [modal, setModal] = useState({modalID:"modalEmpleado"});
+        const [empleadosFiltrados, filtrarEmpleados] = useState([]);
+        const botonRef = useRef(null);
+        const [currentPage, setCurrentPage] = useState(1);
+        const recordsPerPage = 5;
+        const lastIndex = currentPage * recordsPerPage;
+        const firstIndex = lastIndex - recordsPerPage;
+        const records = empleadosFiltrados.slice(firstIndex, lastIndex);
+        const npage = Math.ceil(empleadosFiltrados.length/recordsPerPage);
+        const numbers = [...Array(npage +1).keys()].slice(1)
 
     const [EmpleadoValores, setEmpleadoValores] = useState({
       titulo: "",
@@ -70,12 +72,10 @@ const ListOfEmployees = () => {
                 <div className='col-10'>
                     <BuscarEmpleados empleados={empleados} filtrarEmpleados={filtrarEmpleados}/>
                 </div>
-                <Link to="/app/empleados/addEmpleados" className="btn-primary col-2 continuar">
-                    <FontAwesomeIcon icon={faPlus} />Agregar
-                </Link>
+                <ModalAgregarEmpleado botonRef={botonRef} setModalValores={setModal} />
             </div>
             <div className="table-responsive mb-4">
-                    <table className="table">
+                    <table className="table ">
                         <thead>
                             <tr>
                                 <th className="col--5" scope="col">Cedula</th>
