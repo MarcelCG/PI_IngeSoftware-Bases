@@ -15,8 +15,6 @@ const empleadoURI = URLApi + 'empleados/allByEmpresa/';
 
 const ListOfEmployees = () => {
 
-    const botonRef = useRef(null);
-
     const {usuarioAutenticado} = useAutent(); 
 
     const empresa = usuarioAutenticado.cedula_empresa;

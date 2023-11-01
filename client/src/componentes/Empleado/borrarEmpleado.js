@@ -59,8 +59,7 @@ export const BorrarEmpleado = ({ empleado, botonRef, setEmpleadoValores }) => {
       componente: <div>¿Está seguro de que desea borrar al empleado "<strong>{empleado.cedula}</strong>"?</div>,
       modalID:"modalPol",
       tituloEstilos: "titulo-ventana-rojo",
-      boton:"Borrar",
-      funcion: BorrarEmpleadoAPI
+      footer: <div><button className='btn-primary' onClick={BorrarEmpleadoAPI}>Borrar</button></div>
     });
     botonRef.current.click();
   };
