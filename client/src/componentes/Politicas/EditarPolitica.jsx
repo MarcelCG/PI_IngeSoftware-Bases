@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const politicas = URLApi + 'politicas';
 
 function EditarPolitica(props) {
+  // Agrega un estado para los datos de la política
+  const [datosPolitica, setDatosPolitica] = useState(null);
   const { usuarioAutenticado } = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa;
   const { titulo } = props.match.params;
@@ -41,7 +43,10 @@ function EditarPolitica(props) {
   useEffect(() => {
     axios.get(`${politicas}/${empresa}/${titulo}`)
       .then((response) => {
-        const datosPolitica = response.data;
+          const datosPolitica = response.data;
+          console.log("Datos de la política:", datosPolitica);
+          // Establece los datos de la política cuando están disponibles
+           setDatosPolitica(datosPolitica);
            // Rellena el formulario con los datos de la política
            setValue("titulo", datosPolitica.titulo);
            setValue("periodo", datosPolitica.periodo);
@@ -116,6 +121,7 @@ function EditarPolitica(props) {
         register={register}
         patronesValidacion={patronesValidacion}
         control={control}
+        datosPolitica={datosPolitica}
       />
 
       <ToastContainer />
@@ -124,4 +130,3 @@ function EditarPolitica(props) {
 }
 
 export default EditarPolitica;
-

@@ -206,7 +206,7 @@ class EditarPoliticaFormulario extends Component {
           className="campo"
           {...register("descripcion")}
           rows={5}
-          placeholder="Puedes describir la política aquí"
+          placeholder="Puede describir la política aquí"
           defaultValue={datosPolitica.descripcion} // Rellenar con el dato previo
         />
 
