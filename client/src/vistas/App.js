@@ -10,6 +10,7 @@ import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarPerfil from './perfil';
 import EditarPerfilEmpleador from '../componentes/Empleador/editarPerfilEmpleador'
 import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
+import AgregarSolicitud from '../componentes/Solicitudes/agregarSolicitud';
 import { MenuEmpleador, MenuEmpleado } from './menu';
 import { useAutent } from '../contexto/ContextoAutenticacion';
 
@@ -68,6 +69,7 @@ function App() {
               <Route path="/empleados/editar/:cedula" element={<EditarEmpleado />} />
               <Route path="/perfil" element={<VisualizarPerfil/>}/>
               <Route path="/solicitudes" element={<Solicitudes/>}/>
+              <Route path="/solicitudes/agregarSolicitud" element={<AgregarSolicitud/>}/>  
               <Route path="/perfil/editarEmpleador/:cedula" element={<EditarPerfilEmpleador/>} />
               <Route path="/perfil/editarEmpleado/:cedula" element={<EditarEmpleado />} />
             </Routes>

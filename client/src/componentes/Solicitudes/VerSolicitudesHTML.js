@@ -61,7 +61,7 @@ export const VerSolicitudesHTML = (props) => {
                         <div className="col-8"></div>
                         <FiltrarSolicitudes solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
                         <div className=' col-2'>
-                            <Link to="/app/solicitudes" className="btn-primary continuar">
+                            <Link to="/app/solicitudes/agregarSolicitud" className="btn-primary continuar">
                                 <FontAwesomeIcon icon={faPlus} />Agregar
                             </Link>
                         </div>

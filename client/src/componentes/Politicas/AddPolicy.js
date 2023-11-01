@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import AddPolicyForm from "./AddPolicyForm";
@@ -18,9 +19,8 @@ function AddPolicy() {
   // Cedula de la empresa que inició sesión
   const {usuarioAutenticado} = useAutent(); 
   const empresa = usuarioAutenticado.cedula_empresa;
-  console.log(empresa);
 
-
+  const navegar = useNavigate();
   // Configuración del formulario usando react-hook-form
   const { register, handleSubmit, formState: { errors }, clearErrors, reset } = useForm();
 
@@ -105,6 +105,7 @@ function AddPolicy() {
   // Función para cancelar el formulario
   const handleCancel = () => {
     console.log("Formulario cancelado");
+    navegar('/app/politicas');
   };
   
   return (

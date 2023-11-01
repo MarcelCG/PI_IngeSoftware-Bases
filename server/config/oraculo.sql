@@ -56,7 +56,7 @@ CREATE TABLE Politica (
 );
 
 CREATE TABLE Solicitud (
-    id BIGINT PRIMARY KEY,
+    id BIGINT PRIMARY KEY IDENTITY(1, 1),
     cedula_empleado VARCHAR(255) NOT NULL,
     titulo_politica VARCHAR(255) NOT NULL,
     cedula_empresa VARCHAR(255) NOT NULL,
@@ -178,6 +178,47 @@ BEGIN
 	INNER JOIN Empleado em ON em.cedula_empleado = u.cedula AND u.cedula = @cedula_empleado AND em.cedula_empresa = @cedula_empresa
 END;
 GO;
+
+-- Creado por Ulises
+CREATE PROCEDURE ObtenerSolicitudesDeEmpresa @cedula_empresa varchar(255)
+AS
+SELECT CONCAT(u.nombre, ' ', u.primer_apellido,
+' ', u.segundo_apellido) AS 'nombre_completo',
+s.cedula_empleado AS 'cedula', s.titulo_politica AS 'politica',
+s.fecha_solicitud, s.inicio_fechas_solicitadas,
+s.dias_libres_solicitados, s.hora_de_inicio, s.horas_solicitadas,
+s.estado, s.comentarios
+FROM Empleado e, Solicitud s, Usuario u
+WHERE s.cedula_empresa=@cedula_empresa
+AND e.cedula_empleado=u.cedula
+AND s.cedula_empleado=e.cedula_empleado
+
+-- Creado por Ulises
+CREATE PROCEDURE ObtenerSolicitudesDeEmpleado @cedula varchar(255)
+AS
+SELECT CONCAT(u.nombre, ' ', u.primer_apellido,
+' ', u.segundo_apellido) AS 'nombre_completo',
+s.cedula_empleado AS 'cedula', s.titulo_politica AS 'politica',
+s.fecha_solicitud, s.inicio_fechas_solicitadas,
+s.dias_libres_solicitados, s.hora_de_inicio, s.horas_solicitadas,
+s.estado, s.comentarios
+FROM Empleado e, Solicitud s, Usuario u
+WHERE s.cedula_empleado=@cedula
+AND e.cedula_empleado=u.cedula
+AND s.cedula_empleado=e.cedula_empleado
+
+
+-- Creado por Ulises
+CREATE TRIGGER bajarLibresPorSolicitud
+ON Solicitud
+AFTER INSERT
+AS
+UPDATE Libres
+SET dias_libres_disponibles=(dias_libres_disponibles-i.dias_libres_solicitados)
+FROM inserted i, Libres l
+WHERE i.cedula_empleado=l.cedula_empleado
+AND i.cedula_empresa=l.cedula_empresa
+AND i.titulo_politica=l.titulo_politica
 
 -- Jeremy :>
 GO
