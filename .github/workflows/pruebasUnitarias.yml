@@ -10,6 +10,7 @@ on:
       - visualizar-solicitudes  
       - Visualizar-Empleado  
       - Gestionar-Solicitudes
+      - Buscar-Politica
 
 jobs:
   client-tests:
