@@ -86,7 +86,7 @@ async function getByCedulaEmpresa(cedula_empresa) {
     const result = await pool
       .request()
       .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-      .query('SELECT * FROM Politica WHERE cedula_empresa = @cedula_empresa');
+      .query('SELECT * FROM Politica WHERE cedula_empresa = @cedula_empresa AND activo = 1');
 
     return result.recordset;
   } catch (error) {

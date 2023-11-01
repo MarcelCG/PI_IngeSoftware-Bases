@@ -35,6 +35,11 @@ export const BorrarPolitica = ({ politica, botonRef, setPolValores }) => {
           toast.success('Politica eliminada con éxito', {
             position: toast.POSITION.TOP_RIGHT
           });
+          botonRef.current.click();
+          setTimeout(() => {
+            window.location.reload();
+          }, 2250);
+          
       } catch (error) {
           toast.error('Hubo un error inesperado al eliminar la política, inténtelo de nuevo', {
             position: toast.POSITION.TOP_CENTER
