@@ -2,7 +2,7 @@ import {Modal} from '../Utiles/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faTrash, faPlus, faEye }
+import {faTrash, faPenToSquare, faPlus, faEye }
  from '@fortawesome/free-solid-svg-icons'
 import React, {useState} from "react";
 import FiltrarSolicitudes from './filtrarSolicitudes.js'
@@ -114,7 +114,9 @@ export const VerSolicitudesHTML = (props) => {
 									</td>
                                     { esEmpleador === true ? (
                                         <td className="col--5 acciones text-center">
-										    <button className='btn btn-primary'>Gestionar</button>
+										    {solicitud.estado === "Pendiente"?
+                                            (<button className='btn btn-primary'><FontAwesomeIcon icon={faPenToSquare} /></button>):
+                                            (<button className='btn btn-primary'><FontAwesomeIcon icon={faEye} /></button>)}
                                         </td>
                                     ) : (
                                         <td className="col--5 acciones text-center d-flex flex-row">

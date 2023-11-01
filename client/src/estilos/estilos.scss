@@ -141,6 +141,10 @@ $color-gris: #f4f4f2;
     color: $color-blanco !important;
     text-align: center;
   }
+  .titulo-ventana-rojo{
+    @extend .titulo-ventana;
+    background-color: $color-rojo !important;
+  }
 
   .titulo-ventana-rojo{
     @extend .titulo-ventana;

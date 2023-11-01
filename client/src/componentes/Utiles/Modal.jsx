@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 /* ---------------------------------------------------------------------------------------------------------------------
   │Explicacion:                                                                                                          │
   │  - Este en un template de Modal que podemos usar para no tener que escribir el codigo muchas veces                   │
