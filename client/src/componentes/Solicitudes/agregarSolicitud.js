@@ -9,10 +9,12 @@ import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
 
 const obtenerLibres = URLApi + 'solicitudes/libresPorPolitica/';
+const agregarSolicitud = URLApi + 'solicitudes/';
 
 function AgregarSolicitud() {
   const {usuarioAutenticado} = useAutent(); 
   const cedula = usuarioAutenticado.cedula;
+  const empresa = usuarioAutenticado.cedula_empresa;
 
   useEffect(() => {
     let obtenerLibresURI = obtenerLibres + cedula;
@@ -29,23 +31,69 @@ function AgregarSolicitud() {
   }, []);
   const [libresPorPolitica, setLibresPorPolitica] = useState([]);
 
+  const navegar = useNavigate();
+
   const {register, handleSubmit, 
     formState: {errors},
-    watch,
     reset,
     clearErrors
-  } = useForm()
+	} = useForm()
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = handleSubmit(async (data) => {
+    const datosConFormato = formatoDatos(data);
+    console.log(datosConFormato);
+    axios.post(agregarSolicitud, datosConFormato).then((respuesta) => {
+        console.log('Solicitud POST exitosa:', respuesta.data);
+        toast.success('Solicitud agregada con éxito');
+        reset();
+      }).catch((error) => {
+        console.error('Error en la solicitud POST:', error);
+        toast.error('Hubo un error inesperado al agregar la solicitud, trate de nuevo');
+      });
+  });
+
+  const formatoDatos = (data) => {
+    let horaInicio = "";
+    let horasSolicitadas = "";
+    if (data.ajustarHoras) {
+      horaInicio = data.hora_inicio;
+      horasSolicitadas = data.horas_solicitadas;
+    } else {
+      horaInicio = null;
+      horasSolicitadas = null;
+    }
+    let comentariosJS = ""
+    if (data.comentarios === "") {
+      comentariosJS = null;
+    } else {
+      comentariosJS = data.comentarios;
+    }
+
+    return {
+      cedula_empleado: cedula,
+      titulo: data.politica,
+      cedula_empresa: empresa,
+      inicio_fechas_solicitadas: data.fecha_inicio,
+      dias_solicitados: data.dias_solicitados,
+      hora_inicio: horaInicio,
+      horas_solicitadas: horasSolicitadas,
+      comentarios: comentariosJS
+    };
   };
 
+  // Función para cancelar el formulario
+  const handleCancel = () => {
+    console.log("Formulario cancelado");
+    navegar('/app/solicitudes');
+  };
+  
   let props = {
-    libresPorPolitica,
-    errors,
-    register,
-    clearErrors,
-    handleSubmit,
+		libresPorPolitica,
+		handleCancel,
+		register,
+		handleSubmit,
+		errors,
+		clearErrors,
     onSubmit
   }
 

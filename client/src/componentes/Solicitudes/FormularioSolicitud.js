@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from "react";
 
-
 export const FormularioSolicitud = (props) => {
 	const {
-	libresPorPolitica,
-	errors,
-	errorMessages,
-	register,
-	handleSubmit,
+		libresPorPolitica,
+		handleCancel,
+		register,
+		onSubmit,
+		errors,
+		clearErrors
 	} = props;
 
 	const solicitar2Horas = ["08:00", "08:30", "09:00", "09:30",
@@ -19,9 +19,10 @@ export const FormularioSolicitud = (props) => {
 							"12:00", "12:30", "13:00"]
 
 	const [diasDisponibles, setDiasDisponibles] =
-	useState(libresPorPolitica[0]);
+	useState(0);
 
-	const cambiarDiasDisponibles = (politicaSeleccionada) => {
+	const cambiarDiasDisponibles = (e) => {
+		let politicaSeleccionada = e.target.value;
 		let politicaEncontrada = libresPorPolitica.find(
 			(politica) => politica.titulo_politica === politicaSeleccionada
 		)
@@ -29,7 +30,7 @@ export const FormularioSolicitud = (props) => {
 	}
 
 	useEffect(() => {
-		setDiasDisponibles(libresPorPolitica[0]);
+		setDiasDisponibles();
 	}, [libresPorPolitica]);
 
 	const [listaHorasMostrar, setListaHorasMostrar] = useState(2);
@@ -51,60 +52,94 @@ export const FormularioSolicitud = (props) => {
 			setHorasElegir(false);
 		}
 	}
-
+	
     return (
 		<div className="card-body">
-			<form className='px-4 row py-3'>
+			<form className='px-4 row py-3' onSubmit={onSubmit}>
             	<div className='mt-2 form d-flex justify-content-between'>
               		<div className="col-8">
-						<label htmlFor="titulo">Seleccione la Politica: </label>
-						<select className="form-select" onChange={(e) =>
-							 cambiarDiasDisponibles(e.target.value)}
+						<label htmlFor="politica">Seleccione la Politica: </label>
+						<select className={`form-select ${errors.politica ? ' is-invalid' : ''}`}
+							 {...register("politica", {
+								validate: (value) => {
+									return (value !== "Seleccione" ||
+									"Seleccione una politica")
+								}
+							 })}
+							 onChange={cambiarDiasDisponibles}
 							 >
+							<option selected disabled>Seleccione</option>
 							{
 							libresPorPolitica.map((politica, index) => (
-								<option key={index}>
+								<option key={index}
+								 value={politica.titulo_politica}>
 									{politica.titulo_politica}
 								</option>  
 							))}
 						</select>
+						{ errors.politica && <span className="text-danger">
+							{errors.politica.message}</span>}
               		</div>
-					<div className="col-3">
-						<div>	
-							<label htmlFor="dias_disponibles">Dias Disponibles: </label>
-						</div>
-						<div className="col-12">
-							<span className="form-control">
-								{diasDisponibles ?
-								diasDisponibles.dias_libres_disponibles : ''}
-							</span>
+					<div className="col-4 d-flex justify-content-end">
+						<div className="col-11">
+							<div className="col-12">	
+								<label htmlFor="dias_libres_disponibles">
+									Dias Disponibles: </label>
+							</div>
+							<div className="col-12">
+								<span className="form-control"
+									{...register("dias_libres_disponibles")}>
+									{diasDisponibles ?
+									diasDisponibles.dias_libres_disponibles : 0}
+								</span>
+							</div>
 						</div>
 					</div>
             	</div>
 				<div className='mt-2 form d-flex justify-content-between'>
 					<div className="col-8">
 						<label htmlFor="fecha_inicio">Fecha de Inicio: </label>
-						<input className={`form-control`} type="date"/>
+						<input className={`form-control ${errors.fecha_inicio ?
+							' is-invalid' : ''}`} {...register("fecha_inicio", {
+								required: true,
+								message: "La fecha de inicio es requerida"
+							})}
+						 type="date"/>
+						 { errors.fecha_inicio && <span className="text-danger">
+							Fecha de Inicio requerida</span>}
 					</div>
-					<div className="ms-4 col-3">
-						<label htmlFor="dias_solicitados">Dias a Solicitar: </label>
-						<div className="col-12">
-							<input className="form-control" type="number"
-							 onChange={manejarSolicitud1Dia}>
-							</input>
+					<div className="col-4 d-flex justify-content-end">
+						<div className="col-11">
+							<label htmlFor="dias_solicitados">Dias a Solicitar: </label>
+							<div className="col-12">
+								<input type="text"
+								 className={`form-control ${errors.dias_solicitados ? ' is-invalid' : ''}`}
+								{...register("dias_solicitados", {
+									pattern: {
+										value: /^[1-9]\d*$/,
+										message: "Numero Invalido"
+									},
+									validate: (value) => {
+										return (value <= (diasDisponibles ?
+											diasDisponibles.dias_libres_disponibles : 0) ||
+										"Vacaciones no disponibles")
+									}
+								})}
+								onChange={manejarSolicitud1Dia}
+								defaultValue={0}
+								/>
+								{ errors.dias_solicitados && <span className="text-danger">
+									{errors.dias_solicitados.message}</span>}
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="mt-2">
-					<label htmlFor="fecha_final">Fecha Final: </label>
-					<input readOnly className={`form-control type="date"`}/>
 				</div>
 				{ solicitud1Dia &&
 				<div className="mt-2">
 					<section className="form-check">
-						<input
+						<input type="checkbox"
 							className="form-check-input"
-							type="checkbox"
+							{...register("ajustarHoras")}
 							checked={elegirHoras}
 							onChange={mostrarEleccionHoras}
 						/>
@@ -117,13 +152,14 @@ export const FormularioSolicitud = (props) => {
 				{ solicitud1Dia && elegirHoras &&
 				<div className='mt-2 form d-flex justify-content-between'>
 					<div className="col-8">
-						<label htmlFor="titulo">Hora de Inicio: </label>
-						<select className="form-select">
+						<label htmlFor="hora_inicio">Hora de Inicio: </label>
+						<select className="form-select"
+							{...register("hora_inicio")}>
 							{listaHorasMostrar === 2 && 
 								(solicitar2Horas.map((hora, index) => (
 								<option key={index}>
 									{hora}
-								</option>)  
+								</option>)
 								))
 							}
 							{listaHorasMostrar === 4 && 
@@ -135,26 +171,30 @@ export const FormularioSolicitud = (props) => {
 							}
 						</select>
 					</div>
-					<div className="">
-						<div>	
-							<label htmlFor="dias_disponibles">Horas a Solicitar: </label>
-						</div>
-						<div className="">
-							<select className="form-control" onChange={cambioLista}>
-								<option>2</option>
-								<option>4</option>
-							</select>
+					<div className="col-4 d-flex justify-content-end">	
+						<div className="col-11">
+							<label htmlFor="horas_solicitadas">
+								Horas a Solicitar: </label>
+							<div className="col-12">
+								<select className="form-select"
+								{...register("horas_solicitadas")}
+								onChange={cambioLista}>
+									<option>2</option>
+									<option>4</option>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
 				}
 				<div className="mt-2">
 					<label htmlFor="comentarios">Comentarios: </label>
-					<textarea className="form-control"></textarea>
+					<textarea className="form-control"
+						{...register("comentarios")}></textarea>
 				</div>
 				<div className='d-flex justify-content-end mt-3'>
                   <section className="align-items-right text-align-right float-right">
-                      <input className="btn-danger me-2" type="button" value="Cancelar" />
+                      <input className="btn-danger me-2" type="button" value="Cancelar" onClick={handleCancel}/>
                       <input className="btn-primary" type="submit" value="Agregar"/>
                   </section>
                 </div>
