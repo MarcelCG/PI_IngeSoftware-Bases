@@ -71,11 +71,6 @@ CREATE TABLE Solicitud (
     FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa)
 );
 
-USE ElEquipo
-ALTER TABLE Libres
-ADD ultima_actualizacion DATE;
-
-
 CREATE TABLE Libres (
     cedula_empleado VARCHAR(255) NOT NULL,
     titulo_politica VARCHAR(255) NOT NULL,
