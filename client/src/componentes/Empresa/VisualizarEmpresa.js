@@ -18,7 +18,7 @@ function VisualizarEmpresa() {
     correo1: "",
     correo2: "",
   });
-
+  const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
   const [modalValores, setModalValores] = useState({modalID:"modalEmpresa"})
   const botonRef = useRef(null);
   const [cargando, setCargando] = useState(false);
@@ -81,7 +81,7 @@ function VisualizarEmpresa() {
           </div>
         </div>
       </div>
-      {cargando ? (
+      {cargando && esEmpleador? (
         <div className="row mb-2">
         <div className="col-auto me-auto">
            <BorrarEmpresa {...props} />

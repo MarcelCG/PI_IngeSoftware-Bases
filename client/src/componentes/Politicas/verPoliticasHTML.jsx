@@ -36,9 +36,7 @@ export const VerPoliticasHTML = (props) => {
 				<div className="col-10">
 					<BuscarPoliticas politicas={politicas} filtrarPoliticas={filtrarPoliticas} />
 				</div>
-                <Link to="/app/politicas/addPoliticas" className="btn-primary col-2 continuar">
-                    <FontAwesomeIcon icon={faPlus} />Agregar
-                </Link>
+				<ModalAgregarPol {...props}/>
             </div>
 	      <table className="table table-hover mt-titulo">
 	        <thead>
