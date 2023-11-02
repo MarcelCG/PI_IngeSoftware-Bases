@@ -287,4 +287,33 @@ BEGIN
 	SET estado = @estado
 	WHERE id = @id
 END;
+
+CREATE PROCEDURE BorrarPolitica @titulo nvarchar(255), @cedula_empresa varchar(255)
+AS
+    DELETE FROM Politica
+    WHERE titulo = @titulo
+    AND @titulo NOT IN (SELECT DISTINCT titulo_politica FROM Libres);
+
+    UPDATE Politica
+    SET
+    activo=0
+    WHERE
+    titulo=@titulo AND cedula_empresa = @cedula_empresa;
+END;
+
+CREATE PROCEDURE BorrarEmpleado @cedula_empleado nvarchar (255)
+AS
+    UPDATE Usuario
+        SET
+        activo=0
+        WHERE
+        cedula=@cedula_empleado;
+    UPDATE Libres
+        SET
+        dias_libres_disponibles=0,
+        dias_libres_utilizados=0
+        WHERE
+        cedula_empleado=@cedula_empleado;
+END;
+
 GO;
