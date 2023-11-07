@@ -1,26 +1,28 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { useParams } from "react-router-dom";
+import { useAutent } from "../../contexto/ContextoAutenticacion";
 import AddPolicyForm from "./AddPolicyForm";
+import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
-import "./AddPolicy.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
-// URL para el Api
-const api = 'http://localhost:5000/api';
 
 // URL para el manejo de politicas
-const politicas = api + '/politicas';
+const politicas = URLApi + 'politicas';
 
 function AddPolicy() {
 
   // Cedula de la empresa que inició sesión
-  const {empresa} = useParams();
-  console.log(empresa);
+  const {usuarioAutenticado} = useAutent(); 
+  const empresa = usuarioAutenticado.cedula_empresa;
 
+  const navegar = useNavigate();
   // Configuración del formulario usando react-hook-form
-  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm();
+  const { register, handleSubmit, formState: { errors }, clearErrors, reset } = useForm();
 
   // Estado del checkbox de "Rige a partir del contrato"
   const [disableStartDate, setDisableStartDate] = useState(false);
@@ -79,6 +81,7 @@ function AddPolicy() {
         toast.error('Hubo un error inesperado al agregar la política, trate de nuevo');
         }
       });
+      reset();
   };
 
   // Esta función prepara los datos antes de enviarlos
@@ -102,32 +105,47 @@ function AddPolicy() {
   // Función para cancelar el formulario
   const handleCancel = () => {
     console.log("Formulario cancelado");
-
-    /*Aquí debería volver a la pantalla visualizar políticas*/
+    navegar('/app/politicas');
   };
   
-
   return (
-    <div className="formulario bg-white" >
-        <h1 className="titulo">Agregar Política</h1>
+        <>
+          <div className='card-header titulo-ventana'>
+            <h3 className='mt-2'>Agregar Política</h3>
+          </div>
+          <AddPolicyForm
+            onSubmit={handleSubmit(onSubmit)}
+            handleCancel={handleCancel}
+            setDisableStartDate={setDisableStartDate}
+            disableStartDate={disableStartDate}
+            disableIncremental={disableIncremental}
+            setDisableIncremental={setDisableIncremental}
+            clearErrors={clearErrors}
+            errors={errors}
+            errorMessages={errorMessages}
+            register={register}
+            validationPatterns={validationPatterns}
+          />
 
-        <AddPolicyForm
-          onSubmit={handleSubmit(onSubmit)}
-          handleCancel={handleCancel}
-          setDisableStartDate={setDisableStartDate}
-          disableStartDate={disableStartDate}
-          disableIncremental={disableIncremental}
-          setDisableIncremental={setDisableIncremental}
-          clearErrors={clearErrors}
-          errors={errors}
-          errorMessages={errorMessages}
-          register={register}
-          validationPatterns={validationPatterns}
-        />
-
-        <ToastContainer />
-    </div>
+          <ToastContainer />
+        </>
   );
 }
+
+export const ModalAgregarPol = ({botonRef, setPolValores }) => {
+  const abrir = () => {
+    setPolValores({
+      componente: <AddPolicy/ >,
+      modalID:"modalPol",
+      tamanio:"modal-lg"});
+    botonRef.current.click();
+  };
+
+  return (
+    <button className="col btn btn-primary me-2" onClick={abrir}>
+      <FontAwesomeIcon icon={faPlus} />Agregar
+    </button>
+  );
+};
 
 export default AddPolicy;

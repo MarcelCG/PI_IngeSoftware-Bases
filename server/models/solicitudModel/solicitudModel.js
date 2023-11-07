@@ -14,40 +14,41 @@ async function getAll() {
 
 // Crear una nueva solicitud
 async function createSolicitud(
-  id,
   cedula_empleado,
   titulo,
   cedula_empresa,
-  dias_libres_solicitados,
-  fecha_solicitud,
   inicio_fechas_solicitadas,
-  estado
+  dias_solicitados,
+  hora_inicio,
+  horas_solicitadas,
+  comentarios
 ) {
   try {
     const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
-      .input('id', sql.NVarChar, id)
       .input('cedula_empleado', sql.NVarChar, cedula_empleado)
       .input('titulo', sql.NVarChar, titulo)
       .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-      .input('dias_libres_solicitados', sql.Decimal(5, 2), dias_libres_solicitados)
-      .input('fecha_solicitud', sql.Date, fecha_solicitud)
       .input('inicio_fechas_solicitadas', sql.Date, inicio_fechas_solicitadas)
-      .input('estado', sql.NVarChar, estado)
+      .input('dias_solicitados', sql.Decimal(5, 2), dias_solicitados)
+      .input('hora_inicio', sql.NVarChar, hora_inicio)
+      .input('horas_solicitadas', sql.Int, horas_solicitadas)
+      .input('comentarios', sql.NVarChar, comentarios)
       .query(
         `INSERT INTO Solicitud (
-          id, cedula_empleado, titulo, cedula_empresa,
-          dias_libres_solicitados, fecha_solicitud,
-          inicio_fechas_solicitadas, estado
+        cedula_empleado, titulo_politica, cedula_empresa,
+        fecha_solicitud, inicio_fechas_solicitadas,
+        dias_libres_solicitados, hora_de_inicio, horas_solicitadas,
+        estado, comentarios
         )
         VALUES (
-          @id, @cedula_empleado, @titulo, @cedula_empresa,
-          @dias_libres_solicitados, @fecha_solicitud,
-          @inicio_fechas_solicitadas, @estado
+          @cedula_empleado, @titulo, @cedula_empresa,
+          GETDATE(), @inicio_fechas_solicitadas, @dias_solicitados,
+          @hora_inicio, @horas_solicitadas, 'Pendiente', @comentarios
         )`
       );
-    return result.rowsAffected > 0;
+    return result.rowsAffected[0] > 0;
   } catch (error) {
     throw error;
   }
@@ -73,14 +74,42 @@ async function getSolicitudById(id) {
   }
 }
 
+async function aprobarSolicitud (id, estado) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('id', sql.BigInt, id)
+      .input('estado', sql.NVarChar, estado)
+      .execute('ActualizarEstadoSolicitud')
+    return result.rowsAffected > 0;;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function rechazarSolicitud (id, estado) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('id', sql.BigInt, id)
+      .input('estado', sql.NVarChar, estado)
+      .execute('ActualizarEstadoSolicitud')
+    return result.rowsAffected > 0;;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Función para obtener solicitudes por cédula del empleado
 async function getSolicitudByCedula(cedula_empleado) {
     try {
       const pool = await sql.connect(dbConfig);
       const result = await pool
         .request()
-        .input('cedula_empleado', sql.NVarChar, cedula_empleado)
-        .query('SELECT * FROM Solicitud WHERE cedula_empleado = @cedula_empleado');
+        .input('cedula', sql.NVarChar, cedula_empleado)
+        .execute('ObtenerSolicitudesDeEmpleado')
       return result.recordset;
     } catch (error) {
       throw error;
@@ -94,7 +123,7 @@ async function getSolicitudByCedula(cedula_empleado) {
       const result = await pool
         .request()
         .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-        .query('SELECT * FROM Solicitud WHERE cedula_empresa = @cedula_empresa');
+        .execute(`ObtenerSolicitudesDeEmpresa`);
       return result.recordset;
     } catch (error) {
       throw error;
@@ -122,6 +151,26 @@ async function getSolicitudByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
 
+async function obtenerLibresPorPolitica(cedula_empleado) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const resultado = await pool
+      .request()
+      .input('cedula_empleado', sql.NVarChar, cedula_empleado)
+      .query(`SELECT l.titulo_politica,
+              l.dias_libres_disponibles
+              FROM Libres l, Usuario u, Politica p
+              WHERE l.cedula_empleado=@cedula_empleado
+              AND l.cedula_empleado=u.cedula
+              AND u.activo=1
+              AND p.activo=1
+			        AND p.titulo=l.titulo_politica`);
+      return resultado.recordset;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Otras funciones relacionadas con las solicitudes pueden ser agregadas aquí
 
 // Exportar el modelo
@@ -132,5 +181,8 @@ module.exports = {
   getSolicitudByCedula,
   getSolicitudByEmpresa,
   getSolicitudByCedulaAndEmpresa,
+  aprobarSolicitud,
+  rechazarSolicitud,
+  obtenerLibresPorPolitica
   // Agregar otras funciones relacionadas con las solicitudes según sea necesario
 };

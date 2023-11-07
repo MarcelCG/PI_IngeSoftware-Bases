@@ -23,6 +23,10 @@ async function createUsuario(req, res) {
             nombre,
             primer_apellido,
             segundo_apellido,
+            telefono1,
+            telefono2,
+            correo1,
+            correo2,
             activo
         } = req.body;
 
@@ -32,6 +36,10 @@ async function createUsuario(req, res) {
             nombre,
             primer_apellido,
             segundo_apellido,
+            telefono1,
+            telefono2,
+            correo1,
+            correo2,
             activo
         );
 
@@ -64,7 +72,7 @@ async function getUsuarioByCedula(req, res) {
 async function loginUser(req, res) {
     try {
         const { username, password } = req.body;
-        const usuario = await Usuario.getByCedula(username);
+        const usuario = await Usuario.CedulaActivo(username);
 
         if (!usuario) {
             return res.status(401).json({ error: 'Usuario no encontrado' });

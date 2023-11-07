@@ -1,0 +1,60 @@
+name: Pruebas Unitarias
+
+on:
+  push:
+    branches:
+      - main
+      - desarrollo
+      - Buscar-Empleado
+      - calcular-tiempos
+      - visualizar-solicitudes  
+      - Visualizar-Empleado  
+      - Gestionar-Solicitudes
+      - agregar-solicitud
+      - Buscar-Politica
+      - Servicio-Correos
+
+jobs:
+  client-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Revisar código
+      uses: actions/checkout@v2
+
+    - name: Preparar Node (Cliente)
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Instalar dependencias (Cliente)
+      run: |
+        cd client
+        npm install --legacy-peer-deps
+
+    - name: Ejecutar pruebas de cliente
+      run: |
+        cd client
+        npm test
+
+  server-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: CHECK BACK-END
+      uses: actions/checkout@v2
+
+    - name: Preparar Node (BACK-END)
+      uses: actions/setup-node@v2
+      with:
+        node-version: 19
+
+    - name: Instalar dependencias (BACK-END)
+      run: |
+        cd server
+        npm install --legacy-peer-deps
+
+    - name: Ejecutar pruebas BACK-END
+      run: |
+        cd server
+        npm test

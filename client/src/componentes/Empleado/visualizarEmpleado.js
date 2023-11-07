@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
+import { useAutent } from '../../contexto/ContextoAutenticacion';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { URLApi } from '../Compartido/Constantes';
 
-function VisualizarEmpleado({ cedulaEmpleado, cedulaEmpresa }) {
+function VisualizarEmpleado() {
+  const {usuarioAutenticado} = useAutent();
+  const cedulaEmpleado = usuarioAutenticado.cedula;
+  const cedulaEmpresa = usuarioAutenticado.cedula_empresa;
   const [datosEmpleado, setDatosDelEmpleado] = useState({
-    nombreCompleto: "",
+    nombre: "",
+    primer_apellido: "",
+    segundo_apellido: "",
     cedula: "",
-    correo: "",
-    telefono: "",
-    fechaContratacion: "",
+    correo1: "",
+    correo2: "",
+    telefono1: "",
+    telefono2: "",
+    fecha_contratacion: "",
     jornadaLaboral: "",
     rol: ""
   });
@@ -17,10 +26,11 @@ function VisualizarEmpleado({ cedulaEmpleado, cedulaEmpresa }) {
   const cargarDatosDelEmpleado = async () => {
   try {
     // Realiza una solicitud al servidor para obtener los datos del empleado
-    const response = await axios.get(`/api/empleado/${cedulaEmpleado}/${cedulaEmpresa}`); // Ajusta la ruta según tu configuración
+    const response = await axios.get(`${URLApi}empleados/buscarEmpleado/${cedulaEmpleado}/${cedulaEmpresa}`); // Ajusta la ruta según tu configuración
     
     if (response.status === 200) {
       const datosEmpleado = response.data;
+      console.log(response.data);
       setDatosDelEmpleado(datosEmpleado);
     } else {
       // Maneja el caso en que no se encuentre el empleado
@@ -39,33 +49,22 @@ function VisualizarEmpleado({ cedulaEmpleado, cedulaEmpresa }) {
   }, [cedulaEmpleado, cedulaEmpresa]);
 
   return (
-    <div className="container mt-4">
-      <h2 className="text-center mb-4">Información del Empleado</h2>
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card mb-3">
-            <div className="card-header" style={{ backgroundColor: '#4f709c', color: '#ffffff' }}>
-              <h5 className="mb-0">Datos Personales</h5>
-            </div>
-            <div className="card-body">
-              <p><strong>Nombre:</strong> {datosEmpleado.nombreCompleto}</p>
-              <p><strong>Cédula:</strong> {datosEmpleado.cedula}</p>
-              <p><strong>Correo:</strong> {datosEmpleado.correo}</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="card mb-3">
-            <div className="card-header" style={{ backgroundColor: '#4f709c', color: '#ffffff' }}>
-              <h5 className="mb-0">Detalles Laborales</h5>
-            </div>
-            <div className="card-body">
-              <p><strong>Teléfono:</strong> {datosEmpleado.telefono}</p>
-              <p><strong>Fecha de Contratación:</strong> {datosEmpleado.fechaContratacion}</p>
-              <p><strong>Jornada Laboral:</strong> {datosEmpleado.jornadaLaboral}</p>
-              <p><strong>Rol:</strong> {datosEmpleado.rol}</p>
-            </div>
-          </div>
+    <div className="container mt-2 card-body p-2">
+      <div className="mb-3">
+        <p><strong>Nombre: </strong>{datosEmpleado.nombre}</p>
+        <p><strong>Primer Apellido: </strong>{datosEmpleado.primer_apellido}</p>
+        <p><strong>Segundo Apellido: </strong>{datosEmpleado.segundo_apellido}</p>
+        <p><strong>Cédula:</strong> {datosEmpleado.cedula}</p>
+        <p><strong>Correos:</strong> {datosEmpleado.correo1} &nbsp;
+          {datosEmpleado.correo2 ? datosEmpleado.correo2 : ''}
+        </p>
+        <p><strong>Teléfonos: </strong>{datosEmpleado.telefono1} &nbsp;
+          {datosEmpleado.telefono2 ? datosEmpleado.telefono2 : ''}
+        </p>
+        <p><strong>Fecha de Contratación:</strong> {datosEmpleado.fecha_contratacion}</p>
+        <p><strong>Rol:</strong> {datosEmpleado.rol}</p>
+        <div className="text-center">
+          <Link to={`editarEmpleado/${datosEmpleado.cedula}`} className="btn btn-primary">Editar</Link>
         </div>
       </div>
     </div>

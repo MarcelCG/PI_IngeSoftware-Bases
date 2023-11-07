@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { URLApi } from '../Compartido/Constantes';
 
 function DiasLibresUsuario({ cedulaUsuario }) { // Recibe la cédula del usuario como parámetro
   const [politicas, setPoliticas] = useState([]);
@@ -13,7 +14,7 @@ function DiasLibresUsuario({ cedulaUsuario }) { // Recibe la cédula del usuario
   useEffect(() => {
     const cargarDiasLibres = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/libres/byEmpleado/${cedulaUsuario}`, {
+        const response = await fetch(`${URLApi}libres/byEmpleado/${cedulaUsuario}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

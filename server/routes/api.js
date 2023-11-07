@@ -5,30 +5,27 @@ const router = express.Router();
 //-----usuarios-----//
 const UsuariosRoutes = require('./usuarioRoutes/usuariosRoutes');
 const registroRoutes = require('./usuarioRoutes/registroRoutes');
-const CorreosUsuarioRoutes = require('./usuarioRoutes/correosUsuarioRoutes');
 router.use('/usuario', UsuariosRoutes);
 router.use('/registro', registroRoutes);
-router.use('/correoUsuario', CorreosUsuarioRoutes);
 
 //-----empleador-----//
-const EmpleadorRoutes = require('./usuarioRoutes/empleadorRoutes/empleadorRoutes');;
-const TelefonosUsuarioRoutes = require('./usuarioRoutes/telefonosUsuarioRoutes');
+const EmpleadorRoutes = require('./usuarioRoutes/empleadorRoutes/empleadorRoutes');
+
+const editarEmpleadorRoutes = require('./usuarioRoutes/empleadorRoutes/editarEmpleadorRoutes');
 router.use('/empleador', EmpleadorRoutes);
-router.use('/telUsuario', TelefonosUsuarioRoutes);
+router.use('/editarEmpleador', editarEmpleadorRoutes);
 
 //-----empleado------//
+const editarEmpleadoRutas = require('./usuarioRoutes/empleadoRoutes/editarEmpleadoRutas');
 const empleadoRoutes = require('./usuarioRoutes/empleadoRoutes/empleadoRoutes');
 const registroEmpleado = require('./usuarioRoutes/empleadoRoutes/registroEmpleadoRoutes');
 router.use('/registrarEmpleado', registroEmpleado);
 router.use('/empleados', empleadoRoutes);
+router.use('/editarEmpleado', editarEmpleadoRutas);
 
 //-----empresa-----//
 const EmpresasRoutes = require('./empresaRoutes/empresaRoutes');
-const correosEmpresaRoutes = require('./empresaRoutes/correosEmpresasRoutes');
-const telefonosEmpresaRoutes = require('./empresaRoutes/telefonosEmpresaRoutes');
 router.use('/empresa', EmpresasRoutes);
-router.use('/telEmpresa', telefonosEmpresaRoutes);
-router.use('/correoEmpresa', correosEmpresaRoutes);
 
 //-----solicitudes-----//
 const solicitudRoutes = require('./solicitudRoutes/solicitudRoutes');

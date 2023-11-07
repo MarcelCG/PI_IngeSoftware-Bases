@@ -1,4 +1,5 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
+const Servicio = require('../../servicios/solicitudServicios/solicitudServicios')
 
 // Obtener todas las solicitudes
 async function getAllSolicitudes(req, res) {
@@ -14,32 +15,68 @@ async function getAllSolicitudes(req, res) {
 async function createSolicitud(req, res) {
   try {
     const {
-      id,
       cedula_empleado,
       titulo,
       cedula_empresa,
-      dias_libres_solicitados,
-      fecha_solicitud,
       inicio_fechas_solicitadas,
-      estado,
+      dias_solicitados,
+      hora_inicio,
+      horas_solicitadas,
+      comentarios
     } = req.body;
 
     // Llama a la función createSolicitud que inserta en la tabla "Solicitud"
     const success = await Solicitud.createSolicitud(
-      id,
       cedula_empleado,
       titulo,
       cedula_empresa,
-      dias_libres_solicitados,
-      fecha_solicitud,
       inicio_fechas_solicitadas,
-      estado
+      dias_solicitados,
+      hora_inicio,
+      horas_solicitadas,
+      comentarios
     );
 
     if (success) {
       res.status(201).json({ message: 'Solicitud creada exitosamente' });
     } else {
       res.status(500).json({ message: 'No se pudo crear la solicitud' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function aprobarSolicitud(req, res) {
+  try {
+    const { id } = req.params; // Obtiene el ID de los parámetros de la URL
+    // Llama al servicio de solicitudes
+    const accion = Servicio.aprobarSolicitud(id);
+
+    if (accion) {
+      // Si se pudo aprobar la solicitud, mensaje de exito
+      res.status(200).json('Solicitud aprobada correctamente');
+    } else {
+      // Si no se aprobó una solicitud con ese ID, respondemos con un mensaje de error
+      res.status(404).json({ error: 'Error al aprobar solicitud, recargue la página e intente de nuevo' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function rechazarSolictud(req,res) {
+  try {
+    const { id } = req.params; // Obtiene el ID de los parámetros de la URL
+    // Llama al servicio de solicitudes
+    const accion = Servicio.rechazarSolictud(id);
+
+    if (accion) {
+      // Si se pudo aprobar la solicitud, mensaje de exito
+      res.status(200).json('Solicitud rechazada correctamente');
+    } else {
+      // Si no se aprobó una solicitud con ese ID, respondemos con un mensaje de error
+      res.status(404).json({ error: 'Error al rechazar solicitud, recargue la página e intente de nuevo' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -119,6 +156,22 @@ async function getSolicitudByCedulaAndEmpresa(req, res) {
     }
   }
 
+  async function obtenerLibresPorPolitica(req, res) {
+    try {
+      const { cedula_empleado } = req.params;
+      // Llama a la función getSolicitudByCedulaEmpleado en el modelo de Solicitud
+      const libres = await Solicitud.obtenerLibresPorPolitica(cedula_empleado);
+  
+      if (libres.length > 0) {
+        res.status(200).json(libres);
+      } else {
+        res.status(404).json({ message: 'No se encontraron libres por politica para este empleado' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
 module.exports = {
   getAllSolicitudes,
   createSolicitud,
@@ -126,4 +179,7 @@ module.exports = {
   getSolicitudByCedula,
   getSolicitudByEmpresa,
   getSolicitudByCedulaAndEmpresa,
+  aprobarSolicitud,
+  rechazarSolictud,
+  obtenerLibresPorPolitica
 };
