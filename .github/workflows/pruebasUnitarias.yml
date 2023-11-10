@@ -9,6 +9,10 @@ on:
       - calcular-tiempos
       - visualizar-solicitudes  
       - Visualizar-Empleado  
+      - Gestionar-Solicitudes
+      - agregar-solicitud
+      - Buscar-Politica
+      - Servicio-Correos
 
 jobs:
   client-tests:

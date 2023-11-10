@@ -1,4 +1,5 @@
 const Empresa = require('../../models/empresaModel/empresasModel');
+const EmpresaServicios = require('../../servicios/empresaServicios/empresaServicios');
 
 // Obtener todas las empresas
 async function getAllEmpresas(req, res) {
@@ -46,7 +47,6 @@ async function createEmpresa(req, res) {
 
 async function getEmpresaByCedula(req, res){
   const {cedula_juridica} = req.params;
-  console.log("cedula juridia: ", cedula_juridica);
 
   try {
     const success = await Empresa.getEmpresaByCedula(cedula_juridica);
@@ -63,10 +63,8 @@ async function getEmpresaByCedula(req, res){
 
 async function getEmpresaByCedulaEmpleador(req, res){
   const {cedula_empleador} = req.params;
-    console.log('Se llega al controlador');
     try {
       const success = await Empresa.getEmpresaByCedulaEmpleador(cedula_empleador);
-      console.log('Se pasa del modelo')
       if(success != null){
         res.status(200).json(success);
       } else {
@@ -77,6 +75,21 @@ async function getEmpresaByCedulaEmpleador(req, res){
     }
   }
 
+async function obtenerEmpresaPorCedulaEmpleado(req, res){
+  const {cedula_empleado} = req.params;
+
+    try {
+      const success = await Empresa.obtenerEmpresaPorCedulaEmpleado(cedula_empleado);
+      if(success != null){
+        res.status(200).json(success);
+      } else {
+        res.status(404).json({error: "Empresa no encontrada"});
+      }
+    } catch (error) {
+      res.status(500).json({error: error.message});
+    }
+  }
+  
 async function obtenerEmpresaPorCedulaEmpleado(req, res){
   const {cedula_empleado} = req.params;
 
@@ -103,23 +116,53 @@ async function getEmpresaInfo(req, res) {
       const empresaInfo = {
         ...empresaData,
       };
-      console.log(empresaInfo)
       res.status(200).json({ data: empresaInfo });
     } else {
       res.status(404).json({ error: 'Empresa no encontrada' });
     }
   } catch (error) {
-    console.error('Error al cargar datos de la empresa:', error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
 }
 
 
+async function editarEmpresa(req, res) {
+  try {
+    const { empresa } = req.body; 
+    const estado = await EmpresaServicios.editarEmpresa(empresa);
+    if (estado === true) {
+      res.status(200).json({ message: 'Empresa actualizada exitosamente' });
+    } else {
+      res.status(500).json({ message: 'Ha ocurrido un error' });
+    }
+  }
+  catch(error) {
+    res.status(500).json({ message: 'Ha ocurrido un error' });
+  }
+}
+
+async function borrarEmpresa(req, res) {
+  try {
+    const { cedula_juridica } = req.body;
+    const estado = await EmpresaServicios.borrarEmpresa(cedula_juridica);
+    if (estado === true) {
+      res.status(200).json({ message: 'Empresa borrada exitosamente' });
+    } else {
+      res.status(400).json({ message: 'Ha ocurrido un error' });
+    }
+  }
+  catch(error) {
+    res.status(400).json({ message: 'Ha ocurrido un error' });
+  }
+};
+
 module.exports = {
+  borrarEmpresa,
   getAllEmpresas,
   createEmpresa,
   getEmpresaByCedula,
   getEmpresaByCedulaEmpleador,
   getEmpresaInfo,
+  editarEmpresa,
   obtenerEmpresaPorCedulaEmpleado,
 };

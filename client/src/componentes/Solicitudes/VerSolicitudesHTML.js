@@ -2,11 +2,12 @@ import {Modal} from '../Utiles/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faTrash, faPlus, faEye }
+import {faTrash, faPenToSquare, faPlus, faEye }
  from '@fortawesome/free-solid-svg-icons'
 import React, {useState} from "react";
 import FiltrarSolicitudes from './filtrarSolicitudes.js'
 import { Link } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 export const VerSolicitudesHTML = (props) => {
 	const {
@@ -60,7 +61,7 @@ export const VerSolicitudesHTML = (props) => {
                         <div className="col-8"></div>
                         <FiltrarSolicitudes solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
                         <div className=' col-2'>
-                            <Link to="/app/solicitudes" className="btn-primary continuar">
+                            <Link to="/app/solicitudes/agregarSolicitud" className="btn-primary continuar">
                                 <FontAwesomeIcon icon={faPlus} />Agregar
                             </Link>
                         </div>
@@ -113,7 +114,9 @@ export const VerSolicitudesHTML = (props) => {
 									</td>
                                     { esEmpleador === true ? (
                                         <td className="col--5 acciones text-center">
-										    <button className='btn btn-primary'>Gestionar</button>
+										    {solicitud.estado === "Pendiente"?
+                                            (<button className='btn btn-primary'><FontAwesomeIcon icon={faPenToSquare} /></button>):
+                                            (<button className='btn btn-primary'><FontAwesomeIcon icon={faEye} /></button>)}
                                         </td>
                                     ) : (
                                         <td className="col--5 acciones text-center d-flex flex-row">
@@ -151,6 +154,7 @@ export const VerSolicitudesHTML = (props) => {
                     </nav>
             </div>
         </div>
+        <ToastContainer/>
     </div>
 	);
 }

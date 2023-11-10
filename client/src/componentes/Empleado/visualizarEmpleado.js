@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { URLApi } from '../Compartido/Constantes';
 
 function VisualizarEmpleado() {
@@ -62,6 +63,9 @@ function VisualizarEmpleado() {
         </p>
         <p><strong>Fecha de Contratación:</strong> {datosEmpleado.fecha_contratacion}</p>
         <p><strong>Rol:</strong> {datosEmpleado.rol}</p>
+        <div className="text-center">
+          <Link to={`editarEmpleado/${datosEmpleado.cedula}`} className="btn btn-primary">Editar</Link>
+        </div>
       </div>
     </div>
   );

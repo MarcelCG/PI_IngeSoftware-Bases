@@ -1,12 +1,15 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import AddPolicyForm from "./AddPolicyForm";
 import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
 
 // URL para el manejo de politicas
 const politicas = URLApi + 'politicas';
@@ -16,10 +19,8 @@ function AddPolicy() {
   // Cedula de la empresa que inició sesión
   const {usuarioAutenticado} = useAutent(); 
   const empresa = usuarioAutenticado.cedula_empresa;
-  console.log(empresa);
 
   const navegar = useNavigate();
-
   // Configuración del formulario usando react-hook-form
   const { register, handleSubmit, formState: { errors }, clearErrors, reset } = useForm();
 
@@ -104,16 +105,13 @@ function AddPolicy() {
   // Función para cancelar el formulario
   const handleCancel = () => {
     console.log("Formulario cancelado");
-
     navegar('/app/politicas');
   };
   
-
   return (
-    <div className="container col-6 position-static ventana" >
-        <div className='card border-dark shadow m-3'>
+        <>
           <div className='card-header titulo-ventana'>
-            <h3 className="titulo-ventana">Agregar Política</h3>
+            <h3 className='mt-2'>Agregar Política</h3>
           </div>
           <AddPolicyForm
             onSubmit={handleSubmit(onSubmit)}
@@ -130,9 +128,24 @@ function AddPolicy() {
           />
 
           <ToastContainer />
-        </div>
-    </div>
+        </>
   );
 }
+
+export const ModalAgregarPol = ({botonRef, setPolValores }) => {
+  const abrir = () => {
+    setPolValores({
+      componente: <AddPolicy/ >,
+      modalID:"modalPol",
+      tamanio:"modal-lg"});
+    botonRef.current.click();
+  };
+
+  return (
+    <button className="col btn btn-primary me-2" onClick={abrir}>
+      <FontAwesomeIcon icon={faPlus} />Agregar
+    </button>
+  );
+};
 
 export default AddPolicy;

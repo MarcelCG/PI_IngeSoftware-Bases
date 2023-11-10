@@ -47,9 +47,13 @@ const handleSubmit = (inputs, formData, setErrForm, errForm) => {
     } else {
       updatedErrForm[input.name] = true;
     }
+
   });
   setErrForm(updatedErrForm);
   const hasError = Object.values(updatedErrForm).some((value) => value === true);
+  if(errForm === undefined){
+    return updatedErrForm;
+  }
   return hasError;
 };  
 
