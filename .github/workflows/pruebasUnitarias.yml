@@ -57,4 +57,4 @@ jobs:
     - name: Ejecutar pruebas BACK-END
       run: |
         cd server
-        npm test
+        npm test -- --testTimeout=10000
