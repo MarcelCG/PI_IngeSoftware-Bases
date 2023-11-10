@@ -110,9 +110,6 @@ function AddPolicy() {
   
   return (
         <>
-          <div className='card-header titulo-ventana'>
-            <h3 className='mt-2'>Agregar Política</h3>
-          </div>
           <AddPolicyForm
             onSubmit={handleSubmit(onSubmit)}
             handleCancel={handleCancel}
@@ -137,6 +134,8 @@ export const ModalAgregarPol = ({botonRef, setPolValores }) => {
     setPolValores({
       componente: <AddPolicy/ >,
       modalID:"modalPol",
+      titulo: <h3 className='mt-2'>Agregar Política</h3>,
+      tituloEstilos: 'titulo-ventana',
       tamanio:"modal-lg"});
     botonRef.current.click();
   };

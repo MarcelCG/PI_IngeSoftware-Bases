@@ -2,7 +2,8 @@ import axios from 'axios';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import React, {useState, useEffect, useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faPlus, faTrash, faChevronRight, faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare,faChevronRight, faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
+import { ToastContainer } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import BuscarEmpleados from './buscarEmpleados';
 import { URLApi } from '../Compartido/Constantes';
@@ -65,13 +66,14 @@ const ListOfEmployees = () => {
 
     return(
         <div className='container'>
+            <ToastContainer/>
             <Modal{...props}/>
             <div ref={botonRef} data-bs-toggle="modal" data-bs-target={`#${props.modalID}`}/>
             <div className="row mb-4 col-12 d-flex p-1 align-items-center">
                 <div className='col-10'>
                     <BuscarEmpleados empleados={empleados} filtrarEmpleados={filtrarEmpleados}/>
                 </div>
-                <ModalAgregarEmpleado botonRef={botonRef} setModalValores={setModal} />
+                <ModalAgregarEmpleado botonRef={botonRef} setModalValores={setEmpleadoValores} />
             </div>
             <div className="table-responsive mb-4">
                     <table className="table ">
@@ -92,7 +94,7 @@ const ListOfEmployees = () => {
                                     <td className="col--5">{ empleado.correo }</td>
                                     <td className="col--5">{ empleado.rol }</td>
                                     <td className="col--5 acciones">
-                                        <Link to={`/app/empleados/editar/${empleado.cedula}`} className="btn btn-primary me-2">
+                                        <Link to={`/app/empleados/editar/${empleado.cedula}`} className="btn-primary me-2">
                                             <FontAwesomeIcon className='editar' icon={faPenToSquare} />
                                         </Link>
                                         <BorrarEmpleado empleado={empleado} botonRef={botonRef} setEmpleadoValores={setEmpleadoValores} />

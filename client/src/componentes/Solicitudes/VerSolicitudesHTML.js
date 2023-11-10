@@ -2,7 +2,7 @@ import {Modal} from '../Utiles/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faTrash, faPenToSquare, faPlus, faEye }
+import {faTrash, faPenToSquare, faPlus, faEye, faChevronLeft, faChevronRight }
  from '@fortawesome/free-solid-svg-icons'
 import React, {useState} from "react";
 import FiltrarSolicitudes from './filtrarSolicitudes.js'
@@ -135,8 +135,8 @@ export const VerSolicitudesHTML = (props) => {
                     <nav>
                         <ul className="pagination">
                             <li className="page-item">
-                                <a href="#" className="page-link"
-                                    onClick={paginaAtras}>Prev</a>
+                                <button className="page-link"
+                                    onClick={paginaAtras}><FontAwesomeIcon icon={faChevronLeft} /></button>
                             </li>
                             {
                                 numeros.map((n, i) => (
@@ -147,8 +147,8 @@ export const VerSolicitudesHTML = (props) => {
                                 ))
                             }
                             <li className="page-item">
-                                <a href="#" className="page-link"
-                                    onClick={siguientePagina}>Next</a>
+                            <button className="page-link"
+                                onClick={siguientePagina}><FontAwesomeIcon icon={faChevronRight} /></button>
                             </li>
                         </ul>
                     </nav>
