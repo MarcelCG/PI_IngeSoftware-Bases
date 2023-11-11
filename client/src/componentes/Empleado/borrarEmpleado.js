@@ -70,8 +70,9 @@ export const BorrarEmpleado = ({ empleado, botonRef, setEmpleadoValores }) => {
 
   return (
     <>
-     <ToastContainer autoClose={2500}/>
-     <FontAwesomeIcon className="btn-danger" onClick={()=> borrar(empleado)} icon={faTrash} />
+     <button className='btn-danger' onClick={()=> borrar(empleado)}>
+      <FontAwesomeIcon icon={faTrash} />
+     </button>
     </>
   );
 };
