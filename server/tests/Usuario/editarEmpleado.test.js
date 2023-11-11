@@ -1,13 +1,10 @@
 const usuarioModelo = require('../../models/usuarioModel/usuariosModel');
+const empleadoModelo = require('../../models/usuarioModel/Empleado/empleadoModel');
 const { EditarUsuario } = require('../../servicios/usuarioServicios/empleadoServicios/editarEmpleadoServicios');
 
 // Mock del modelo para simular su comportamiento
-jest.mock('../../models/usuarioModel/usuariosModel', () => {
-  return {
-    editarUsuario: jest.fn().mockResolvedValue(true),
-    editarEmpleado: jest.fn().mockResolvedValue(true),
-  };
-});
+jest.mock('../../models/usuarioModel/usuariosModel');
+jest.mock('../../models/usuarioModel/Empleado/empleadoModel');
 
 describe('editar empleado', () => {
   beforeEach(() => {
@@ -32,6 +29,9 @@ describe('editar empleado', () => {
       },
     };
 
+    usuarioModelo.editarUsuario.mockResolvedValue(true);
+    empleadoModelo.editarEmpleado.mockResolvedValue(true);
+
     const respuesta = await EditarUsuario(solicitud, {});
 
     expect(usuarioModelo.editarUsuario).toHaveBeenCalledWith(
@@ -47,6 +47,6 @@ describe('editar empleado', () => {
       true,
     );
 
-    expect(respuesta).toBe(1);
+    expect(respuesta).toBe(2);
   });
-}, 10000);
+});

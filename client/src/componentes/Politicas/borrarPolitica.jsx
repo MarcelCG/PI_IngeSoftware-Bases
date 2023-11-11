@@ -65,7 +65,9 @@ export const BorrarPolitica = ({ politica, botonRef, setPolValores }) => {
 
   return (
     <>
-     <FontAwesomeIcon className="btn-danger" onClick={()=> borrar(politica)} icon={faTrash} />
+      <button onClick={()=> borrar(politica)} className='btn-danger'>
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
     </>
   );
 };
