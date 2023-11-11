@@ -13,6 +13,7 @@ import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
 import AgregarSolicitud from '../componentes/Solicitudes/agregarSolicitud';
 import { MenuEmpleador, MenuEmpleado } from './menu';
 import { useAutent } from '../contexto/ContextoAutenticacion';
+import EjemploDatos from '../componentes/Utiles/Reportes/EjemploDatos'
 
 function App() {
   const {usuarioAutenticado} = useAutent();
@@ -40,6 +41,9 @@ function App() {
       case '/app/solicitudes':
         titulo = 'Lista de Solicitudes';
       break;
+      case '/app/reportes':
+          titulo = 'Reportes';
+        break;
     default:
       titulo = '';
       break;
@@ -62,6 +66,7 @@ function App() {
             <div className="container col-10">
             <Routes>
               <Route path="/politicas" element={<VerPoliticas/>} />
+              <Route path="/reportes" element={<EjemploDatos/>} />
               <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
               <Route path="/empleados" element={<ListOfEmployees/>}/>
               <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>

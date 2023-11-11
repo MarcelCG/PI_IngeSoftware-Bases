@@ -5,27 +5,23 @@ import {FiltroPlantilla, AplicarFiltros} from './Filtro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faBroom } from '@fortawesome/free-solid-svg-icons'
 
-export default function ListaFiltros ({listaFiltros, datos, setDatos, booleano, originales}) {
+export default function FiltrosLista ({rep, filtros, setRep, originales}) {
 
-	const [filtroInfo, setFiltroInfo] = useState({});
+	const [filtroCampo, setFiltroCampo] = useState({});
+
 	useEffect(() => {
 		const filtrosNombres = {};
-		listaFiltros.forEach((filtro) => {
-      filtrosNombres[filtro.nombre] = '';
-    });
-    setFiltroInfo(filtrosNombres);
-	}, [listaFiltros]);
+		filtros.forEach((filtro) => {filtrosNombres[filtro.nombre] = '';});
+    setFiltroCampo(filtrosNombres);
+	}, [filtros]);
 
 	const actualizarCampo = () => {
-		listaFiltros.forEach((filtro) => {
-		  filtro['campo'] = filtroInfo[filtro['nombre']];
-		});
+		filtros.forEach((filtro) => {filtro['campo'] = filtroCampo[filtro['nombre']];});
 	};
 
 	const filtrar = () => {
 		actualizarCampo();
-		AplicarFiltros(listaFiltros, originales, setDatos);
-
+		AplicarFiltros(rep, filtros, originales, setRep);
 	};
 
 	return(
@@ -34,10 +30,10 @@ export default function ListaFiltros ({listaFiltros, datos, setDatos, booleano, 
 			  <div className='accordion-item'>
 			    <div id='flush-collapseOne' className='accordion-collapse collapse' data-bs-parent='#accordionFlushExample'>
 			      <div className='accordion-body row '>
-			      {listaFiltros.map((filtro) => (
+			      {filtros.map((filtro) => (
 			      	<div className='col-6 p-1 rounded' key={filtro.nombre}>
-			      		<FiltroPlantilla Filtro={filtro} originales={originales}
-			      		filtroInfo={filtroInfo} setFiltroInfo={setFiltroInfo}/>
+			      		<FiltroPlantilla filtro={filtro} originales={originales}
+			      		filtroCampo={filtroCampo} setFiltroCampo={setFiltroCampo}/>
 			      	</div>
 			      ))}
 				      <div className='d-flex row justify-content-end'>

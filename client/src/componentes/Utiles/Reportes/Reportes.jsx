@@ -1,35 +1,22 @@
-import _ from 'lodash';
+import React from 'react';
+import FiltrosLista from './FiltrosLista'
 import ReportesTabla from './ReportesTabla'
-import React, { useState, useEffect } from 'react';
-import ListaFiltros from './ListaFiltros'
-import {listaFiltros, MyData} from './EjemploDatos'
 import ReportesOpciones from './ReportesOpciones'
-export default function Reportes (originales, ) {
 
-	originales = [
-		{id: '3', cuerpo: 'mundo'},
-		{id: '2', cuerpo: 'costa rica'},
-		{id: '3', cuerpo: 'comadreja'},
-		{id: '3', cuerpo: 'comadreja'},
-		{id: '4', cuerpo: 'chaca'},
-		{id: '5', cuerpo: 'lito'},
-		{id: '6', cuerpo: 'lito'}
-	];
+export default function Reportes ({rep, setRep, opciones}) {
 
-	const [datos, setDatos] = useState([...originales]);
-
-	const [booleano, setBooleano] = useState(false);
-	const props = {listaFiltros, datos, setDatos, booleano, setBooleano, originales}; 
-
+	const props = {...rep, rep, opciones, setRep}; 
 	return (
 		<div className='container p-1'>
-			<div className='row container rounded shadow mb-3'>		
+			<div className='row container shadow rounded mb-3'>		
 				<ReportesOpciones {...props}/>
 			</div>
-			<div className='container'>
-				<ListaFiltros {...props}/>
+			<div className='row container rounded mb-3'>
+				<FiltrosLista {...props}/>
 			</div>
+			<div className='row container shadow rounded mb-3'>
 			<ReportesTabla {...props}/>
+			</div>
 		</div>
 	);
 };

@@ -1,42 +1,15 @@
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import React, { useState, useEffect } from 'react';
-import {FiltroPlantilla} from './Filtro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter, faPrint } from '@fortawesome/free-solid-svg-icons'
 
-export default function ReportesOpciones ({ReportesLista, SetDatos, booleano, setBooleano}) {
-	const ejemploFuncion = (nombre) => {
-	};
-
-	const [opciones, setOpciones] = useState([
-		{
-			nombre:'Politicas',
-			funcion:ejemploFuncion
-		},
-		{
-			nombre:'Politicas y tiempo',
-			funcion:ejemploFuncion
-		},
-		{
-			nombre:'Politicas y comadrejas',
-			funcion:ejemploFuncion
-		},
-		{
-			nombre:'jeremy espinoza',
-			funcion:ejemploFuncion
-		},
-		{
-			nombre:'el zancudo loco',
-			funcion:ejemploFuncion
-		},
-	]);
-
+export default function ReportesOpciones ({cargando, filtros, opciones}) {
 	const [Titulo, setTitulo] = useState('Elegir');
 
 	const funcion = (opcion) => {
 		setTitulo(opcion.nombre);
-		opcion.funcion();
+		opcion.cargarDatos();
 	};
 
 	return (
@@ -59,12 +32,11 @@ export default function ReportesOpciones ({ReportesLista, SetDatos, booleano, se
 	    </div>
 	  </div>
   	<div className='col-4'>
-      <button className='btn btn-outline-success btn-lg' data-bs-toggle='collapse' data-bs-target='#flush-collapseOne' aria-expanded='false' aria-controls='flush-collapseOne'>
-      	Filtros <FontAwesomeIcon icon={faFilter} />
+  	<button className={`btn btn-outline-success btn-lg ${cargando?'':'disabled'}`} data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">      	Filtros <FontAwesomeIcon icon={faFilter} />
       </button>
     </div>
     <div className='col-4'>
-    	<button className='btn btn-outline-secondary btn-lg'>
+    	<button className={`btn btn-outline-secondary btn-lg ${cargando?'': 'disabled'}`}>
     		Imprimir <FontAwesomeIcon icon={faPrint} />
     	</button>
     </div>
