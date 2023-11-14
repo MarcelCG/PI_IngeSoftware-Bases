@@ -5,6 +5,7 @@ import { useAutent } from '../../contexto/ContextoAutenticacion';
 import 'bootstrap/dist/css/bootstrap.css';
 import {URLApi} from '../Compartido/Constantes';
 import axios from 'axios';
+import { BorrarEmpresa } from './BorrarEmpresa'
 
 function VisualizarEmpresa() {
   const {usuarioAutenticado} = useAutent();
@@ -17,7 +18,7 @@ function VisualizarEmpresa() {
     correo1: "",
     correo2: "",
   });
-
+  const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
   const [modalValores, setModalValores] = useState({modalID:"modalEmpresa"})
   const botonRef = useRef(null);
   const [cargando, setCargando] = useState(false);
@@ -57,7 +58,9 @@ function VisualizarEmpresa() {
   cargarDatosEmpresa(); 
 }, [empresa]);
 
-  const props = {setDatosDeEmpresa, datosEmpresa, botonRef, setModalValores, ...modalValores};
+  const desabilitado = false;
+  const props = {desabilitado, setDatosDeEmpresa, datosEmpresa, botonRef, setModalValores, ...modalValores};
+
   return (
     <div className="container mt-2">
       {cargando && (
@@ -78,16 +81,18 @@ function VisualizarEmpresa() {
           </div>
         </div>
       </div>
-      {cargando ? (
-        <div className="d-grid justify-content-md-end disabled">
-          <EditarEmpresa {...props} />
+      {cargando && esEmpleador? (
+        <div className="row mb-2">
+        <div className="col-auto me-auto">
+           <BorrarEmpresa {...props} />
+        </div>
+        <div className="col-auto">
+           <EditarEmpresa {...props} />
+        </div>
         </div>
       ) : (
-        <div className="d-grid justify-content-md-end">
-          <button className="btn btn-primary me-2" disabled>
-            Editar Empresa
-          </button>
-        </div>
+        <>
+        </>
       )}
     </div>
   );

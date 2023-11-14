@@ -2,7 +2,7 @@ import {Modal} from '../Utiles/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faTrash, faPlus, faEye }
+import {faTrash, faPenToSquare, faPlus, faEye, faChevronLeft, faChevronRight }
  from '@fortawesome/free-solid-svg-icons'
 import React, {useState} from "react";
 import FiltrarSolicitudes from './filtrarSolicitudes.js'
@@ -61,7 +61,7 @@ export const VerSolicitudesHTML = (props) => {
                         <div className="col-8"></div>
                         <FiltrarSolicitudes solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
                         <div className=' col-2'>
-                            <Link to="/app/solicitudes" className="btn-primary continuar">
+                            <Link to="/app/solicitudes/agregarSolicitud" className="btn-primary continuar">
                                 <FontAwesomeIcon icon={faPlus} />Agregar
                             </Link>
                         </div>
@@ -114,7 +114,9 @@ export const VerSolicitudesHTML = (props) => {
 									</td>
                                     { esEmpleador === true ? (
                                         <td className="col--5 acciones text-center">
-										    <button className='btn btn-primary'>Gestionar</button>
+										    {solicitud.estado === "Pendiente"?
+                                            (<button className='btn btn-primary'><FontAwesomeIcon icon={faPenToSquare} /></button>):
+                                            (<button className='btn btn-primary'><FontAwesomeIcon icon={faEye} /></button>)}
                                         </td>
                                     ) : (
                                         <td className="col--5 acciones text-center d-flex flex-row">
@@ -133,8 +135,8 @@ export const VerSolicitudesHTML = (props) => {
                     <nav>
                         <ul className="pagination">
                             <li className="page-item">
-                                <a href="#" className="page-link"
-                                    onClick={paginaAtras}>Prev</a>
+                                <button className="page-link"
+                                    onClick={paginaAtras}><FontAwesomeIcon icon={faChevronLeft} /></button>
                             </li>
                             {
                                 numeros.map((n, i) => (
@@ -145,8 +147,8 @@ export const VerSolicitudesHTML = (props) => {
                                 ))
                             }
                             <li className="page-item">
-                                <a href="#" className="page-link"
-                                    onClick={siguientePagina}>Next</a>
+                            <button className="page-link"
+                                onClick={siguientePagina}><FontAwesomeIcon icon={faChevronRight} /></button>
                             </li>
                         </ul>
                     </nav>

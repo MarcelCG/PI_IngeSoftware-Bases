@@ -1,7 +1,6 @@
 import React from "react";
 import axios from 'axios';
 import {useForm} from 'react-hook-form'
-import { useNavigate } from 'react-router-dom';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import { ToastContainer, toast } from 'react-toastify';
 import { URLApi } from '../Compartido/Constantes';
@@ -14,8 +13,6 @@ const AddEmployee = () => {
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa;
 
-  const navegar = useNavigate();
-  
   const {register, handleSubmit, 
     formState: {errors},
     watch,
@@ -54,10 +51,6 @@ const AddEmployee = () => {
 
     return (
       <>
-        
-              <div className='card-header titulo-ventana'>
-                  <h3 className='mt-2'>Registrar Empleado</h3>
-              </div>
               <div className='card-body'>
                   <form className='px-4 row py-3' onSubmit={onSubmit}>
                       <div className='col-6'>
@@ -293,6 +286,8 @@ export const ModalAgregarEmpleado = ({botonRef, setModalValores }) => {
     setModalValores({
       componente: <AddEmployee/ >,
       modalID:"modalEmpleados",
+      titulo: <h3 className='mt-2'>Registrar Empleado</h3>,
+      tituloEstilos: 'titulo-ventana',
       tamanio:"modal-lg"});
     botonRef.current.click();
   };
@@ -304,4 +299,4 @@ export const ModalAgregarEmpleado = ({botonRef, setModalValores }) => {
   );
 };
 
-export default AddEmployee
+export default AddEmployee;

@@ -4,7 +4,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export const BorrarPolitica = ({ politica, botonRef, setPolValores }) => {
   const {
@@ -54,8 +54,7 @@ export const BorrarPolitica = ({ politica, botonRef, setPolValores }) => {
       componente: <div>¿Está seguro de que desea borrar la politica "<strong>{politica.titulo}</strong>"?</div>,
       modalID:"modalPol",
       tituloEstilos: "titulo-ventana-rojo",
-      boton:"Borrar",
-      funcion: BorrarPoliticaAPI
+      footer: <div><button className='btn-primary' onClick={BorrarPoliticaAPI}>Borrar</button></div>
     });
     botonRef.current.click();
   };
@@ -66,7 +65,9 @@ export const BorrarPolitica = ({ politica, botonRef, setPolValores }) => {
 
   return (
     <>
-     <FontAwesomeIcon className="btn-danger" onClick={()=> borrar(politica)} icon={faTrash} />
+      <button onClick={()=> borrar(politica)} className='btn-danger'>
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
     </>
   );
 };

@@ -52,7 +52,6 @@ async function createEmpleado(
   fecha_contratacion
 ) {
   try {
-    //console.log(cedula_empleado, cedula_empresa, rol, fecha_contratacion);
     const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
@@ -163,6 +162,35 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
 
+  async function editarEmpleado(
+    cedula_empleado,
+    rol,
+    fecha_contratacion
+  ) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const resultado = await pool
+        .request()
+        .input('cedula_empleado', sql.NVarChar, cedula_empleado)
+        .input('rol', sql.NVarChar, rol)
+        .input('fecha_contratacion', sql.Date, fecha_contratacion)
+        .query(
+          `UPDATE Empleado 
+          SET 
+            cedula_empleado=@cedula_empleado,
+            rol=@rol,
+            fecha_contratacion=@fecha_contratacion
+          WHERE 
+            cedula_empleado=@cedula_empleado`
+        );
+      return resultado.rowsAffected > 0;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+
   //Funcion que devuelve los correos de los empleados que tienen una politica vigente
   async function correoEmpleadosPorPolitica(titulo, cedula_empresa) {
     try {
@@ -187,6 +215,43 @@ async function getByCedulaAndEmpresa(cedula_empleado, cedula_empresa) {
     }
   }
   
+  async function borrarEmpleado(cedulaEmpleado) {
+    let consulta_exitosa = null;
+    try {
+      const exito = await sql.connect(dbConfig);
+      const resultado = await exito
+        .request()
+        .input('cedula_empleadoConsulta', sql.NVarChar, cedulaEmpleado)
+        .query('EXEC BorrarEmpleado @cedula_empleado=@cedula_empleadoConsulta');
+    
+      consulta_exitosa= 5;
+      return consulta_exitosa;
+    } catch (error) {
+      // Manejar errores
+      console.error("Error al ejecutar la consulta:", error);
+      return consulta_exitosa;
+    }
+  }
+  async function correoEmpleado(cedula_empleado) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const result = await pool
+        .request()
+        .input('cedulaEmpleadoConsulta', sql.NVarChar, cedula_empleado)
+        .query(`SELECT correo1
+                FROM Usuario
+                WHERE cedula = @cedulaEmpleadoConsulta`);
+  
+      if (result.recordset.length > 0) {
+        const correos = result.recordset.map((row) => row.correo1);
+        return correos;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 
 // Exportar el modelo
 module.exports = {
@@ -197,5 +262,8 @@ module.exports = {
   getByEmpresa,
   getByCedulaAndEmpresa,
   getEmpleadoByCedulaYEmpresa,
+  borrarEmpleado,
+  correoEmpleado,
+  editarEmpleado,
   correoEmpleadosPorPolitica
 };

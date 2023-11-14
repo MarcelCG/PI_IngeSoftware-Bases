@@ -56,7 +56,7 @@ CREATE TABLE Politica (
 );
 
 CREATE TABLE Solicitud (
-    id BIGINT PRIMARY KEY,
+    id BIGINT PRIMARY KEY IDENTITY(1, 1),
     cedula_empleado VARCHAR(255) NOT NULL,
     titulo_politica VARCHAR(255) NOT NULL,
     cedula_empresa VARCHAR(255) NOT NULL,
@@ -71,11 +71,6 @@ CREATE TABLE Solicitud (
     FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa)
 );
 
-USE ElEquipo
-ALTER TABLE Libres
-ADD ultima_actualizacion DATE;
-
-
 CREATE TABLE Libres (
     cedula_empleado VARCHAR(255) NOT NULL,
     titulo_politica VARCHAR(255) NOT NULL,
@@ -88,6 +83,7 @@ CREATE TABLE Libres (
     FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa)
 );
 
+-- Jeremy
 DROP TRIGGER InsertarLibre
 GO;
 CREATE TRIGGER InsertarLibre 
@@ -177,6 +173,89 @@ BEGIN
 	INNER JOIN Empleado em ON em.cedula_empleado = u.cedula AND u.cedula = @cedula_empleado AND em.cedula_empresa = @cedula_empresa
 END;
 GO;
+
+-- Creado por Ulises
+CREATE PROCEDURE ObtenerSolicitudesDeEmpresa @cedula_empresa varchar(255)
+AS
+SELECT CONCAT(u.nombre, ' ', u.primer_apellido,
+' ', u.segundo_apellido) AS 'nombre_completo',
+s.cedula_empleado AS 'cedula', s.titulo_politica AS 'politica',
+s.fecha_solicitud, s.inicio_fechas_solicitadas,
+s.dias_libres_solicitados, s.hora_de_inicio, s.horas_solicitadas,
+s.estado, s.comentarios
+FROM Empleado e, Solicitud s, Usuario u
+WHERE s.cedula_empresa=@cedula_empresa
+AND e.cedula_empleado=u.cedula
+AND s.cedula_empleado=e.cedula_empleado
+
+-- Creado por Ulises
+CREATE PROCEDURE ObtenerSolicitudesDeEmpleado @cedula varchar(255)
+AS
+SELECT CONCAT(u.nombre, ' ', u.primer_apellido,
+' ', u.segundo_apellido) AS 'nombre_completo',
+s.cedula_empleado AS 'cedula', s.titulo_politica AS 'politica',
+s.fecha_solicitud, s.inicio_fechas_solicitadas,
+s.dias_libres_solicitados, s.hora_de_inicio, s.horas_solicitadas,
+s.estado, s.comentarios
+FROM Empleado e, Solicitud s, Usuario u
+WHERE s.cedula_empleado=@cedula
+AND e.cedula_empleado=u.cedula
+AND s.cedula_empleado=e.cedula_empleado
+
+
+-- Creado por Ulises
+CREATE TRIGGER bajarLibresPorSolicitud
+ON Solicitud
+AFTER INSERT
+AS
+UPDATE Libres
+SET dias_libres_disponibles=(dias_libres_disponibles-i.dias_libres_solicitados)
+FROM inserted i, Libres l
+WHERE i.cedula_empleado=l.cedula_empleado
+AND i.cedula_empresa=l.cedula_empresa
+AND i.titulo_politica=l.titulo_politica
+
+-- Jeremy :>
+GO
+CREATE PROCEDURE BorrarEmpresa(@cedula_empresa VARCHAR(255))
+AS
+BEGIN
+    -- 1. Borrar Politicas
+    DECLARE @titulo_politica VARCHAR(255);
+    DECLARE PoliticasCursos CURSOR FOR
+    SELECT titulo
+    FROM Politica WHERE cedula_empresa = @cedula_empresa
+
+    OPEN PoliticasCursos;
+    FETCH NEXT FROM PoliticasCursos INTO @titulo_politica
+    WHILE @@FETCH_STATUS = 0
+    BEGIN 
+        BorrarPolitica(@titulo_politica, @cedula_empresa)
+        FETCH NEXT FROM PoliticasCursos INTO @titulo_politica
+    END
+    CLOSE PoliticasCursos;
+    DEALLOCATE PoliticasCursos;
+    -- 2. Borrar Empleados
+    DECLARE @cedula_empleado VARCHAR(255);
+    DECLARE EmpleadosCursos CURSOR FOR
+    SELECT cedula_empleado
+    FROM Empleado WHERE cedula_empresa = @cedula_empresa
+
+    OPEN EmpleadosCursos;
+    FETCH NEXT FROM EmpleadosCursos INTO @cedula_empleado
+    WHILE @@FETCH_STATUS = 0
+    BEGIN 
+        BorrarEmpleado(@cedula_empleado)
+        FETCH NEXT FROM EmpleadosCursos INTO @cedula_empleado
+    END
+    CLOSE EmpleadosCursos;
+    DEALLOCATE EmpleadosCursos;
+    --3.Borrar Empresa y Empleador
+    UPDATE Empresa SET activa = 0 WHERE cedula_juridica = @cedula_empresa
+    UPDATE Empleador SET activa = 0 WHERE cedula_empleador = (SELECT cedula_empleador FROM Empresa WHERE cedula_juridica = @cedula_empresa)
+
+END;        
+
 CREATE PROC ActualizarEstadoSolicitud @id bigInt, @estado varchar(255)
 AS
 BEGIN
@@ -208,6 +287,35 @@ BEGIN
 	SET estado = @estado
 	WHERE id = @id
 END;
+
+CREATE PROCEDURE BorrarPolitica @titulo nvarchar(255), @cedula_empresa varchar(255)
+AS
+    DELETE FROM Politica
+    WHERE titulo = @titulo
+    AND @titulo NOT IN (SELECT DISTINCT titulo_politica FROM Libres);
+
+    UPDATE Politica
+    SET
+    activo=0
+    WHERE
+    titulo=@titulo AND cedula_empresa = @cedula_empresa;
+END;
+
+CREATE PROCEDURE BorrarEmpleado @cedula_empleado nvarchar (255)
+AS
+    UPDATE Usuario
+        SET
+        activo=0
+        WHERE
+        cedula=@cedula_empleado;
+    UPDATE Libres
+        SET
+        dias_libres_disponibles=0,
+        dias_libres_utilizados=0
+        WHERE
+        cedula_empleado=@cedula_empleado;
+END;
+
 GO;
 
 CREATE PROCEDURE ActualizarPolitica

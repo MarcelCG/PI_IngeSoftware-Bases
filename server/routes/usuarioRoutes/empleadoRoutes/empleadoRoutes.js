@@ -9,6 +9,8 @@ router.post('/', EmpleadoController.createEmpleado);
 router.get('/byCedula/:cedula_empleado', EmpleadoController.getEmpleadoByCedula);
 router.get('/viewByCedula/:cedula_empleado', EmpleadoController.getEmpleadoConCedulaYEmpresa);
 router.get('/byEmpresa/:cedula_empresa', EmpleadoController.getEmpleadoByEmpresa);
-router.get('/buscarEmpleado/:cedula_empleado/:cedula_empresa', EmpleadoController.getEmpleadoByCedulaAndEmpresa)
+router.get('/buscarEmpleado/:cedula_empleado/:cedula_empresa', EmpleadoController.getEmpleadoByCedulaAndEmpresa);
+router.post('/borrar',EmpleadoController.borrarEmpleado);
+
 
 module.exports = router;

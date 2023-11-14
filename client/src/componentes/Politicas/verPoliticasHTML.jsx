@@ -1,10 +1,10 @@
 import {Modal} from '../Utiles/Modal'
 import {ajustarFecha} from './verPolitica'
 import {BorrarPolitica} from './borrarPolitica'
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faTrash, faChevronLeft, faChevronRight, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom';
+import { faPenToSquare, faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons'
+import { ToastContainer } from 'react-toastify';
 import { ActualizarTiempoLibre } from '../Libres/ActualizarLibres'
 import { ModalAgregarPol } from "./AddPolicy";
 import BuscarPoliticas from './BuscarPolitica';
@@ -26,6 +26,7 @@ export const VerPoliticasHTML = (props) => {
 
 	return (
 	<div className="container">
+		<ToastContainer/>
 	  {cargando ? (
 	    <div>
 		<ActualizarTiempoLibre />
@@ -37,11 +38,9 @@ export const VerPoliticasHTML = (props) => {
 				<div className="col-10">
 					<BuscarPoliticas politicas={politicas} filtrarPoliticas={filtrarPoliticas} />
 				</div>
-                <Link to="/app/politicas/addPoliticas" className="btn-primary col-2 continuar">
-                    <FontAwesomeIcon icon={faPlus} />Agregar
-                </Link>
+				<ModalAgregarPol {...props}/>
             </div>
-	      <table className="table table-hover mt-titulo">
+	      <table className="table table-hover">
 	        <thead>
 	          <tr>
 	            <th scope="col">&nbsp;&nbsp;&nbsp;Titulo </th>

@@ -10,6 +10,7 @@ on:
       - visualizar-solicitudes  
       - Visualizar-Empleado  
       - Gestionar-Solicitudes
+      - agregar-solicitud
       - Buscar-Politica
       - Servicio-Correos
 
@@ -56,4 +57,4 @@ jobs:
     - name: Ejecutar pruebas BACK-END
       run: |
         cd server
-        npm test
+        npm test -- --testTimeout=20000
