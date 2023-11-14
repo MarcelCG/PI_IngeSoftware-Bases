@@ -13,11 +13,11 @@ export default function ReportesTabla ({rep, cargando, columnas, datos, pagAct, 
 
 	return (
 		<>
-		{cargando?(<div>
+		{!cargando?(<div>
 			<div className='rounded p-3'>
 				<div className='rounded'>
 					<style>{`.table th { width: ${columnas.length}%;}`}</style>
-					<div className="overflow-hidden rounded">
+					<div className='overflow-hidden rounded'>
 				  <table className='table border border-secondary-subtle'>
 				    <thead className='border border-secondary-subtle'>
 				      <tr className='rounded'>
@@ -42,19 +42,19 @@ export default function ReportesTabla ({rep, cargando, columnas, datos, pagAct, 
 			</div>
 			</div>
       <nav>
-        <ul className="pagination">
-					<li className="page-item">
-						<button className="page-link outlined" onClick={() => (pagAct>1?setRep({...rep, pagAct:pagAct-1}):setRep({...rep,pagAct:1}))}>
+        <ul className='pagination'>
+					<li className='page-item'>
+						<button className='page-link outlined' onClick={() => (pagAct>1?setRep({...rep, pagAct:pagAct-1}):setRep({...rep,pagAct:1}))}>
 							<FontAwesomeIcon icon={faChevronLeft} />
 						</button>
 					</li>
         	{numeros.map((n) => (
           <li className={`page-item ${pagAct === n ? 'active' : ''}`} key={n}>
-          	<button className="page-link" onClick={() => setRep({...rep,pagAct:n})}>{n}</button>
+          	<button className='page-link' onClick={() => setRep({...rep,pagAct:n})}>{n}</button>
       		</li>
         	))}
-					<li className="page-item">
-						<button className="page-link outlined" onClick={() => (pagAct<numeros.length?setRep({...rep,pagAct:pagAct+1}):setRep({...rep,pagAct}))}>
+					<li className='page-item'>
+						<button className='page-link outlined' onClick={() => (pagAct<numeros.length?setRep({...rep,pagAct:pagAct+1}):setRep({...rep,pagAct}))}>
 							<FontAwesomeIcon icon={faChevronRight} />
 						</button>
 					</li>
@@ -63,4 +63,4 @@ export default function ReportesTabla ({rep, cargando, columnas, datos, pagAct, 
 		</div>):(<></>)}
 		</>
 	);
-}
+};

@@ -9,18 +9,26 @@ export default function FiltrosLista ({rep, filtros, setRep, cargando, originale
 
 	const [filtroCampo, setFiltroCampo] = useState({});
 
-	useEffect(() => {
-		const filtrosNombres = {};
-		filtros.forEach((filtro) => {filtrosNombres[filtro.nombre] = '';});
-    setFiltroCampo(filtrosNombres);
-	}, [filtros]);
-
 	const actualizarCampo = () => {
 		filtros.forEach((filtro) => {filtro['campo'] = filtroCampo[filtro['nombre']];});
 	};
 
+	useEffect(() => {
+		filtros.forEach((filtro) => {
+	    setFiltroCampo((prev) => ({ ...prev, [filtro.nombre]:''}));
+	  });
+	}, [filtros]);
+
 	const filtrar = () => {
 		actualizarCampo();
+		AplicarFiltros(rep, filtros, originales, setRep);
+	};
+
+	const limpiar = () => {
+		filtros.forEach((filtro) => {	
+			document.getElementById(`${filtro.nombre}`).value = '';
+			filtro['campo'] = '';
+		});
 		AplicarFiltros(rep, filtros, originales, setRep);
 	};
 
@@ -37,10 +45,10 @@ export default function FiltrosLista ({rep, filtros, setRep, cargando, originale
 			      	</div>
 			      ))}
 				      <div className='d-flex row justify-content-end'>
-				      	<button className={`btn btn-outline-danger btn-lg col-2 m-2 ${cargando?'':'disabled'}`} onClick={filtrar}>
+				      	<button className={`btn btn-warning btn-lg col-2 m-2 ${!cargando?'':'disabled'}`} onClick={limpiar}>
 				      		Limpiar<FontAwesomeIcon icon={faBroom} />
 				      	</button>
-				      	<button className={`btn btn-outline-info btn-lg col-2 m-2 ${cargando?'':'disabled'}`} onClick={filtrar}>
+				      	<button className={`btn btn-info btn-lg col-2 m-2 ${!cargando?'':'disabled'}`} onClick={filtrar}>
 				      		Buscar<FontAwesomeIcon icon={faSearch} />
 				      	</button>
 				      </div>
