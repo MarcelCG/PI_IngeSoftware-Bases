@@ -9,6 +9,8 @@ import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import {errorMessages, obtenerPatronesValidacion, 
+  transformDataBeforeSubmit} from './AyudanteFormulario';
 
 
 // URL para el manejo de politicas
@@ -30,37 +32,15 @@ function AddPolicy() {
   // Estado del checkbox de "Incrementativo"
   const [disableIncremental, setDisableIncremental] = useState(false);
 
-  // Mensajes de error estándar
-  const errorMessages = {
-    required: "Este campo es obligatorio",
-  };
-
-  // Patrones de validación específicos para cada campo
-  const validationPatterns = {
-    periodo: {
-      pattern: {
-        value: /^[1-9]\d*$/,
-        message: "Este campo debe ser mayor a 0"
-      },
-    },
-    dias_a_dar: {
-      pattern: {
-        value: /^[1-9]\d*$/,
-        message: "Este campo debe ser mayor a 0"
-      },
-    },
-    dias_a_incrementar: {
-      pattern: {
-        value: !disableIncremental ? /^[1-9]\d*$/ : '',
-        message: "Este campo debe ser mayor a 0"
-      },
-    },
-  };
+  const validationPatterns = obtenerPatronesValidacion(disableIncremental);
 
   // Función que se ejecuta al enviar el formulario
   const onSubmit = (data) => {
     console.log(data);
-    const formData = transformDataBeforeSubmit(data);
+    const formData = {
+      ...transformDataBeforeSubmit(data),
+      cedula_empresa: empresa,
+    }
   
     axios.post(politicas, formData).then((response) => {
         console.log('Solicitud POST exitosa:', response.data);
@@ -82,24 +62,6 @@ function AddPolicy() {
         }
       });
       reset();
-  };
-
-  // Esta función prepara los datos antes de enviarlos
-  const transformDataBeforeSubmit = (data) => {
-    return {
-      titulo: data.titulo,
-      cedula_empresa: empresa,
-      periodo: data.periodo * (data.periodUnit === "1/24" ? (1/24): data.periodUnit),
-      fecha_inicio: data.inicia_desde_contrato ? '2023-01-01': data.fecha_inicio,
-      fecha_final: data.fecha_final,
-      inicia_desde_contrato: data.inicia_desde_contrato,
-      dias_a_dar: data.dias_a_dar * (data.dias_a_darUnit === "1/24" ? (1/24): data.dias_a_darUnit),
-      incrementativo: !data.incrementativo,
-      dias_a_incrementar: data.incrementativo ? 0 : data.dias_a_incrementar * (data.incrementalUnit === "1/24" ? (1/24): data.incrementalUnit),
-      acumulativo: data.acumulativo,
-      activo:true,
-      descripcion: data.descripcion,
-    };
   };
 
   // Función para cancelar el formulario
@@ -141,7 +103,7 @@ export const ModalAgregarPol = ({botonRef, setPolValores }) => {
   };
 
   return (
-    <button className="col btn btn-primary me-2" onClick={abrir}>
+    <button className="btn btn-primary col-2 continuar" onClick={abrir}>
       <FontAwesomeIcon icon={faPlus} />Agregar
     </button>
   );
