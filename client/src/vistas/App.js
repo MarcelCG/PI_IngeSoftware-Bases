@@ -11,18 +11,21 @@ import VisualizarPerfil from './perfil';
 import EditarPerfilEmpleador from '../componentes/Empleador/editarPerfilEmpleador'
 import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
 import AgregarSolicitud from '../componentes/Solicitudes/agregarSolicitud';
+import Dashboard from '../componentes/Dashboard/Dashboard';
 import { MenuEmpleador, MenuEmpleado } from './menu';
 import { useAutent } from '../contexto/ContextoAutenticacion';
 
 function App() {
   const {usuarioAutenticado} = useAutent();
   const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
-
   let titulo;
 
   // Define el título según la ruta actual
   switch (useLocation().pathname) {
     case '/app':
+      titulo = 'Inicio';
+      break;
+    case '/app/':
       titulo = 'Inicio';
       break;
     case '/app/politicas':
@@ -60,20 +63,21 @@ function App() {
 
             {titulo && <h3 className='titulo-pagina text-center'>{titulo}</h3>}
             <div className="container col-10">
-            <Routes>
-              <Route path="/politicas" element={<VerPoliticas/>} />
-              <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
-              <Route path="/empleados" element={<ListOfEmployees/>}/>
-              <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
-              <Route path="/empresa" element={<VisualizarEmpresa/>}/>
-              <Route path="/empleados/editar/:cedula" element={<EditarEmpleado />} />
-              <Route path="/perfil" element={<VisualizarPerfil/>}/>
-              <Route path="/solicitudes" element={<Solicitudes/>}/>
-              <Route path="/solicitudes/agregarSolicitud" element={<AgregarSolicitud/>}/>  
-              <Route path="/perfil/editarEmpleador/:cedula" element={<EditarPerfilEmpleador/>} />
-              <Route path="/perfil/editarEmpleado/:cedula" element={<EditarEmpleado />} />
-            </Routes>
-        </div>
+              <Routes>
+                <Route path="/" element={<Dashboard/>} />
+                <Route path="/politicas" element={<VerPoliticas/>} />
+                <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
+                <Route path="/empleados" element={<ListOfEmployees/>}/>
+                <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
+                <Route path="/empresa" element={<VisualizarEmpresa/>}/>
+                <Route path="/empleados/editar/:cedula" element={<EditarEmpleado />} />
+                <Route path="/perfil" element={<VisualizarPerfil/>}/>
+                <Route path="/solicitudes" element={<Solicitudes/>}/>
+                <Route path="/solicitudes/agregarSolicitud" element={<AgregarSolicitud/>}/>  
+                <Route path="/perfil/editarEmpleador/:cedula" element={<EditarPerfilEmpleador/>} />
+                <Route path="/perfil/editarEmpleado/:cedula" element={<EditarEmpleado />} />
+              </Routes>
+            </div>
           </main>
         <footer>
           <div className="container">
