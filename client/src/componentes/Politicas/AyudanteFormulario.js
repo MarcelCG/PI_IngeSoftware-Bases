@@ -1,5 +1,5 @@
 // Mensajes de error estándar
-export const errorMessages = {
+export const mensajesError = {
     required: "Este campo es obligatorio",
 };
 
@@ -28,18 +28,47 @@ export const obtenerPatronesValidacion = (disableIncremental) => {
 };
 
 // Esta función prepara los datos antes de enviarlos
-export const transformDataBeforeSubmit = (data) => {
+export const transformarDatosAntesDeEnviar = (datos) => {
     return {
-      titulo: data.titulo,
-      periodo: data.periodo * (data.periodUnit === "1/24" ? (1/24): data.periodUnit),
-      fecha_inicio: data.inicia_desde_contrato ? '2023-01-01': data.fecha_inicio,
-      fecha_final: data.fecha_final,
-      inicia_desde_contrato: data.inicia_desde_contrato,
-      dias_a_dar: data.dias_a_dar * (data.dias_a_darUnit === "1/24" ? (1/24): data.dias_a_darUnit),
-      incrementativo: !data.incrementativo,
-      dias_a_incrementar: data.incrementativo ? 0 : data.dias_a_incrementar * (data.incrementalUnit === "1/24" ? (1/24): data.incrementalUnit),
-      acumulativo: data.acumulativo,
+      titulo: datos.titulo,
+      periodo: datos.periodo * (datos.unidad_periodo === "1/8" ? (1/8): datos.unidad_periodo),
+      fecha_inicio: datos.inicia_desde_contrato ? '2023-01-01': datos.fecha_inicio,
+      fecha_final: datos.fecha_final,
+      inicia_desde_contrato: datos.inicia_desde_contrato,
+      dias_a_dar: datos.dias_a_dar * (datos.unidad_a_dar === "1/8" ? (1/8): datos.unidad_a_dar),
+      incrementativo: !datos.incrementativo,
+      dias_a_incrementar: datos.incrementativo ? 0 : datos.dias_a_incrementar * (datos.unidad_incremento === "1/24" ? (1/24): datos.unidad_incremento),
+      acumulativo: datos.acumulativo,
       activo:true,
-      descripcion: data.descripcion,
+      descripcion: datos.descripcion,
+    };
+};
+
+export const formatoFecha = (fechaOriginal) => {
+    const fecha = new Date(fechaOriginal);
+
+    const año = fecha.getFullYear();
+    const mes = fecha.getMonth() + 1;
+    const dia = fecha.getDate();
+
+    return `${año}-${mes}-${dia}`;
+}
+
+export const convertirDatosRecibidos = (datos) => {
+    return {
+        titulo: datos.titulo,
+        periodo: datos.periodo < 1 ? datos.periodo * 8 : datos.periodo,
+        unidad_periodo: datos.periodo < 1 ? "1/8" : "1",
+        fecha_inicio: datos.inicia_desde_contrato ? '': (formatoFecha(datos.fecha_inicio)),
+        fecha_final: formatoFecha(datos.fecha_final),
+        inicia_desde_contrato: datos.inicia_desde_contrato,
+        dias_a_dar: datos.dias_a_dar < 1 ? datos.dias_a_dar * 8 : datos.dias_a_dar,
+        unidad_a_dar: datos.dias_a_dar < 1 ? "1/8" : "1",
+        incrementativo: datos.incrementativo,
+        dias_a_incrementar: datos.dias_a_incrementar < 1 ? datos.dias_a_incrementar * 8 : datos.dias_a_incrementar,
+        unidad_incremento: datos.dias_a_incrementar < 1 ? "1/8" : "1",
+        acumulativo: datos.acumulativo,
+        activo:datos.activo,
+        descripcion: datos.descripcion,
     };
 };

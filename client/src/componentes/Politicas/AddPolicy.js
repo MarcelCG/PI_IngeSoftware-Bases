@@ -4,13 +4,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
-import AddPolicyForm from "./AddPolicyForm";
+import PoliticasFormularioHTML from "./PoliticasFormularioHTML";
 import { URLApi } from '../Compartido/Constantes';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import {errorMessages, obtenerPatronesValidacion, 
-  transformDataBeforeSubmit} from './AyudanteFormulario';
+import {mensajesError, obtenerPatronesValidacion, 
+  transformarDatosAntesDeEnviar} from './AyudanteFormulario';
 
 
 // URL para el manejo de politicas
@@ -32,13 +32,13 @@ function AddPolicy() {
   // Estado del checkbox de "Incrementativo"
   const [disableIncremental, setDisableIncremental] = useState(false);
 
-  const validationPatterns = obtenerPatronesValidacion(disableIncremental);
+  const patronesValidacion = obtenerPatronesValidacion(disableIncremental);
 
   // Función que se ejecuta al enviar el formulario
   const onSubmit = (data) => {
     console.log(data);
     const formData = {
-      ...transformDataBeforeSubmit(data),
+      ...transformarDatosAntesDeEnviar(data),
       cedula_empresa: empresa,
     }
   
@@ -72,7 +72,7 @@ function AddPolicy() {
   
   return (
         <>
-          <AddPolicyForm
+          <PoliticasFormularioHTML
             onSubmit={handleSubmit(onSubmit)}
             handleCancel={handleCancel}
             setDisableStartDate={setDisableStartDate}
@@ -81,9 +81,10 @@ function AddPolicy() {
             setDisableIncremental={setDisableIncremental}
             clearErrors={clearErrors}
             errors={errors}
-            errorMessages={errorMessages}
+            mensajesError={mensajesError}
             register={register}
-            validationPatterns={validationPatterns}
+            patronesValidacion={patronesValidacion}
+            accion="Agregar"
           />
 
           <ToastContainer />

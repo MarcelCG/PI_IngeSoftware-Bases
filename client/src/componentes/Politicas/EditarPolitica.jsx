@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
-import EditarPoliticaFormulario from "./EditarPoliticaFormulario";
+import PoliticasFormularioHTML from "./PoliticasFormularioHTML";
+import { obtenerPatronesValidacion, mensajesError,
+  transformarDatosAntesDeEnviar, convertirDatosRecibidos } from "./AyudanteFormulario";
 import { URLApi } from '../Compartido/Constantes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare} from '@fortawesome/free-solid-svg-icons'
 import 'react-toastify/dist/ReactToastify.css';
 
 const politicas = URLApi + 'politicas';
@@ -16,52 +20,35 @@ function EditarPolitica(props) {
   const empresa = usuarioAutenticado.cedula_empresa;
   const { titulo } = props.match.params;
 
-  const { register, handleSubmit, formState: { errors }, control, setValue, getValues } = useForm();
+  const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm();
 
   const [desactivarFechaInicio, setDesactivarFechaInicio] = useState(false);
   const [desactivarIncremento, setDesactivarIncremento] = useState(false);
 
-  const mensajesError = {
-    requerido: "Este campo es obligatorio",
-  };
-
-  const patronesValidacion = {
-    periodo: {
-      valor: /^[1-9]\d*$/,
-      mensaje: "Este campo debe ser mayor a 0",
-    },
-    díasADar: {
-      valor: /^[1-9]\d*$/,
-      mensaje: "Este campo debe ser mayor a 0",
-    },
-    díasAIncrementar: {
-      valor: !desactivarIncremento ? /^[1-9]\d*$/ : '',
-      mensaje: "Este campo debe ser mayor a 0",
-    },
-  };
+  const patronesValidacion = obtenerPatronesValidacion(desactivarIncremento);
 
   useEffect(() => {
     // Realiza una solicitud GET para obtener los datos de la política
-    axios.get(`${URLApi}editarPolitica/${titulo}`)
+    axios.get(`${politicas}/searchPolitica/${titulo}/${empresa}`)
       .then((response) => {
-        const datosPolitica = response.data;
-        console.log("Datos de la política:", datosPolitica);
+        const datosPolitica = convertirDatosRecibidos(response.data);
         // Establece los datos de la política cuando están disponibles
         setDatosPolitica(datosPolitica);
         // Rellena el formulario con los datos de la política
         setValue("titulo", datosPolitica.titulo);
         setValue("periodo", datosPolitica.periodo);
-        setValue("unidadPeriodo", "1/24");
-        setValue("fecha_inicio", datosPolitica.inicia_desde_contrato ? "" : datosPolitica.fecha_inicio);
+        setValue("unidad_periodo", datosPolitica.unidad_periodo);
+        setValue("fecha_inicio", datosPolitica.fecha_inicio);
         setValue("fecha_final", datosPolitica.fecha_final);
-        setValue("desdeContrato", datosPolitica.inicia_desde_contrato);
-        setValue("díasADar", datosPolitica.dias_a_dar);
-        setValue("unidadDíasADar", "1/24");
-        setValue("incrementativo", !datosPolitica.incrementativo);
-        setValue("díasAIncrementar", datosPolitica.dias_a_incrementar);
-        setValue("unidadIncremento", "1/24");
+        setValue("dias_a_dar", datosPolitica.dias_a_dar);
+        setValue("unidad_a_dar", datosPolitica.unidad_a_dar);
+        setValue("dias_a_incrementar", datosPolitica.dias_a_incrementar);
+        setValue("unidad_incremento", datosPolitica.unidad_incremento);
         setValue("acumulativo", datosPolitica.acumulativo);
         setValue("descripcion", datosPolitica.descripcion);
+
+        setDesactivarFechaInicio(datosPolitica.inicia_desde_contrato)
+        setDesactivarIncremento(!datosPolitica.incrementativo);
       })
       .catch((error) => {
         console.error('Error al obtener los datos de la política', error);
@@ -70,7 +57,10 @@ function EditarPolitica(props) {
   }, [titulo, setValue]);
 
   const enviarFormulario = (datos) => {
-    const datosFormulario = transformarDatosAntesDeEnviar(datos);
+    const datosFormulario = {
+      ...transformarDatosAntesDeEnviar(datos),
+      cedula_empresa: empresa,
+    };
 
     axios.put(`${politicas}/${empresa}/${titulo}`, datosFormulario)
       .then((response) => {
@@ -83,51 +73,51 @@ function EditarPolitica(props) {
       });
   };
 
-  const transformarDatosAntesDeEnviar = (datos) => {
-    return {
-      titulo: datos.titulo,
-      cedula_empresa: empresa,
-      periodo: datos.periodo * (datos.unidadPeriodo === "1/24" ? (1 / 24) : datos.unidadPeriodo),
-      fecha_inicio: datos.desdeContrato ? '2023-01-01' : datos.fecha_inicio,
-      fecha_final: datos.fecha_final,
-      desde_contrato: datos.desdeContrato,
-      días_a_dar: datos.díasADar * (datos.unidadDíasADar === "1/24" ? (1 / 24) : datos.unidadDíasADar),
-      incrementativo: !datos.incrementativo,
-      días_a_incrementar: datos.incrementativo ? 0 : datos.díasAIncrementar * (datos.unidadIncremento === "1/24" ? (1 / 24) : datos.unidadIncremento),
-      acumulativo: datos.acumulativo,
-      activo: true,
-      descripcion: datos.descripcion,
-    };
-  };
-
   const cancelarFormulario = () => {
     console.log("Formulario cancelado");
     // Aquí puedes realizar acciones específicas de cancelación
   };
 
   return (
-    <div className="formulario bg-white">
-      <h1 className="titulo">Editar Política</h1>
-
-      <EditarPoliticaFormulario
+    <>
+      <PoliticasFormularioHTML
         onSubmit={handleSubmit(enviarFormulario)}
-        cancelarFormulario={cancelarFormulario}
-        setDesactivarFechaInicio={setDesactivarFechaInicio}
-        desactivarFechaInicio={desactivarFechaInicio}
-        desactivarIncremento={desactivarIncremento}
-        setDesactivarIncremento={setDesactivarIncremento}
+        handleCancel={cancelarFormulario}
+        setDisableStartDate={setDesactivarFechaInicio}
+        disableStartDate={desactivarFechaInicio}
+        disableIncremental={desactivarIncremento}
+        setDisableIncremental={setDesactivarIncremento}
         clearErrors={getValues} // Cambiado a getValues
         errors={errors}
         mensajesError={mensajesError}
         register={register}
         patronesValidacion={patronesValidacion}
-        control={control}
         datosPolitica={datosPolitica}
+        accion="Editar"
       />
-
       <ToastContainer />
-    </div>
+    </>
   );
-}
+};
+
+export const ModalEditarPol = (props) => {
+  const {botonRef, setPolValores, match } = props;
+  const titulo = match.params.titulo;
+  const abrir = () => {
+    setPolValores({
+      componente: <EditarPolitica {...props}/>,
+      modalID:"modalEditarPol",
+      titulo: <h3 className='mt-2'>Editar Política: {titulo}</h3>,
+      tituloEstilos: 'titulo-ventana',
+      tamanio:"modal-lg"});
+    botonRef.current.click();
+  };
+
+  return (
+    <button className="btn-primary me-2" onClick={abrir}>
+      <FontAwesomeIcon icon={faPenToSquare} />
+    </button>
+  );
+};
 
 export default EditarPolitica;

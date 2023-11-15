@@ -57,23 +57,6 @@ export const VerPoliticas = () => {
     botonRef.current.click();
   };
 
-    // Función para abrir el formulario de edición
-    const manejoEditarPolitica = (politica) => {
-      console.log('manejoEditarPolitica se ejecutó');
-      if (politica && politica.titulo) {
-        // Renderiza el componente EditarPolitica con las props
-        setPolValores({
-          ...polValores,
-          titulo: politica.titulo,
-          componente: <EditarPolitica match={{ params: { titulo: politica.titulo } }} />
-        });
-        botonRef.current.click();
-      } else {
-        // Manejar el caso en el que 'politica' no sea válido
-        console.error('El objeto de política no es válido');
-      }
-    };
-
   let props = {
     ...polValores,
     politicasAct,
@@ -87,7 +70,6 @@ export const VerPoliticas = () => {
     setPolValores, //nuevo
     politicas,
     filtrarPoliticas,
-    manejoEditarPolitica
   };
 
   return ( <VerPoliticasHTML {...props}/> );

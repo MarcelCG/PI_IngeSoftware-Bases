@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class AddPolicyForm extends Component {
+class PoliticasFormularioHTML extends Component {
     render () {
         const {
             onSubmit,
@@ -11,9 +11,10 @@ class AddPolicyForm extends Component {
             setDisableIncremental,
             clearErrors,
             errors,
-            errorMessages,
+            mensajesError,
             register,
-            validationPatterns 
+            patronesValidacion,
+            accion
         } = this.props;
 
         return (
@@ -25,7 +26,7 @@ class AddPolicyForm extends Component {
                   <label htmlFor="titulo">Título: </label>
                   <input className={`form-control ${errors.titulo ? "is-invalid" : ""}`}
                     {...register("titulo", {
-                      required: errorMessages.required,
+                      required: mensajesError.required,
                     })}
                     name="titulo"
                     type="text"
@@ -35,18 +36,22 @@ class AddPolicyForm extends Component {
                 {errors.titulo && <span className="text-danger">{errors.titulo.message}</span>}
 
                 {/* Campo de fecha de inicio */}
-                <div className="mt-2">
-                  <label htmlFor="fecha_inicio">Fecha de Inicio: </label>
-                  <input className={`form-control ${errors.fecha_inicio ? "is-invalid" : ""}`}
-                    {...register("fecha_inicio", {
-                      required: !disableStartDate ? errorMessages.required : false,
-                    })}
-                    name="fecha_inicio"
-                    type="date"
-                    disabled={disableStartDate}
-                  />
-                </div>
-                {errors.fecha_inicio && <span className="text-danger">{errorMessages.required}</span>}
+                {!disableStartDate && 
+                  <div>
+                    <div className="mt-2">
+                    <label htmlFor="fecha_inicio">Fecha de Inicio: </label>
+                    <input className={`form-control ${errors.fecha_inicio ? "is-invalid" : ""}`}
+                      {...register("fecha_inicio", {
+                        required: !disableStartDate ? mensajesError.required : false,
+                      })}
+                      name="fecha_inicio"
+                      type="date"
+                      disabled={disableStartDate}
+                    />
+                    </div>
+                    {errors.fecha_inicio && <span className="text-danger">{mensajesError.required}</span>}
+                  </div>
+                }
 
                 {/* Checkbox para "Rige a partir del contrato" */}
                 <div className="mt-1">
@@ -73,13 +78,13 @@ class AddPolicyForm extends Component {
                   <label htmlFor="fecha_final">Fecha de Vencimiento: </label>
                   <input className={`form-control ${errors.fecha_final ? "is-invalid" : ""}`}
                     {...register("fecha_final", {
-                      required: errorMessages.required,
+                      required: mensajesError.required,
                     })}
                     name="fecha_final"
                     type="date"
                   />
                 </div>
-                {errors.fecha_final && <span className="text-danger">{errorMessages.required}</span>}
+                {errors.fecha_final && <span className="text-danger">{mensajesError.required}</span>}
 
                 {/* Campo de período*/}
                 <div className="mt-2">
@@ -87,8 +92,8 @@ class AddPolicyForm extends Component {
                   <section className="form d-flex align-items-center">
                     <input className={`form-control ${errors.periodo ? "is-invalid" : ""}`}
                       {...register("periodo", {
-                        required: errorMessages.required,
-                        ...validationPatterns.periodo,
+                        required: mensajesError.required,
+                        ...patronesValidacion.periodo,
                       })}
                       name="periodo"
                       type="number"
@@ -97,9 +102,9 @@ class AddPolicyForm extends Component {
                     />
 
                     <select className="form-select"
-                      {...register("periodUnit")}
+                      {...register("unidad_periodo")}
                     >
-                      <option value="1/24">Horas</option>
+                      <option value="1/8">Horas</option>
                       <option value="1">Días</option>
                       <option value="7">Semanas</option>
                       <option value="30">Meses</option>
@@ -110,35 +115,39 @@ class AddPolicyForm extends Component {
                 {errors.periodo && <span className="text-danger">{errors.periodo.message}</span>}
 
                 {/* Campo de incrementativo*/}
-                <div className="mt-2">
-                  <label htmlFor="dias_a_incrementar">Incremento por Periodo: </label>
-                  <section className="form d-flex align-items-center">
-                    <input className={`form-control ${errors.dias_a_incrementar ? "is-invalid" : ""}`}
-                      {...register("dias_a_incrementar", {
-                        required: !disableIncremental ? errorMessages.required : false,
-                        ...validationPatterns.dias_a_incrementar
-                      })}
-                      name="dias_a_incrementar"
-                      type="number"
-                      disabled={disableIncremental}
-                      min={0}
-                      defaultValue={0}
-                    />
+                {!disableIncremental &&
+                  <div>
+                    <div className="mt-2">
+                      <label htmlFor="dias_a_incrementar">Incremento por Periodo: </label>
+                      <section className="form d-flex align-items-center">
+                        <input className={`form-control ${errors.dias_a_incrementar ? "is-invalid" : ""}`}
+                          {...register("dias_a_incrementar", {
+                            required: !disableIncremental ? mensajesError.required : false,
+                            ...patronesValidacion.dias_a_incrementar
+                          })}
+                          name="dias_a_incrementar"
+                          type="number"
+                          disabled={disableIncremental}
+                          min={0}
+                          defaultValue={0}
+                        />
 
-                    <select className="form-select" disabled={disableIncremental}
-                      {...register("incrementalUnit", {
-                        required: !disableIncremental ? errorMessages.required : false
-                      })}
-                    >
-                      <option value="1/24">Horas</option>
-                      <option value="1">Días</option>
-                      <option value="7">Semanas</option>
-                      <option value="30">Meses</option>
-                      <option value="365">Años</option>
-                    </select>
-                  </section>
-                </div>
-                {errors.dias_a_incrementar && <span className="text-danger">{errors.dias_a_incrementar.message}</span>}
+                        <select className="form-select" disabled={disableIncremental}
+                          {...register("unidad_incremento", {
+                            required: !disableIncremental ? mensajesError.required : false
+                          })}
+                        >
+                          <option value="1/8">Horas</option>
+                          <option value="1">Días</option>
+                          <option value="7">Semanas</option>
+                          <option value="30">Meses</option>
+                          <option value="365">Años</option>
+                        </select>
+                      </section>
+                    </div>
+                    {errors.dias_a_incrementar && <span className="text-danger">{errors.dias_a_incrementar.message}</span>}
+                  </div>
+                }
 
                 {/* Checkbox para "Incrementativo" */}
                 <div className="mt-1">
@@ -161,8 +170,8 @@ class AddPolicyForm extends Component {
                   <section className="form d-flex align-items-center">
                     <input className={`form-control ${errors.dias_a_dar ? "is-invalid" : ""}`}
                       {...register("dias_a_dar", {
-                        required: errorMessages.required,
-                        ...validationPatterns.dias_a_dar,
+                        required: mensajesError.required,
+                        ...patronesValidacion.dias_a_dar,
                       })}
                       name="dias_a_dar"
                       type="number"
@@ -171,9 +180,9 @@ class AddPolicyForm extends Component {
                     />
 
                     <select className="form-select"
-                      {...register("dias_a_darUnit")}
+                      {...register("unidad_a_dar")}
                     >
-                      <option value='1/24'>Horas</option>
+                      <option value='1/8'>Horas</option>
                       <option value="1">Días</option>
                       <option value="7">Semanas</option>
                       <option value="30">Meses</option>
@@ -210,7 +219,7 @@ class AddPolicyForm extends Component {
                 <div className='d-flex justify-content-end mt-3'>
                   <section className="align-items-right text-align-right float-right">
                       <input className="btn-danger me-2" type="button" value="Cancelar" onClick={handleCancel}/>
-                      <input className="btn-primary" type="submit" value="Agregar"/>
+                      <input className="btn-primary" type="submit" value={accion}/>
                   </section>
                 </div>
               </form>
@@ -219,4 +228,4 @@ class AddPolicyForm extends Component {
     }
 }
 
-export default AddPolicyForm;
+export default PoliticasFormularioHTML;
