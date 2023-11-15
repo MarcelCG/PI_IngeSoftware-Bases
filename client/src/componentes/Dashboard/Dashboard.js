@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
-import DashboardEmpleado from './dashboardEmpleado';
+import DashboardEmpleado from './DashboardEmpleado';
 
 function Dashboard() {
   const {usuarioAutenticado} = useAutent();
