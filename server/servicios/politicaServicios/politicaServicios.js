@@ -1,6 +1,7 @@
 const modeloPolitica = require('../../models/politicaModel/politicasModel');
 const modeloEmpleados = require('../../models/usuarioModel/Empleado/empleadoModel');
 const correoServicios = require('../correoServicios/correoServicios');
+const {NO_ENCONTRADO, EXITO, SIN_MODIFICACIONES} = require('../../config/constantes');
 
 function vigente(Politica) {
 	const hoy = new Date();
@@ -56,8 +57,31 @@ async function borrarPolitica(titulo, cedula_empresa) {
   }
 }
 
+async function editarPolitica(titulo, cedula_empresa, datosNuevos) {
+  try {
+
+    const politica = modeloPolitica.getByTituloAndCedula(titulo, cedula_empresa);
+
+    if (!politica) {
+      return NO_ENCONTRADO;
+    }
+
+    const edicion = modeloPolitica.editarPolitica(titulo, cedula_empresa ,datosNuevos);
+    if (!edicion) {
+      return SIN_MODIFICACIONES;
+    }
+
+    return EXITO;
+
+  } catch(error) {
+    console.error('Error en Servicio editarPolitica: ', error);
+    throw new Error('Error en Servicio editarPolitica: ' + error.message);
+  }
+}
+
 module.exports = {
   vigente,
-  borrarPolitica
+  borrarPolitica,
+  editarPolitica,
 };
 

@@ -57,12 +57,12 @@ function EditarPolitica(props) {
   }, [titulo, setValue]);
 
   const enviarFormulario = (datos) => {
-    const datosFormulario = {
-      ...transformarDatosAntesDeEnviar(datos),
-      cedula_empresa: empresa,
-    };
+    console.log('Estos se recibio: ', datos);
+    const datosFormulario = transformarDatosAntesDeEnviar(datos);
 
-    axios.put(`${politicas}/${empresa}/${titulo}`, datosFormulario)
+    console.log('Estos son los cambios: ', datosFormulario);
+
+    axios.put(`${politicas}/editarPolitica/${titulo}/${empresa}`, datosFormulario)
       .then((response) => {
         console.log('Solicitud PUT exitosa:', response.data);
         toast.success('Política actualizada con éxito');

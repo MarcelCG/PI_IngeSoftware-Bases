@@ -9,6 +9,6 @@ router.get('/byTitulo/:titulo', PoliticaController.getPoliticaByTitulo);
 router.get('/byCedula/:cedula_empresa', PoliticaController.getPoliticaByCedulaEmpresa);
 router.get('/searchPolitica/:titulo/:cedula_empresa', PoliticaController.getPoliticaByTituloAndCedula)
 router.post('/borrar',PoliticaController.borrarPolitica);
-router.put('/editarPolitica/:titulo', PoliticaController.editarPolitica);
+router.put('/editarPolitica/:titulo/:cedula_empresa', PoliticaController.editarPolitica);
 
 module.exports = router;

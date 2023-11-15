@@ -133,13 +133,14 @@ async function borrarPolitica(titulo,cedula_empresa) {
   }
 }
 // Función para actualizar una política por su título (Mediante función almancenada en la base de datos)
-async function editarPolitica(titulo, actualizarDatosPolitica) {
+async function editarPolitica(titulo, cedula_empresa ,actualizarDatosPolitica) {
   try {
       const pool = await sql.connect(dbConfig);
       const result = await pool
           .request()
           .input("titulo", sql.NVarChar, titulo)
-          .input("cedula_empresa", sql.NVarChar, actualizarDatosPolitica.cedula_empresa)
+          .input("titulo_nuevo", sql.NVarChar, actualizarDatosPolitica.titulo)
+          .input("cedula_empresa", sql.NVarChar,cedula_empresa)
           .input("periodo", sql.Decimal(5, 2), actualizarDatosPolitica.periodo)
           // No se actualiza la fecha de inicio
           .input("fecha_final", sql.Date, actualizarDatosPolitica.fecha_final)

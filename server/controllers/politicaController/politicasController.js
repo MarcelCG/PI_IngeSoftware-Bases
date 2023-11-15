@@ -1,5 +1,6 @@
 const Politica = require('../../models/politicaModel/politicasModel');
 const serviciosPolitica = require('../../servicios/politicaServicios/politicaServicios')
+const {NO_ENCONTRADO, ERROR_INTERNO, SIN_MODIFICACIONES, EXITO} = require('../../config/constantes');
 
 // Obtener todas las politicas
 async function getAllPoliticas(req, res) {
@@ -144,27 +145,23 @@ async function borrarPolitica(solicitud, respuesta) {
 
 async function editarPolitica(req, res) {
   try {
-    const { titulo } = req.params; // Obtiene el título de la política a editar
+    const { titulo, cedula_empresa } = req.params; // Obtiene el título y cedula de la política a editar
     const actualizarDatosPolitica = req.body; // Datos actualizados de la política
 
-    // Verifica si existe una política con el título especificado
-    const politicaExistente = await Politica.getByTitulo(titulo);
-    console.log (politicaExistente);
+    const respuesta = await serviciosPolitica.editarPolitica(titulo, cedula_empresa, actualizarDatosPolitica);
 
-    if (politicaExistente) {
-      // Llama a la función para actualizar la política
-      const exito = await Politica.editarPolitica(titulo, actualizarDatosPolitica); // Cambia "editarPolitica" a "Politica.editarPolitica"
+    const mapeoRespuestas = {
+      [NO_ENCONTRADO]: { estado: NO_ENCONTRADO, mensaje: "No se encontró la política" },
+      [SIN_MODIFICACIONES]: { estado: SIN_MODIFICACIONES, mensaje: "No se realizaron modificaciones" },
+      [ERROR_INTERNO]: { estado: ERROR_INTERNO, mensaje: "Error interno del servidor" },
+      [EXITO]: { estado: EXITO, mensaje: "Operación exitosa" }
+    };
 
-      if (exito) {
-        res.status(200).json({ message: 'Política actualizada exitosamente' });
-      } else {
-        res.status(500).json({ message: 'No se pudo actualizar la política' });
-      }
-    } else {
-      res.status(404).json({ error: 'Política no encontrada' });
-    }
+    const { estado, mensaje } = mapeoRespuestas[respuesta] || { estado: 500, mensaje: "Respuesta inesperada del servicio" };
+
+    res.status(estado).json({ mensaje });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(ERROR_INTERNO).json({ error: error.message });
   }
 }
 

@@ -1,0 +1,6 @@
+module.exports = {
+    NO_ENCONTRADO: 405,
+    EXITO: 200,
+    SIN_MODIFICACIONES: 304,
+    ERROR_INTERNO: 501,
+}

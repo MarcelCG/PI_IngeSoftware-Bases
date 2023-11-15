@@ -80,7 +80,7 @@ CREATE TABLE Libres (
     ultima_actualizacion DATE,
     PRIMARY KEY (cedula_empleado,titulo_politica,cedula_empresa),
     FOREIGN KEY (cedula_empleado) REFERENCES Empleado(cedula_empleado),
-    FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa)
+    FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa) ON UPDATE CASCADE
 );
 
 -- Jeremy
@@ -320,6 +320,7 @@ GO;
 
 CREATE PROCEDURE ActualizarPolitica
     @titulo VARCHAR(255),
+	@titulo_nuevo VARCHAR(255),
     @cedula_empresa VARCHAR(255),
     @periodo DECIMAL(5, 2),
     @fecha_final DATE,
@@ -334,7 +335,7 @@ AS
 BEGIN
     UPDATE Politica
     SET
-        cedula_empresa = @cedula_empresa,
+		titulo = @titulo_nuevo,
         periodo = @periodo,
         fecha_final = @fecha_final,
         inicia_desde_contrato = @inicia_desde_contrato,
@@ -344,5 +345,5 @@ BEGIN
         acumulativo = @acumulativo,
         activo = @activo,
         descripcion = @descripcion
-    WHERE titulo = @titulo;
+    WHERE titulo = @titulo AND cedula_empresa = @cedula_empresa;
 END

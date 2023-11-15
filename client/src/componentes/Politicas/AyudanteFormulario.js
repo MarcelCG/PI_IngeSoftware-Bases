@@ -37,7 +37,7 @@ export const transformarDatosAntesDeEnviar = (datos) => {
       inicia_desde_contrato: datos.inicia_desde_contrato,
       dias_a_dar: datos.dias_a_dar * (datos.unidad_a_dar === "1/8" ? (1/8): datos.unidad_a_dar),
       incrementativo: !datos.incrementativo,
-      dias_a_incrementar: datos.incrementativo ? 0 : datos.dias_a_incrementar * (datos.unidad_incremento === "1/24" ? (1/24): datos.unidad_incremento),
+      dias_a_incrementar: datos.incrementativo ? 0 : datos.dias_a_incrementar * (datos.unidad_incremento === "1/8" ? (1/8): datos.unidad_incremento),
       acumulativo: datos.acumulativo,
       activo:true,
       descripcion: datos.descripcion,
