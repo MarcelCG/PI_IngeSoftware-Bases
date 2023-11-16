@@ -51,7 +51,7 @@ export const formatoFecha = (fechaOriginal) => {
     const mes = fecha.getMonth() + 1;
     const dia = fecha.getDate();
 
-    return `${año}-${mes}-${dia}`;
+    return `${año}-${mes < 10 ? '0'+mes : mes}-${dia < 10 ? '0'+dia: dia}`;
 }
 
 export const convertirDatosRecibidos = (datos) => {
@@ -59,9 +59,7 @@ export const convertirDatosRecibidos = (datos) => {
         titulo: datos.titulo,
         periodo: datos.periodo < 1 ? datos.periodo * 8 : datos.periodo,
         unidad_periodo: datos.periodo < 1 ? "1/8" : "1",
-        fecha_inicio: datos.inicia_desde_contrato ? '': (formatoFecha(datos.fecha_inicio)),
         fecha_final: formatoFecha(datos.fecha_final),
-        inicia_desde_contrato: datos.inicia_desde_contrato,
         dias_a_dar: datos.dias_a_dar < 1 ? datos.dias_a_dar * 8 : datos.dias_a_dar,
         unidad_a_dar: datos.dias_a_dar < 1 ? "1/8" : "1",
         incrementativo: datos.incrementativo,

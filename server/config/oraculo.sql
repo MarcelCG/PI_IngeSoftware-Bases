@@ -163,6 +163,17 @@ BEGIN
 END;
 GO;
 
+CREATE PROC obtenerDatosEmpleadorPorCedula @cedula_empresa varchar(255)
+AS
+BEGIN
+	SELECT u.cedula,u.nombre, u.primer_apellido, 
+	u.segundo_apellido,u.correo1, u. correo2,
+	u.telefono1, u.telefono2, em.nombre AS 'nombre_empresa'
+	FROM Usuario u
+	INNER JOIN Empresa em ON em.cedula_empleador = u.cedula AND em.cedula_juridica = @cedula_empresa
+END;
+GO;
+
 CREATE PROC obtenerDatosEmpleado @cedula_empleado varchar(255), @cedula_empresa varchar(255)
 AS
 BEGIN
@@ -324,7 +335,6 @@ CREATE PROCEDURE ActualizarPolitica
     @cedula_empresa VARCHAR(255),
     @periodo DECIMAL(5, 2),
     @fecha_final DATE,
-    @inicia_desde_contrato BIT,
     @dias_a_dar DECIMAL(5, 2),
     @incrementativo BIT,
     @dias_a_incrementar DECIMAL(5, 2),
@@ -338,7 +348,6 @@ BEGIN
 		titulo = @titulo_nuevo,
         periodo = @periodo,
         fecha_final = @fecha_final,
-        inicia_desde_contrato = @inicia_desde_contrato,
         dias_a_dar = @dias_a_dar,
         incrementativo = @incrementativo,
         dias_a_incrementar = @dias_a_incrementar,

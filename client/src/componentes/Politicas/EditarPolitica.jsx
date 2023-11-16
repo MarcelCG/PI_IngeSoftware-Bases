@@ -57,15 +57,16 @@ function EditarPolitica(props) {
   }, [titulo, setValue]);
 
   const enviarFormulario = (datos) => {
-    console.log('Estos se recibio: ', datos);
-    const datosFormulario = transformarDatosAntesDeEnviar(datos);
 
-    console.log('Estos son los cambios: ', datosFormulario);
+    const datosFormulario = transformarDatosAntesDeEnviar(datos);
 
     axios.put(`${politicas}/editarPolitica/${titulo}/${empresa}`, datosFormulario)
       .then((response) => {
         console.log('Solicitud PUT exitosa:', response.data);
         toast.success('Política actualizada con éxito');
+        setTimeout(() => {
+          window.location.reload();
+        }, 	2500); 	
       })
       .catch((error) => {
         console.error('Error en la solicitud PUT:', error);
@@ -93,7 +94,8 @@ function EditarPolitica(props) {
         register={register}
         patronesValidacion={patronesValidacion}
         datosPolitica={datosPolitica}
-        accion="Editar"
+        accion={"Editar"}
+        edicion={true}
       />
       <ToastContainer />
     </>

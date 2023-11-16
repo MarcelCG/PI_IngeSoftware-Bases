@@ -142,9 +142,7 @@ async function editarPolitica(titulo, cedula_empresa ,actualizarDatosPolitica) {
           .input("titulo_nuevo", sql.NVarChar, actualizarDatosPolitica.titulo)
           .input("cedula_empresa", sql.NVarChar,cedula_empresa)
           .input("periodo", sql.Decimal(5, 2), actualizarDatosPolitica.periodo)
-          // No se actualiza la fecha de inicio
           .input("fecha_final", sql.Date, actualizarDatosPolitica.fecha_final)
-          .input("inicia_desde_contrato", sql.Bit, actualizarDatosPolitica.inicia_desde_contrato)
           .input("dias_a_dar", sql.Decimal(5, 2), actualizarDatosPolitica.dias_a_dar)
           .input("incrementativo", sql.Bit, actualizarDatosPolitica.incrementativo)
           .input("dias_a_incrementar", sql.Decimal(5, 2), actualizarDatosPolitica.dias_a_incrementar)

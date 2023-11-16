@@ -14,7 +14,8 @@ class PoliticasFormularioHTML extends Component {
             mensajesError,
             register,
             patronesValidacion,
-            accion
+            accion,
+            edicion
         } = this.props;
 
         return (
@@ -36,42 +37,49 @@ class PoliticasFormularioHTML extends Component {
                 {errors.titulo && <span className="text-danger">{errors.titulo.message}</span>}
 
                 {/* Campo de fecha de inicio */}
-                {!disableStartDate && 
+                {!edicion && (
                   <div>
-                    <div className="mt-2">
-                    <label htmlFor="fecha_inicio">Fecha de Inicio: </label>
-                    <input className={`form-control ${errors.fecha_inicio ? "is-invalid" : ""}`}
-                      {...register("fecha_inicio", {
-                        required: !disableStartDate ? mensajesError.required : false,
-                      })}
-                      name="fecha_inicio"
-                      type="date"
-                      disabled={disableStartDate}
-                    />
+                    {!disableStartDate && (
+                      <div>
+                        <div className="mt-2">
+                          <label htmlFor="fecha_inicio">Fecha de Inicio: </label>
+                          <input
+                            className={`form-control ${errors.fecha_inicio ? "is-invalid" : ""}`}
+                            {...register("fecha_inicio", {
+                              required: !disableStartDate ? mensajesError.required : false,
+                            })}
+                            name="fecha_inicio"
+                            type="date"
+                            disabled={disableStartDate}
+                          />
+                        </div>
+                        {errors.fecha_inicio && (
+                          <span className="text-danger">{mensajesError.required}</span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Checkbox para "Rige a partir del contrato" */}
+                    <div className="mt-1">
+                      <section className="form-check">
+                        <input
+                          className="form-check-input"
+                          {...register("inicia_desde_contrato")}
+                          type="checkbox"
+                          checked={disableStartDate}
+                          onChange={(e) => {
+                            setDisableStartDate(e.target.checked);
+                            clearErrors("fecha_inicio");
+                          }}
+                        />
+
+                        <label className="form-check-label" htmlFor="inicia_desde_contrato">
+                          Rige a partir del contrato
+                        </label>
+                      </section>
                     </div>
-                    {errors.fecha_inicio && <span className="text-danger">{mensajesError.required}</span>}
                   </div>
-                }
-
-                {/* Checkbox para "Rige a partir del contrato" */}
-                <div className="mt-1">
-                  <section className="form-check">
-                    <input
-                      className="form-check-input"
-                      {...register("inicia_desde_contrato")}
-                      type="checkbox" 
-                      checked={disableStartDate} 
-                      onChange={(e) => {
-                        setDisableStartDate(e.target.checked);
-                        clearErrors("fecha_inicio");
-                      }}
-                    />
-
-                    <label className="form-check-label" htmlFor="inicia_desde_contrato">
-                      Rige a partir del contrato
-                    </label>
-                  </section>
-                </div>
+                )}
 
                 {/* Campo de fecha de vencimiento */}
                 <div className="mt-2">
