@@ -1,5 +1,6 @@
 const Politica = require('../../models/politicaModel/politicasModel');
 const serviciosPolitica = require('../../servicios/politicaServicios/politicaServicios')
+const {NO_ENCONTRADO, ERROR_INTERNO, SIN_MODIFICACIONES, EXITO} = require('../../config/constantes');
 
 // Obtener todas las politicas
 async function getAllPoliticas(req, res) {
@@ -104,7 +105,7 @@ async function getPoliticaByTituloAndCedula(req, res) {
   try {
     const { titulo, cedula_empresa } = req.params;
 
-    // Llama a la función getByTituloAndCedula en el modelo de Política
+    // Llama a la función getPoliticaByTituloAndCedula en el modelo de Política
     const politica = await Politica.getByTituloAndCedula(titulo, cedula_empresa);
 
     if (politica !== null) {
@@ -142,11 +143,35 @@ async function borrarPolitica(solicitud, respuesta) {
   }
 }
 
+async function editarPolitica(req, res) {
+  try {
+    const { titulo, cedula_empresa } = req.params; // Obtiene el título y cedula de la política a editar
+    const actualizarDatosPolitica = req.body; // Datos actualizados de la política
+
+    const respuesta = await serviciosPolitica.editarPolitica(titulo, cedula_empresa, actualizarDatosPolitica);
+
+    const mapeoRespuestas = {
+      [NO_ENCONTRADO]: { estado: NO_ENCONTRADO, mensaje: "No se encontró la política" },
+      [SIN_MODIFICACIONES]: { estado: SIN_MODIFICACIONES, mensaje: "No se realizaron modificaciones" },
+      [ERROR_INTERNO]: { estado: ERROR_INTERNO, mensaje: "Error interno del servidor" },
+      [EXITO]: { estado: EXITO, mensaje: "Operación exitosa" }
+    };
+
+    const { estado, mensaje } = mapeoRespuestas[respuesta] || { estado: 500, mensaje: "Respuesta inesperada del servicio" };
+
+    res.status(estado).json({ mensaje });
+  } catch (error) {
+    res.status(ERROR_INTERNO).json({ error: error.message });
+  }
+}
+
+// Exporta la función editarPolitica
 module.exports = {
   getAllPoliticas,
   createPolitica,
   getPoliticaByTitulo,
   getPoliticaByCedulaEmpresa,
   getPoliticaByTituloAndCedula,
-  borrarPolitica
+  borrarPolitica,
+  editarPolitica,
 };
