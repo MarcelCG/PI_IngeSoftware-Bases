@@ -7,6 +7,7 @@ import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
 import EditarEmpleado from '../componentes/Empleado/editarEmpleado';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
+import Calendario from '../componentes/Inicio/Calendario';
 import VisualizarPerfil from './perfil';
 import EditarPerfilEmpleador from '../componentes/Empleador/editarPerfilEmpleador'
 import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
@@ -65,6 +66,8 @@ function App() {
             {titulo && <h3 className='titulo-pagina text-center'>{titulo}</h3>}
             <div className="container col-10">
             <Routes>
+              {esEmpleador ?
+                <Route path='/' element={<Calendario/>}/> : ''}
               <Route path="/politicas" element={<VerPoliticas/>} />
               <Route path="/reportes" element={<EjemploDatos/>} />
               <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
