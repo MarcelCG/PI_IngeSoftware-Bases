@@ -20,7 +20,6 @@ export default function EjemploDatos () {
 		cargando:true, /* booleano para saber cuando la pag. esta cargando*/
 		pagAct:1, /* campo para lo de la pagina actual que se muestra en la Tabla*/
 		titulo:'Elegir'
-		// const [Titulo, setTitulo] = useState('Elegir');
 	}
 	/* Hook para el Reporte, Rep = Reporte */
 	const [rep, setRep] = useState({ ...predeterminado });

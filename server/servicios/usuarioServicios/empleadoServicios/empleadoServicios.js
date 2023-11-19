@@ -3,6 +3,9 @@ const correoServicios = require('../../correoServicios/correoServicios');
 
 function obtenerFechaContrato(Empleados, cedula){
 	const empleado = Empleados.find(Emple => Emple.cedula === cedula);
+  if (empleado === undefined){
+    return null;
+  }
   return fechaContratacion = new Date(empleado.fecha_contratacion);
  
 }

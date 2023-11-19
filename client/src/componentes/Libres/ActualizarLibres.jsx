@@ -12,7 +12,7 @@ export const ActualizarTiempoLibre = () => {
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa; 
   const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
-  const esPrimeroDelMes = new Date().getDate() === 1;
+  const esPrimeroDelMes = true;//new Date().getDate() === 1;
 
 	const cargarDatos = async() => {
 		setCargando(true);
@@ -20,27 +20,30 @@ export const ActualizarTiempoLibre = () => {
 	  try {
 	    const respuesta = await axios.get
 	    (`${URLApi}libres/actualizarTodos/${empresa}`,);
-	    if(respuesta.data >= 0){
+	    const cantEmpleados = new Set(respuesta.data.map(lib => lib.cedula_empleado)).size;
+	    if(respuesta.data !== undefined){
 	   		toast.success(
-   		   	<span>
-   		      Se ha actualizado: <strong>{respuesta.data}</strong>
-   		      {respuesta.data === 1 ? " empleado" : " empleados"}
-   		   	</span>,{position: toast.POSITION.TOP_CENTER}
-	   		);
+   		   	<> Se ha actualizado: <b>{cantEmpleados} </b>
+   		      {cantEmpleados === 1 ? "empleado":"empleados"}
+   		   	</>,{position: toast.POSITION.TOP_CENTER});
 	   	} else {
-	   		toast.error(
-	   			errorDescrib,{position: toast.POSITION.TOP_CENTER,
-	   			className:"alert alert-danger"}
-	   		);
+	   		toast.error(errorDescrib,{position: toast.POSITION.TOP_CENTER,className:"alert alert-danger"});
 	   	}
 	   	setCargando(false);
 	  } catch (error) {
-	  	toast.error(
-	  		errorDescrib,{position:
-	  		toast.POSITION.TOP_CENTER, className:"alert alert-danger"}
-	  	);
+	  	toast.error(errorDescrib,{position:toast.POSITION.TOP_CENTER, className:"alert alert-danger"});
 	  	setCargando(false);
 	  }
+	};
+	// eslint-disable-next-line 
+	const generarReporte = (libresNuevos) => {
+		let diasEmpleado = [];
+		libresNuevos.forEach(lib => {
+  		const { cedula_empleado, dias_libres_disponibles } = lib;
+  		diasEmpleado[cedula_empleado] = (diasEmpleado[cedula_empleado] || 0) + parseFloat(dias_libres_disponibles);
+		});
+		// aqui supuestamente iria algo como Gen[pdf]
+
 	};
 
 	const props = {

@@ -130,7 +130,7 @@ BEGIN
         IF @RC_ANTERIOR = @@ROWCOUNT 
             BEGIN
                 INSERT INTO Libres (cedula_empleado,
-                    titulo_politica,
+                    titulo_politica, 
                     cedula_empresa,
                     dias_libres_disponibles,
                     dias_libres_utilizados,
@@ -316,4 +316,38 @@ AS
         cedula_empleado=@cedula_empleado;
 END;
 
-GO;
+-- Jeremias
+CREATE TRIGGER InsertarPolitica
+ON Politica
+INSTEAD OF INSERT
+AS
+BEGIN
+    INSERT INTO Politica SELECT * FROM inserted;
+    -- variables --
+    DECLARE @CED VARCHAR(255);
+    DECLARE @TITULO VARCHAR(255); 
+    DECLARE @EMPRESA VARCHAR(255);
+    -- Get values from inserted rows
+    SELECT @TITULO = titulo, @EMPRESA = cedula_empresa
+    FROM inserted;
+    -- cursor --
+    DECLARE empleadosLista CURSOR FOR
+    SELECT cedula_empleado
+    FROM EMPLEADO AS E 
+    JOIN USUARIO AS U ON E.cedula_empleado = U.cedula
+    WHERE U.activo = 1 AND E.cedula_empresa = @EMPRESA;
+
+    -- abrir cursor --
+    OPEN empleadosLista;
+
+    --LOOP --
+    FETCH NEXT FROM empleadosLista INTO @CED;
+    WHILE @@FETCH_STATUS = 0
+    BEGIN   
+        INSERT INTO Libres VALUES (@CED, @TITULO, @EMPRESA, 0, 0, null);
+        FETCH NEXT FROM empleadosLista INTO @CED;
+    END;
+
+    CLOSE empleadosLista;
+    DEALLOCATE empleadosLista;
+END;
