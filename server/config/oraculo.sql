@@ -80,7 +80,7 @@ CREATE TABLE Libres (
     ultima_actualizacion DATE,
     PRIMARY KEY (cedula_empleado,titulo_politica,cedula_empresa),
     FOREIGN KEY (cedula_empleado) REFERENCES Empleado(cedula_empleado),
-    FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa)
+    FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa) ON UPDATE CASCADE
 );
 
 -- Jeremy
@@ -160,6 +160,17 @@ BEGIN
 	u.telefono1, u.telefono2, em.nombre AS 'nombre_empresa'
 	FROM Usuario u
 	INNER JOIN Empresa em ON em.cedula_empleador = u.cedula AND u.cedula = @cedula_empleador
+END;
+GO;
+
+CREATE PROC obtenerDatosEmpleadorPorCedula @cedula_empresa varchar(255)
+AS
+BEGIN
+	SELECT u.cedula,u.nombre, u.primer_apellido, 
+	u.segundo_apellido,u.correo1, u. correo2,
+	u.telefono1, u.telefono2, em.nombre AS 'nombre_empresa'
+	FROM Usuario u
+	INNER JOIN Empresa em ON em.cedula_empleador = u.cedula AND em.cedula_juridica = @cedula_empresa
 END;
 GO;
 
@@ -351,3 +362,31 @@ BEGIN
     CLOSE empleadosLista;
     DEALLOCATE empleadosLista;
 END;
+
+CREATE PROCEDURE ActualizarPolitica
+    @titulo VARCHAR(255),
+	@titulo_nuevo VARCHAR(255),
+    @cedula_empresa VARCHAR(255),
+    @periodo DECIMAL(5, 2),
+    @fecha_final DATE,
+    @dias_a_dar DECIMAL(5, 2),
+    @incrementativo BIT,
+    @dias_a_incrementar DECIMAL(5, 2),
+    @acumulativo BIT,
+    @activo BIT,
+    @descripcion VARCHAR(255)
+AS
+BEGIN
+    UPDATE Politica
+    SET
+		titulo = @titulo_nuevo,
+        periodo = @periodo,
+        fecha_final = @fecha_final,
+        dias_a_dar = @dias_a_dar,
+        incrementativo = @incrementativo,
+        dias_a_incrementar = @dias_a_incrementar,
+        acumulativo = @acumulativo,
+        activo = @activo,
+        descripcion = @descripcion
+    WHERE titulo = @titulo AND cedula_empresa = @cedula_empresa;
+END

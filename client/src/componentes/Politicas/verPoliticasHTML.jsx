@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import { ActualizarTiempoLibre } from '../Libres/ActualizarLibres'
 import { ModalAgregarPol } from "./AddPolicy";
 import BuscarPoliticas from './BuscarPolitica';
+import { ModalEditarPol } from './EditarPolitica';
 
 export const VerPoliticasHTML = (props) => {
 	const {
@@ -20,7 +21,7 @@ export const VerPoliticasHTML = (props) => {
 		numeros,
 		esEmpleador,
 		politicas,
-		filtrarPoliticas
+		filtrarPoliticas,
 	} = props;
 
 	return (
@@ -59,10 +60,8 @@ export const VerPoliticasHTML = (props) => {
 	              <td>{politica.dias_a_dar}</td>
 	              {esEmpleador &&
 	              <td>
-	                <button className="btn-primary me-2">
-	                	<FontAwesomeIcon icon={faPenToSquare} />
-	                </button>
-					<BorrarPolitica politica={politica} botonRef={botonRef} setPolValores={props.setPolValores} />
+					<ModalEditarPol {...props} match={{ params: { titulo: politica.titulo } }}/>
+	                <BorrarPolitica politica={politica} botonRef={botonRef} setPolValores={props.setPolValores} />
 	              </td>}
 	            </tr>
 	          ))}
