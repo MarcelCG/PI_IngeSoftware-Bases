@@ -1,6 +1,7 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
 const Empleado = require('../../models/usuarioModel/Empleado/empleadoModel')
 const Servicio = require('../../servicios/solicitudServicios/solicitudServicios')
+const {datosPrueba, datosEsperados} = require('./datosPrueba');
 
 // Mock del módulo Solicitud
 jest.mock('../../models/solicitudModel/solicitudModel');
@@ -78,3 +79,28 @@ describe('solicitudModel', () => {
     });
   });
 });
+
+describe('Obtener Fechas de Solicitudes Aprobadas', () => {
+  it('Obtener las fechas correctamente', async () => {
+    // Preparar
+    // Mock del modelo
+    Solicitud.getSolicitudByEmpresa.mockResolvedValue(datosPrueba);
+
+    //Actuar
+    const respuesta = await Servicio.obtenerFechasSolicitudesAprobadas('1-2345-6789');
+
+    // Afirmar
+    expect(respuesta).toStrictEqual(datosEsperados);
+  });
+  it('Obtener las fechas cuando no hay solicitudes', async () => {
+    // Preparar
+    // Mock del modelo
+    Solicitud.getSolicitudByEmpresa.mockResolvedValue([]);
+
+    //Actuar
+    const respuesta = await Servicio.obtenerFechasSolicitudesAprobadas('1-2345-6789');
+
+    // Afirmar
+    expect(respuesta).toStrictEqual([]);
+  })
+})
