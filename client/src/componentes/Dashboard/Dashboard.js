@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import DashboardEmpleado from './DashboardEmpleado';
+import DashboardEmpleador from './DashboardEmpleador';
 
 function Dashboard() {
   const {usuarioAutenticado} = useAutent();
@@ -10,7 +11,7 @@ function Dashboard() {
     <div className="container mt-2 card-body p-2">
       {esEmpleador ? 
         (
-          <></>
+          <DashboardEmpleador/>
         ) : (
           <DashboardEmpleado/>
         )

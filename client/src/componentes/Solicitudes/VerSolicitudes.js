@@ -125,14 +125,11 @@ const Solicitudes = () => {
         --dias;
         let fechaFinal = new Date(fecha);
 		while (dias > 0) {
-			fechaFinal.setDate(fechaFinal.getDate() + 1);
-			if (fechaFinal.getDay() !== 0) {
+			fechaFinal.setUTCDate(fechaFinal.getUTCDate() + 1);
+			if (fechaFinal.getUTCDay() !== 0 && fechaFinal.getUTCDay() !== 6) {
 			    dias--;
 			}
 		}
-        if (fechaFinal.getDay() == 6) {
-            fechaFinal.setDate(fechaFinal.getDate() + 1);
-        }
 		return fechaFinal;
 	}
 

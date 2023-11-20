@@ -1,5 +1,6 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
 const Servicio = require('../../servicios/solicitudServicios/solicitudServicios')
+const {ERROR_INTERNO, EXITO, NO_ENCONTRADO} = require('../../config/constantes')
 
 // Obtener todas las solicitudes
 async function getAllSolicitudes(req, res) {
@@ -172,6 +173,21 @@ async function getSolicitudByCedulaAndEmpresa(req, res) {
     }
   }
 
+  async function obtenerFechasSolicitudesAprobadas(req, res) {
+    try {
+      const { cedula_empresa } = req.params;
+
+      const respuesta = await Servicio.obtenerFechasSolicitudesAprobadas(cedula_empresa);
+      if (respuesta.length > 0) {
+        res.status(EXITO).json(respuesta);
+      } else {
+        res.status(NO_ENCONTRADO).json({message: 'No se encontraron solicitudes aprobadas en la empresa'})
+      }
+    } catch (error) {
+      res.status(ERROR_INTERNO).json({ error: error.message });
+    }
+  }
+
 module.exports = {
   getAllSolicitudes,
   createSolicitud,
@@ -181,5 +197,6 @@ module.exports = {
   getSolicitudByCedulaAndEmpresa,
   aprobarSolicitud,
   rechazarSolictud,
-  obtenerLibresPorPolitica
+  obtenerLibresPorPolitica,
+  obtenerFechasSolicitudesAprobadas
 };
