@@ -329,6 +329,39 @@ END;
 
 GO;
 
+-- Creado por Ulises
+CREATE PROCEDURE ObtenerInfoLibresPorPolitica @cedula varchar(255)
+AS
+SELECT 
+    l.cedula_empleado, 
+    l.titulo_politica, 
+    l.dias_libres_disponibles,
+    COALESCE(sp.dias_pendientes_aprobacion, 0) AS dias_pendientes_aprobacion,
+    COALESCE(sa.dias_proximos_utilizar, 0) AS dias_proximos_utilizar
+FROM 
+    Libres l JOIN Politica p ON l.titulo_politica = p.titulo
+    LEFT JOIN 
+        (SELECT s.titulo_politica, s.cedula_empleado,
+            SUM(s.dias_libres_solicitados) AS dias_pendientes_aprobacion
+         FROM Solicitud s
+         WHERE s.estado = 'Pendiente'
+         GROUP BY s.cedula_empleado, titulo_politica) sp
+		 ON l.cedula_empleado = sp.cedula_empleado
+		 AND l.titulo_politica = sp.titulo_politica
+    LEFT JOIN 
+        (SELECT s.titulo_politica, s.cedula_empleado, 
+             SUM(s.dias_libres_solicitados) AS dias_proximos_utilizar
+         FROM 
+             Solicitud s
+         WHERE s.estado = 'Aprobada' AND GETDATE() < s.inicio_fechas_solicitadas
+         GROUP BY s.cedula_empleado, s.titulo_politica) sa
+		 ON l.cedula_empleado = sa.cedula_empleado
+		 AND l.titulo_politica = sa.titulo_politica
+WHERE (p.activo = 1
+    OR (l.dias_libres_disponibles != 0
+    OR COALESCE(sp.dias_pendientes_aprobacion, 0) != 0
+    OR COALESCE(sa.dias_proximos_utilizar, 0) != 0)) AND l.cedula_empleado = @cedula;
+    
 CREATE PROCEDURE ActualizarPolitica
     @titulo VARCHAR(255),
 	@titulo_nuevo VARCHAR(255),
