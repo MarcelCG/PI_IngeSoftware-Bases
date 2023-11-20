@@ -15,7 +15,7 @@ export default function Reportes ({rep, setRep, opciones}) {
 				<FiltrosLista {...props}/>
 			</div>
 			<div className='row container shadow rounded mb-3'>
-			<ReportesTabla {...props}/>
+				<ReportesTabla {...props}/>
 			</div>
 		</div>
 	);

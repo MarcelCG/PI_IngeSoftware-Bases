@@ -46,10 +46,10 @@ export default function FiltrosLista ({rep, filtros, setRep, cargando, originale
 			      ))}
 				      <div className='d-flex row justify-content-end'>
 				      	<button className={`btn btn-warning btn-lg col-2 m-2 ${!cargando?'':'disabled'}`} onClick={limpiar}>
-				      		Limpiar<FontAwesomeIcon icon={faBroom} />
+				      		Limpiar<FontAwesomeIcon className="ms-1" icon={faBroom} />
 				      	</button>
 				      	<button className={`btn btn-info btn-lg col-2 m-2 ${!cargando?'':'disabled'}`} onClick={filtrar}>
-				      		Buscar<FontAwesomeIcon icon={faSearch} />
+				      		Buscar<FontAwesomeIcon className="ms-1" icon={faSearch} />
 				      	</button>
 				      </div>
 			      </div>
