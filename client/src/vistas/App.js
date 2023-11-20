@@ -7,7 +7,6 @@ import {VerPoliticas} from '../componentes/Politicas/verPoliticas';
 import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
 import EditarEmpleado from '../componentes/Empleado/editarEmpleado';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
-import Calendario from '../componentes/Inicio/Calendario';
 import VisualizarPerfil from './perfil';
 import EditarPerfilEmpleador from '../componentes/Empleador/editarPerfilEmpleador'
 import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'

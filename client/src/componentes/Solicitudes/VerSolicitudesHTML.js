@@ -54,7 +54,7 @@ export const VerSolicitudesHTML = (props) => {
                 { esEmpleador === true ? (
                     <>
                         <div className="col-10"></div>
-                        <FiltrarSolicitudes solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
+                        <FiltrarSolicitudes cambiarPagina={cambiarPagina} solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
                     </>
                 ) : (
                     <>

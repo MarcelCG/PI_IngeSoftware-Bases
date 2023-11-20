@@ -72,7 +72,7 @@ const darFormatoUTC = (fecha) => {
     return new Date(año, mes, dia, horas, minutos, 0);
 }
 
-function Calendario() {
+function DashboardEmpleador() {
     const {usuarioAutenticado} = useAutent(); 
     const empresa = usuarioAutenticado.cedula_empresa;
 
@@ -148,4 +148,4 @@ function Calendario() {
     )
 }
 
-export default Calendario;
+export default DashboardEmpleador;
