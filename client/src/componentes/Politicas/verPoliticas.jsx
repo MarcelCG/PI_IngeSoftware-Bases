@@ -5,6 +5,7 @@ import { useAutent } from "../../contexto/ContextoAutenticacion";
 import React, {useState, useEffect, useRef} from "react";
 import { URLApi } from '../Compartido/Constantes';
 import { setModal } from '../Utiles/Modal';
+import EditarPolitica from './EditarPolitica';
 
 export const VerPoliticas = () => {
 
@@ -68,7 +69,7 @@ export const VerPoliticas = () => {
     esEmpleador,
     setPolValores, //nuevo
     politicas,
-    filtrarPoliticas
+    filtrarPoliticas,
   };
 
   return ( <VerPoliticasHTML {...props}/> );

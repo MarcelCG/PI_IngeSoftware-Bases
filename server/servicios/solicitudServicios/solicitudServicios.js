@@ -1,6 +1,7 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
 const Empleado = require('../../models/usuarioModel/Empleado/empleadoModel')
 const Correo = require('../correoServicios/correoServicios');
+const {URLAPI} = require('../../config/constantes');
 
 const fs = require('fs');
 const handlebars = require('handlebars');
@@ -30,7 +31,8 @@ async function aprobarSolicitud(id) {
             if (accion) {
                 const datos = {
                     nombre: empleado.nombre,
-                    estado: 'Aprobada'
+                    estado: 'Aprobada',
+                    URLAPI,
                 }
                 Correo.enviarCorreo(plantilla, datos, empleado.correo1, 'Solicitud Aprobada');
                 return true;
@@ -64,7 +66,8 @@ async function rechazarSolictud(id) {
 
             const datos = {
                 nombre: empleado.nombre,
-                estado: 'Rechazada'
+                estado: 'Rechazada',
+                URLAPI,
             }
             Correo.enviarCorreo(plantilla, datos, empleado.correo1, 'Solicitud Rechazada');
 

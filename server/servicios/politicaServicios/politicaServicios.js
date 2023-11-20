@@ -1,6 +1,18 @@
 const modeloPolitica = require('../../models/politicaModel/politicasModel');
 const modeloEmpleados = require('../../models/usuarioModel/Empleado/empleadoModel');
+const modeloEmpleador = require('../../models/usuarioModel/Empleador/empleadorModel');
 const correoServicios = require('../correoServicios/correoServicios');
+const {NO_ENCONTRADO, EXITO, SIN_MODIFICACIONES, ERROR_INTERNO} = require('../../config/constantes');
+const {URLAPI} = require('../../config/constantes');
+
+// Importaciones necesarias para usar plantillas de correo
+const fs = require('fs');
+const handlebars = require('handlebars');
+const path = require('path');
+
+const rutaPlantillaEdicionPolitica = path.join(__dirname, 'edicionPolitica.handlebars');
+const ruta = fs.readFileSync(rutaPlantillaEdicionPolitica, 'utf8');
+const plantillaEdicionPolitica = handlebars.compile(ruta);
 
 function vigente(Politica) {
 	const hoy = new Date();
@@ -56,8 +68,42 @@ async function borrarPolitica(titulo, cedula_empresa) {
   }
 }
 
+async function editarPolitica(titulo, cedula_empresa, datosNuevos) {
+  try {
+
+    const politica = await modeloPolitica.getByTituloAndCedula(titulo, cedula_empresa);
+
+    if (!politica) {
+      return NO_ENCONTRADO;
+    }
+
+    const edicion = await modeloPolitica.editarPolitica(titulo, cedula_empresa ,datosNuevos);
+    if (!edicion) {
+      return SIN_MODIFICACIONES;
+    }
+
+    const empleador = await modeloEmpleador.getByEmpresa(politica.cedula_empresa);
+
+    if (empleador) {
+      const datos = {
+        nombre: empleador.nombre,
+        empresa: empleador.nombre_empresa,
+        URLAPI,
+      }
+      correoServicios.enviarCorreo(plantillaEdicionPolitica, datos, empleador.correo1, 'Política Editada');
+    }
+
+    return EXITO;
+
+  } catch(error) {
+    console.error('Error en Servicio editarPolitica: ', error);
+    throw new Error('Error en Servicio editarPolitica: ' + error.message);
+  }
+}
+
 module.exports = {
   vigente,
-  borrarPolitica
+  borrarPolitica,
+  editarPolitica,
 };
 
