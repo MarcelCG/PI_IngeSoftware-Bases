@@ -39,6 +39,11 @@ function AgregarSolicitud() {
 	} = useForm()
 
   const onSubmit = handleSubmit(async (data) => {
+    var iniciaDiaHabil = verificarFechaDiaHabil(data.fecha_inicio);
+    if (!iniciaDiaHabil) {
+      toast.error('La fecha de inicio no puede ser ni Sábado ni Domingo');
+      return;
+    }
     const datosConFormato = formatoDatos(data);
     console.log(datosConFormato);
     axios.post(agregarSolicitud, datosConFormato).then((respuesta) => {
@@ -53,6 +58,15 @@ function AgregarSolicitud() {
         toast.error('Hubo un error inesperado al agregar la solicitud, trate de nuevo');
       });
   });
+
+  const verificarFechaDiaHabil = (fecha) => {
+    fecha = new Date(fecha);
+    fecha.setDate(fecha.getDate()+1);
+    if (fecha.getDay() !== 0 && fecha.getDay() !== 6) {
+      return true;
+    }
+    return false;
+  }
 
   const formatoDatos = (data) => {
     let horaInicio = "";

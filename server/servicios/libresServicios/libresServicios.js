@@ -137,7 +137,18 @@ function calcularTiempos(PoliticasVigentes, LibresSinActualizar, Empleados) {
   return nuevosDias;
 }
 
+async function obtenerInfoLibresPorPolitica(cedula) {
+  try {
+    const politicas = await LibModel.obtenerInfoLibresPorPolitica(cedula);
+    return politicas;
+  } catch (error) {
+    console.error("Error al encontrar los dias libres por politica", error);
+    return error;
+  }
+}
+
 module.exports = {
   actualizarTodos,
-  calcularTiempos
+  calcularTiempos,
+  obtenerInfoLibresPorPolitica
 };
