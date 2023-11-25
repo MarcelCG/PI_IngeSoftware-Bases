@@ -43,5 +43,9 @@ router.use('/libres', libresRoutes);
 const politicasRoutes = require('./politicaRoutes/politicasRoutes');
 router.use('/politicas', politicasRoutes);
 
+//-----reportes-----//
+const reportesEmpleadoRutas = require('./reportesRutas/reportesEmpleadoRutas/reportesEmpleadoRutas');
+router.use('/reportesEmpleado', reportesEmpleadoRutas);
+
 
 module.exports = router;
