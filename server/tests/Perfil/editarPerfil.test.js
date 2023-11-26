@@ -1,14 +1,14 @@
 const usuarioModelo = require('../../models/usuarioModel/usuariosModel');
-const { editarPerfilEmpleador } = require('../../servicios/usuarioServicios/empleadorServicios/empleadorServicios');
+const { editarPerfil } = require('../../servicios/perfilServicios/perfilServicios')
 
 // Mock del modelo para simular su comportamiento
 jest.mock('../../models/usuarioModel/usuariosModel', () => {
   return {
-    editarPerfilEmpleador: jest.fn().mockResolvedValue(true),
+    editarUsuario: jest.fn().mockResolvedValue(true),
   };
 });
 
-describe('editarPerfilEmpleador', () => {
+describe('editar perfil', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -17,6 +17,7 @@ describe('editarPerfilEmpleador', () => {
     const solicitud = {
       body: {
         cedula: '1-2345-6789',
+        contrasena: 'contrasena',
         nombre: 'Nombre',
         primer_apellido: 'Apellido1',
         segundo_apellido: 'Apellido2',
@@ -24,22 +25,27 @@ describe('editarPerfilEmpleador', () => {
         telefono2: '789123',
         correo1: 'correo1@example.com',
         correo2: 'correo2@example.com',
+        rol: 'rol',
+        fecha_contratacion: '2000-01-01',
+        bool: true,
       },
     };
 
-    const respuesta = await editarPerfilEmpleador(solicitud, {});
+    const respuesta = await editarPerfil(solicitud, {});
 
-    expect(usuarioModelo.editarPerfilEmpleador).toHaveBeenCalledWith(
+    expect(usuarioModelo.editarUsuario).toHaveBeenCalledWith(
       '1-2345-6789',
+      'contrasena',
       'Nombre',
       'Apellido1',
       'Apellido2',
       '123456',
       '789123',
       'correo1@example.com',
-      'correo2@example.com'
+      'correo2@example.com',
+      true,
     );
 
     expect(respuesta).toBe(true);
   });
-});
+}, 10000);
