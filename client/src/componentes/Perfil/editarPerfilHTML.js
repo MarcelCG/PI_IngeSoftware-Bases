@@ -194,7 +194,7 @@ const EditarPerfilHTML  = ({datosEmpleador,onSubmit,register,errors,watch}) => {
                     </div>
                     <div className='d-flex justify-content-end mt-3'>
                         <div className='align-items-right text-align-right float-right'>
-                            <button className='btn btn-primary' type='submit'>Agregar</button>
+                            <button className='btn btn-primary' type='submit'>Guardar Cambios</button>
                         </div>
                     </div>
                 </form>
