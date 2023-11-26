@@ -43,5 +43,8 @@ router.use('/libres', libresRoutes);
 const politicasRoutes = require('./politicaRoutes/politicasRoutes');
 router.use('/politicas', politicasRoutes);
 
+//-----perfil-----//
+const perfilRoutes = require('./perfilRoutes/perfilRoutes');
+router.use('/perfil', perfilRoutes);
 
 module.exports = router;
