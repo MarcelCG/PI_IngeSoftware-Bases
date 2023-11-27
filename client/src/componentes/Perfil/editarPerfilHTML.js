@@ -21,7 +21,7 @@ const EditarPerfilHTML  = ({datosEmpleador,onSubmit,register,errors,watch}) => {
                             <label htmlFor="contrasena">Contraseña</label>
                             <input
                                 type="password"
-                                defaultValue={datosEmpleador.contrasena}
+                                defaultValue="password"
                                 {...register("contrasena", {
                                     required: {
                                         value: true,
