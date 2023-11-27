@@ -11,6 +11,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import EditarPerfilHTML from './editarPerfilHTML';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import sha256 from 'js-sha256';
 
 const EditarPerfil= () => {
 
@@ -71,7 +72,8 @@ const EditarPerfil= () => {
 
     // Realiza la solicitud de actualización de datos del empleado con los nuevos valores.
     try {
-        console.log(data);
+        const hashedPassword = await sha256(data.contrasena);
+        data.contrasena = hashedPassword;
         data.cedula=cedula;
         const respuesta = await axios.post(URIActualizarDatos, data);
         toast.success('Empleado editado con éxito', {
