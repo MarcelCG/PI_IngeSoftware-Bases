@@ -1,4 +1,5 @@
 const Solicitud = require('../../../models/solicitudModel/solicitudModel');
+const BitacoraLibres = require('../../../models/bitacoraModelo/bitacoraLibresModelo');
 const {EXITO} = require('../../../config/constantes');
 
 async function reporteDiasUsados(cedula_empleado){
@@ -48,6 +49,27 @@ async function reporteDiasUsados(cedula_empleado){
     }
 }
 
+async function reporteDiasAcumulados (cedula_empleado) {
+    try {
+        const fechasLibresObtenidos = await BitacoraLibres.obtenerTodosPorEmpleado(cedula_empleado);
+        if (fechasLibresObtenidos.length <= 0) {
+            return fechasLibresObtenidos;
+        }
+
+        return fechasLibresObtenidos.map(fechaObtenido => {
+            return {
+                politica: fechaObtenido.titulo_politica,
+                fecha:fechaObtenido.fecha,
+                dias: fechaObtenido.dias,
+            }
+        })
+    } catch (error) {
+        console.error('Hubo un error en el servicio reporteDiasAcumulados: ', error);
+        throw error;
+    }
+}
+
 module.exports = {
     reporteDiasUsados,
+    reporteDiasAcumulados,
 }

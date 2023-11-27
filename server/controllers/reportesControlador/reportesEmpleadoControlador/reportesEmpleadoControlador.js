@@ -16,6 +16,22 @@ async function reporteDiasUsados (req, res) {
     }
 }
 
+async function reporteDiasAcumulados (req, res) {
+
+    try {
+        const { cedula_empleado } = req.params;
+        if (cedula_empleado) {
+            const diasUsados = await Servicio.reporteDiasAcumulados(cedula_empleado);
+            res.status(EXITO).json(diasUsados);
+        } else {
+            res.status(NO_ENCONTRADO).json({message: "No se recibió una cédula"});
+        }
+    } catch (error) {
+        res.status(ERROR_INTERNO).json({error: error.message});
+    }
+}
+
 module.exports = {
     reporteDiasUsados,
+    reporteDiasAcumulados,
 }
