@@ -32,7 +32,7 @@ export function MenuEmpleador() {
     { to: '/app/empleados', label: 'Empleados' },
     { to: '/app/politicas', label: 'Políticas' },
     { to: '/app/solicitudes', label: 'Solicitudes'},
-    { to: '/app/reportesEmpleador', label: 'Reportes'}
+    { to: '/app/reportes', label: 'Reportes'}
   ];
 
   return (
@@ -46,6 +46,7 @@ export function MenuEmpleado() {
     { to: '/app', label: 'Inicio' },
     { to: '/app/politicas', label: 'Políticas' },
     { to: '/app/solicitudes', label: 'Solicitudes'},
+    { to: '/app/reportes', label: 'Reportes'}
   ];
 
   return (

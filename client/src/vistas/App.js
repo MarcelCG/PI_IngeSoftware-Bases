@@ -41,7 +41,7 @@ function App() {
       case '/app/solicitudes':
         titulo = 'Lista de Solicitudes';
       break;
-      case '/app/reportesEmpleador':
+      case '/app/reportes':
           titulo = 'Reportes';
         break;
     default:
@@ -66,7 +66,7 @@ function App() {
             <div className="container col-10">
             <Routes>
               <Route path="/politicas" element={<VerPoliticas/>} />
-              <Route path="/reportesEmpleador" element={<ReportesEmpleador/>} />
+              <Route path="/reportes" element={ esEmpleador ? <ReportesEmpleador/> : ''} />
               <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
               <Route path="/empleados" element={<ListOfEmployees/>}/>
               <Route path="/empleados/addEmpleados" element={<AddEmployee/>}/>
