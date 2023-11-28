@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from "react";
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import { URLApi } from '../Compartido/Constantes';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { Modal } from '../Utiles/Modal';
+import {ModalEditarPerfil} from '../Perfil/editarPerfil'
 
 
 
@@ -20,6 +22,14 @@ function VisualizarEmpleadorPorCedula() {
     telefono1: "",
     telefono2: "",
     nombre_empresa: ""
+  });
+  const botonRef = useRef(null);
+  const [modal, setModal] = useState({modalID:"modalEditarPerfil"});
+
+  const [PerfilValores, setPerfilValores] = useState({
+    titulo: "",
+    componente: "",
+    modalID:"modalEditarPerfil"
   });
 
   const cargarDatosDelEmpleador = async () => {
@@ -44,8 +54,18 @@ function VisualizarEmpleadorPorCedula() {
     cargarDatosDelEmpleador();
   }, [cedulaEmpleador]);
 
+
+
+  let props = {
+    ...PerfilValores,
+    botonRef,
+    setPerfilValores
+  };
+  
   return (
     <div>
+      <Modal{...props}/>
+      <div ref={botonRef} data-bs-toggle="modal" data-bs-target={`#${props.modalID}`}/>
       <div className="card-body">
         <p><strong>Nombre: </strong>{datosEmpleador.nombre}</p>
         <p><strong>Primer Apellido: </strong>{datosEmpleador.primer_apellido}</p>
@@ -58,7 +78,7 @@ function VisualizarEmpleadorPorCedula() {
           {datosEmpleador.telefono2 ? datosEmpleador.telefono2 : ''}
         </p>
         <div className="text-center">
-          <Link to={`editarEmpleador/${datosEmpleador.cedula}`} className="btn btn-primary">Editar</Link>
+          <ModalEditarPerfil botonRef={botonRef} setModalValores={setPerfilValores} />
         </div>
       </div>
     </div>

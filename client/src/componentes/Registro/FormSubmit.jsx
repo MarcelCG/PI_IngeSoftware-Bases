@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { URLApi } from '../Compartido/Constantes';
 import { ToastContainer, toast } from 'react-toastify';
+import sha256 from 'js-sha256';
 
 
 export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation }) => {
@@ -107,8 +108,13 @@ export const FormSubmit = ({ formData, setForm, errForm, setErrForm, navigation 
 	const sendDataDB = async (e) => {
 		setloading(true);
 		let errorDesc = "ERROR: Vuelva a intentar mas tarde";
+		console.log(formData.empleadorPass);
+
 	  try {
 	  	// eslint-disable-next-line no-unused-vars
+		const hashedPassword = await sha256(formData.empleadorPass);
+		formData.empleadorPass = hashedPassword;
+		console.log("NUEVA CONTRA:"+formData.empleadorPass);
 	    const response = await axios.post(`${URLApi}registro`, {
 	      formData
 	    });

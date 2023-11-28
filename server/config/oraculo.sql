@@ -423,3 +423,15 @@ BEGIN
         descripcion = @descripcion
     WHERE titulo = @titulo AND cedula_empresa = @cedula_empresa;
 END
+
+CREATE NONCLUSTERED INDEX IX_CedulaEmpresa_Empleado
+ON Empleado (cedula_empresa);
+
+CREATE NONCLUSTERED INDEX IX_CedulaEmpresa_Politica
+ON Politica (cedula_empresa);
+
+CREATE NONCLUSTERED INDEX IX_CedulaEmpresa_Solicitud
+ON Solicitud (cedula_empresa);
+
+CREATE NONCLUSTERED INDEX IX_CedulaEmpresa_Libres
+ON Libres (cedula_empresa);

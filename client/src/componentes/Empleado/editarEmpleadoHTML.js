@@ -22,7 +22,7 @@ const EditarEmpleadoHTML  = ({datosEmpleado,onSubmit,register,errors,watch,handl
                                 </div>
                                 <div className='mt-2'>
                                     <label htmlFor="contrasena">Contraseña</label>
-                                    <input type="password" defaultValue={datosEmpleado.contrasena}
+                                    <input type="password" defaultValue="password"
                                         {...register("contrasena", {
                                             required: {
                                                 value: true,
