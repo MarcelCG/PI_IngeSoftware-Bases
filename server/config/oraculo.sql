@@ -390,3 +390,20 @@ BEGIN
         descripcion = @descripcion
     WHERE titulo = @titulo AND cedula_empresa = @cedula_empresa;
 END
+
+--Ulises
+CREATE PROCEDURE SolicitudesAprobadasEmpresa @cedula_empresa varchar(255)
+AS
+SELECT *
+FROM Solicitud s
+WHERE s.cedula_empresa=@cedula_empresa
+AND estado='Aprobada' OR estado='Pendiente'
+
+--Ulises
+CREATE PROCEDURE TotalLibresPorPoliticaEmpresa @cedula_empresa varchar(255)
+AS
+SELECT l.titulo_politica,
+SUM(l.dias_libres_disponibles) AS total_dias_libres_disponibles
+FROM Libres l
+WHERE l.cedula_empresa=@cedula_empresa
+GROUP BY l.titulo_politica
