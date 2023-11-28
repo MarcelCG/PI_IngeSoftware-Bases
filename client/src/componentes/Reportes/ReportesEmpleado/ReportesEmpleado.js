@@ -1,138 +1,164 @@
 import axios from 'axios';
 import Reportes from '../../Utiles/Reportes/Reportes';
-import React, { useState, useEffect, useRef } from 'react';
-import { NombreEscogido, fechaLimiteIzq, fechaLimiteDer } from '../../Utiles/Reportes/Filtro'; /* a que se importan los metodos para filtrado que se vayan a usar*/
+import React, { useState, useRef } from 'react';
+import { NombreEscogido, fechaLimiteIzq, fechaLimiteDer } from '../../Utiles/Reportes/Filtro';
 import { URLApi } from '../../Compartido/Constantes';
 import { useAutent } from "../../../contexto/ContextoAutenticacion";
 
 const URLReportesEmpleado = URLApi + 'reportesEmpleado/';
 const URLReporteDiasUsados = URLReportesEmpleado + 'diasUsados/';
 const URLReporteDiasAcumulados = URLReportesEmpleado + 'diasAcumulados/';
+const URLReporteDashboard = URLReportesEmpleado + 'dashboard/';
+
+const formatearDatosDiasUsados = (nuevosDatos) => {
+	if (!Array.isArray(nuevosDatos)) {
+		return [];
+	}
+
+	const datosAgrupados = nuevosDatos.reduce((acumulador, dato) => {
+	  const existente = acumulador.find((item) => item.politica === dato.politica);
+  
+	  if (existente) {
+		if (dato.gastado) {
+			existente.dias_gastados += dato.dias_solicitados;
+		} else {
+			existente.dias_sin_gastar += dato.dias_solicitados;
+		}
+	  } else {
+		acumulador.push({ ...dato });
+	  }
+  
+	  return acumulador;
+	}, []);
+  
+	return datosAgrupados;
+};
+
+const formatearDatosDashboard = (nuevosDatos) => {
+	if (!Array.isArray(nuevosDatos)) {
+		return [];
+	}
+
+	const datosAgrupados = nuevosDatos.reduce((acumulador, dato) => {
+	  const existente = acumulador.find((item) => item.politica === dato.politica);
+  
+	  if (existente) {
+		if (dato.totales) {
+			if (!existente.totales) {
+				existente.totales = true;
+				existente.fecha_final = dato.fecha_final;
+			}
+			if (dato.fecha_final >= existente.fecha_final) {
+				existente.dias_totales = dato.dias_totales;
+			}
+		} else {
+			existente.dias_solicitados += dato.dias_solicitados;
+			existente.dias_aprobados += dato.dias_aprobados;
+		}
+	  } else {
+		acumulador.push({ ...dato });
+	  }
+  
+	  return acumulador;
+	}, []);
+  
+	return datosAgrupados;
+};
+
+const formatearDatosDiasAcumulados = (nuevosDatos) => {
+	if (!Array.isArray(nuevosDatos)) {
+		return [];
+	}
+
+	const datosAgrupados = nuevosDatos.reduce((acumulador, dato) => {
+		const existente = acumulador.find((item) => item.politica === dato.politica);
+	
+		if (existente) {
+			existente.dias_solicitados += dato.dias_solicitados;
+		} else {
+			acumulador.push({ ...dato });
+		}
+	
+		return acumulador;
+	}, []);
+  
+	return datosAgrupados;
+};
 
 export default function ReportesEmpleado () {
-
-	/* esto es lo normal*/
 	const {usuarioAutenticado} = useAutent();
 	const cedula = usuarioAutenticado.cedula;
 
-	/* como va estar construido las opciones default dep Reporte*/
+	/* Datos por defecto*/
 	const predeterminado = {
-		originales: [], /*arreglo con la infomacion de un query que no se modifica*/
-		datos: [], /* datos con lo que se van a trabajar, estos son afectados por los filtros*/
-		filtros: [], /* filtros que va a tener el Reporte*/
-		columnas: [], /* columnas que se deben de imprimir en la Tabla de Reporte*/
-		cargando:true, /* booleano para saber cuando la pag. esta cargando*/
-		pagAct:1, /* campo para lo de la pagina actual que se muestra en la Tabla*/
+		originales: [],
+		datos: [],
+		filtros: [],
+		columnas: [],
+		cargando:true,
+		pagAct:1,
 		titulo:'Elegir'
-		// const [Titulo, setTitulo] = useState('Elegir');
 	}
-	/* Hook para el Reporte, Rep = Reporte */
+
 	const [reporte, actualizarReporte] = useState({ ...predeterminado });
 	const actualizarFormateadoReporte = useRef();
 
-	const formatearDatosDiasUsados = (nuevosDatos) => {
-		if (!Array.isArray(nuevosDatos)) {
-			// Manejar el caso cuando nuevosDatos no es un array
-			return [];
-		  }
-		const datosAgrupados = nuevosDatos.reduce((acumulador, dato) => {
-		  const existente = acumulador.find((item) => item.politica === dato.politica);
-	  
-		  if (existente) {
-			if (dato.gastado) {
-				existente.dias_gastados += dato.dias;
-			} else {
-				existente.dias_sin_gastar += dato.dias;
+	const filtros = [
+		{ nombre: "Titulo", tipo: "texto", funcion: NombreEscogido, campo: '', columna: 'politica' },
+		{ nombre: "Desde", tipo: 'date', funcion: fechaLimiteIzq, campo: '', columna: 'fecha_inicio' },
+		{ nombre: "Hasta", tipo: 'date', funcion: fechaLimiteDer, campo: '', columna: 'fecha_final' }];
+
+	async function cargarDatos(URL, formatearDatos, titulo, columnas) {
+		actualizarFormateadoReporte.current = (nuevosDatos) => {
+			const datosFormateados = formatearDatos(nuevosDatos.datos);
+			actualizarReporte({ ...nuevosDatos, datos: datosFormateados });
+		};
+		actualizarFormateadoReporte.current({...predeterminado, cargando:true});
+
+		try {
+			const respuesta = await axios.get(`${URL}${cedula}`);
+			actualizarFormateadoReporte.current({
+				cargando:false,
+				titulo,
+				pagAct:1,
+				originales:[...respuesta.data],
+				datos:[...respuesta.data],
+				filtros,
+				columnas,
+			})
+			} catch (error) {
+				console.error('500')
 			}
-		  } else {
-			acumulador.push({ ...dato });
-		  }
-	  
-		  return acumulador;
-		}, []);
-	  
-		return datosAgrupados;
-	  };
-
-	  const formatearDatosDiasAcumulados = (nuevosDatos) => {
-		if (!Array.isArray(nuevosDatos)) {
-			// Manejar el caso cuando nuevosDatos no es un array
-			return [];
-		  }
-		const datosAgrupados = nuevosDatos.reduce((acumulador, dato) => {
-		  const existente = acumulador.find((item) => item.politica === dato.politica);
-	  
-		  if (existente) {
-			existente.dias += dato.dias;
-		  } else {
-			acumulador.push({ ...dato });
-		  }
-	  
-		  return acumulador;
-		}, []);
-	  
-		return datosAgrupados;
-	  };
-	
-
-	/*dependiendo del Reporte que les hayan tocado, deben de crear los llamados a la BD con los datos que ocupan*/
-	/* a que se actualizan los datos dependiendo de la opcion que se haya escogido en el dropdown de tipo reporte*/
-	async function cargarDiasAcumulados() {
-		actualizarFormateadoReporte.current = (nuevosDatos) => {
-			const datosFormateados = formatearDatosDiasAcumulados(nuevosDatos.datos);
-			actualizarReporte({ ...nuevosDatos, datos: datosFormateados });
-		};
-		actualizarFormateadoReporte.current({...predeterminado, cargando:true});
-	  try {
-	    const respuesta = await axios.get(`${URLReporteDiasAcumulados}${cedula}`);
-		actualizarFormateadoReporte.current({
-	    		cargando:false,
-	    		titulo:'Dias Acumulados',
-	    		pagAct:1,
-	    		originales:[...respuesta.data],
-	    		datos:[...respuesta.data],
-	    		filtros:[
-	    			{ nombre: "Titulo", tipo: "texto", funcion: NombreEscogido, campo: '', columna: 'politica' },
-					{ nombre: "Desde", tipo: 'date', funcion: fechaLimiteIzq, campo: '', columna: 'fecha' },
-					{ nombre: "Hasta", tipo: 'date', funcion: fechaLimiteDer, campo: '', columna: 'fecha' }],
-	    		columnas:[
-	    			{nombre:"Titulo Política",id:"politica"},
-					{nombre: "Dias Acumulados", id:"dias"},]
-	    	})
-	  } catch (error) {
-	  	console.error('500')
-	  }
 	};
 
-	async function cargarDiasUsados() {
-		actualizarFormateadoReporte.current = (nuevosDatos) => {
-			const datosFormateados = formatearDatosDiasUsados(nuevosDatos.datos);
-			actualizarReporte({ ...nuevosDatos, datos: datosFormateados });
-		};
-		actualizarFormateadoReporte.current({...predeterminado, cargando:true});
-	  try {
-	    const respuesta = await axios.get(`${URLReporteDiasUsados}${cedula}`);
-		actualizarFormateadoReporte.current({
-	    		cargando:false,
-	    		titulo:'Dias usados',
-	    		pagAct:1,
-	    		originales:[...respuesta.data],
-	    		datos:[...respuesta.data],	
-	    		filtros: [
-	    		    { nombre: "Titulo", tipo: "texto", funcion: NombreEscogido, campo: '', columna: 'politica' },
-	    		    { nombre: "Desde", tipo: 'date', funcion: fechaLimiteIzq, campo: '', columna: 'fecha' },
-					{ nombre: "Hasta", tipo: 'date', funcion: fechaLimiteDer, campo: '', columna: 'fecha' }],
-	    		columnas:[
-	    			{nombre:"Titulo Política",id:"politica"},
-					{nombre: "Dias Aprobados", id:"dias_sin_gastar"},
-					{nombre: "Dias Usados", id: "dias_gastados"}]
-	    	})
-	  } catch (error) {
-	  	console.error('500', error)
-	  }
-	};
+	const cargarDiasAcumulados = () => cargarDatos( URLReporteDiasAcumulados, formatearDatosDiasAcumulados,
+		'Dias Acumulados',
+		[
+			{nombre:"Titulo Política",id:"politica"},
+			{nombre: "Dias Acumulados", id:"dias_solicitados"},
+		]
+	);
 
-	/* opciones en el dropdown con las que se va a actualizar el reporte*/ 
+	const cargarDiasUsados = () => cargarDatos( URLReporteDiasUsados, formatearDatosDiasUsados,
+		'Dias Usados',
+		[
+			{nombre:"Titulo Política",id:"politica"},
+			{nombre: "Dias Aprobados", id:"dias_sin_gastar"},
+			{nombre: "Dias Usados", id: "dias_gastados"}
+		]
+	);
+
+	const cargarDashboard = () => cargarDatos( URLReporteDashboard, formatearDatosDashboard,
+		'Dashboard',
+		[
+			{nombre:"Titulo Política",id:"politica"},
+			{nombre: "Dias Disponibles", id:"dias_totales"},
+			{nombre: "Dias Solicitados", id:"dias_solicitados"},
+			{nombre: "Dias Utilizados", id:"dias_aprobados"}
+		]
+	);
+
+	/* Tipos de reporte*/ 
 	const opciones = [
 		{
 			nombre:"Dias Usados",
@@ -141,6 +167,10 @@ export default function ReportesEmpleado () {
 		{
 			nombre:"Dias Acumulados",
 			cargarDatos:cargarDiasAcumulados
+		},
+		{
+			nombre:"Dashboard",
+			cargarDatos:cargarDashboard
 		}
 	];
 
@@ -153,13 +183,3 @@ export default function ReportesEmpleado () {
 		</>
 	);
 }
-
-
-
-
-
-
-
-
-
-
