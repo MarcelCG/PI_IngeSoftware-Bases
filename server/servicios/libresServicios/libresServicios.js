@@ -30,7 +30,8 @@ async function actualizarTodos(cedula_empresa) {
     // se mandan los nuevos tiempos a la BD
 
     estado = await LibModel.actualizarTodos(nuevosDias, cedula_empresa);
-    estado = await BitLibModel.agregarBitacorasLIB(nuevosDias, cedula_empresa);
+    const nuevaFecha = new Date('2020-1-1');
+    estado = await BitLibModel.agregarBitacorasLIB(nuevosDias, cedula_empresa, nuevaFecha);
     if (nuevosDias !== undefined) {
       return nuevosDias;
     } else {
