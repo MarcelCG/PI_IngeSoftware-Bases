@@ -31,7 +31,23 @@ async function reporteDiasAcumulados (req, res) {
     }
 }
 
+async function reporteDashboard (req, res) {
+
+    try {
+        const { cedula_empleado } = req.params;
+        if (cedula_empleado) {
+            const dashboard = await Servicio.reporteDashboard(cedula_empleado);
+            res.status(EXITO).json(dashboard);
+        } else {
+            res.status(NO_ENCONTRADO).json({message: "No se recibió una cédula"});
+        }
+    } catch (error) {
+        res.status(ERROR_INTERNO).json({error: error.message});
+    }
+}
+
 module.exports = {
     reporteDiasUsados,
     reporteDiasAcumulados,
+    reporteDashboard,
 }
