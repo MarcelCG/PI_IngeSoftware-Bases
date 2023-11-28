@@ -11,7 +11,8 @@ export default function ReportesOpciones ({titulo, cargando, filtros, datos, col
 		datos,
 		columnas,
 		cargando,
-		datosEmpresa
+		datosEmpresa,
+		titulo
 	};
 
 	return (
