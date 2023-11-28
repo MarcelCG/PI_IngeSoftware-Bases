@@ -8,8 +8,8 @@ import ListOfEmployees from '../componentes/Empleado/visualizarEmpleados';
 import EditarEmpleado from '../componentes/Empleado/editarEmpleado';
 import VisualizarEmpresa from '../componentes/Empresa/VisualizarEmpresa';
 import VisualizarPerfil from './perfil';
-import EditarPerfilEmpleador from '../componentes/Empleador/editarPerfilEmpleador'
-import Solicitudes from '../componentes/Solicitudes/VerSolicitudes'
+import EditarPerfil from '../componentes/Perfil/editarPerfil';
+import Solicitudes from '../componentes/Solicitudes/VerSolicitudes';
 import AgregarSolicitud from '../componentes/Solicitudes/agregarSolicitud';
 import Dashboard from '../componentes/Dashboard/Dashboard';
 import { MenuEmpleador, MenuEmpleado } from './menu';
@@ -79,7 +79,7 @@ function App() {
                 <Route path="/perfil" element={<VisualizarPerfil/>}/>
                 <Route path="/solicitudes" element={<Solicitudes/>}/>
                 <Route path="/solicitudes/agregarSolicitud" element={<AgregarSolicitud/>}/>  
-                <Route path="/perfil/editarEmpleador/:cedula" element={<EditarPerfilEmpleador/>} />
+                <Route path="/perfil/editarEmpleador/:cedula" element={<EditarPerfil/>} />
                 <Route path="/perfil/editarEmpleado/:cedula" element={<EditarEmpleado />} />
               </Routes>
             </div>
