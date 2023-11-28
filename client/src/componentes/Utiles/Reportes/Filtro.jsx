@@ -11,6 +11,22 @@ export const FiltroPlantilla = ({ filtro, filtroCampo, setFiltroCampo, originale
   );
 };
 
+export const fechaLimiteIzqRep1 = () => {
+	return 1;
+};
+
+export const fechaLimiteDerRep1 = () => {
+	return 1;
+};
+
+export const fechaLimiteIzqRep3 = () => {
+	return 1;
+};
+
+export const fechaLimiteDerRep3 = () => {
+	return 1;
+};
+
 export const fechaLimiteIzq = (dato, fechaMenor) => {
 	return ((dato >= fechaMenor)||fechaMenor==='');
 };
@@ -24,11 +40,11 @@ export const NombreEscogido = (dato, texto) => {
 };
 
 export const AplicarFiltros = (state, listaFiltros, originales, setState) => {
-	let temporales = [...originales];
+  let temporales = [...originales];
   listaFiltros.forEach(filtro => {
-  	if(temporales !== undefined){
-	    temporales = temporales.filter(dato =>filtro.funcion(dato[filtro.columna], filtro.campo));
-	  }
+  if(temporales !== undefined){
+    temporales = temporales.filter(dato =>filtro.funcion(dato[filtro.columna], filtro.campo));
+  }
   });
   setState({...state, datos:temporales});
 };

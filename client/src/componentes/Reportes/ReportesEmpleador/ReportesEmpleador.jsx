@@ -1,16 +1,22 @@
 import axios from 'axios';
 import Reportes from '../../Utiles/Reportes/Reportes'
 import React, { useState, useEffect } from 'react';
-import {NombreEscogido, fechaLimiteIzq, fechaLimiteDer} from '../../Utiles/Reportes/Filtro'; /* a que se importan los metodos para filtrado que se vayan a usar*/
+import {NombreEscogido, fechaLimiteIzqRep1, fechaLimiteDerRep1, fechaLimiteIzqRep3, fechaLimiteDerRep3} from '../../Utiles/Reportes/Filtro'; /* a que se importan los metodos para filtrado que se vayan a usar*/
 import { URLApi } from '../../Compartido/Constantes';
 import { useAutent } from "../../../contexto/ContextoAutenticacion";
 
-export default function ReportesEmpleador () {
+const URLEmpresa = URLApi + 'empresa/getEmpresaInfo/';
+const URLReportesEmpleador = URLApi + 'reportesEmpleador/';
+const URLReporteDiasSolicitadosPorPolitica = URLReportesEmpleador + 'reporteDiasSolicitadosPorPolitica/';
+const URLReporteDiasGastadosPorEmpleadoPorPolitica = URLReportesEmpleador + 'reporteDiasGastadosPorEmpleadoPorPolitica/';
+const URLReporteDiasGeneradosPorPolitica = URLReportesEmpleador + 'reporteDiasGeneradosPorPolitica/';
 
+
+export default function ReportesEmpleador () {
 	/* esto es lo normal*/
 	const {usuarioAutenticado} = useAutent();
 	const empresa = usuarioAutenticado.cedula_empresa; 
-
+	
 	/* como va estar construido las opciones default dep Reporte*/
 	const predeterminado = {
 		originales: [], /*arreglo con la infomacion de un query que no se modifica*/
@@ -34,8 +40,7 @@ export default function ReportesEmpleador () {
 	useEffect(() => {
 		async function cargarDatosEmpresa() {
 			try {
-			const response = await axios.get(`${URLApi}empresa/getEmpresaInfo/${empresa}`);
-			
+			const response = await axios.get(`${URLEmpresa}${empresa}`);
 			if (response.status === 200) {
 	
 				const data = response.data.data;
@@ -64,19 +69,25 @@ export default function ReportesEmpleador () {
 		cargarDatosEmpresa(); 
   	}, [empresa]);
 
-	/* Hook para el Reporte, Rep = Reporte */
 	const [rep, setRep] = useState({ ...predeterminado });
 
-	/*dependiendo del Reporte que les hayan tocado, deben de crear los llamados a la BD con los datos que ocupan*/
-	/* a que se actualizan los datos dependiendo de la opcion que se haya escogido en el dropdown de tipo reporte*/
-	async function cargarDiasSolicitadosPorPolitica() {
+	async function cargarDiasSolicitadosPorPolitica(fecha_inicio=0, fecha_final=0) {
 		setRep({...predeterminado, cargando:true});
 	  try {
-	    const respuesta = await axios.get(`${URLApi}reportesEmpleador/reporteDiasSolicitadosPorPolitica/${empresa}`);
+	    const respuesta = await axios.get(`${URLReporteDiasSolicitadosPorPolitica}${empresa}`);
 		let DiasLibresPorPolitica = respuesta.data.DiasLibresPorPolitica;
-		let LibresEmpresa = respuesta.data.LibresEmpresa;
 		let SolicitudesAprobadas = respuesta.data.SolicitudesAprobadas;
-		let info = construirDatosDiasSolicitadosPorPolitica(DiasLibresPorPolitica, LibresEmpresa, SolicitudesAprobadas);
+		let info = [];
+
+		if (fecha_inicio!==0 && fecha_final===0) {
+			info = construirDatosDiasSolicitadosPorPolitica(DiasLibresPorPolitica, SolicitudesAprobadas, fecha_inicio, 0);
+		} else if (fecha_inicio===0 && fecha_final!==0) {
+			info = construirDatosDiasSolicitadosPorPolitica(DiasLibresPorPolitica, SolicitudesAprobadas,0,fecha_final);
+		} else if (fecha_inicio!==0 && fecha_final!==0) {
+			info = construirDatosDiasSolicitadosPorPolitica(DiasLibresPorPolitica, SolicitudesAprobadas, fecha_inicio, fecha_final);
+		} else {
+			info = construirDatosDiasSolicitadosPorPolitica(DiasLibresPorPolitica, SolicitudesAprobadas);
+		}
 		setRep({
 			cargando:false,
 			titulo:'Dias solicitados por política',
@@ -84,8 +95,8 @@ export default function ReportesEmpleador () {
 			originales:[...info],
 			datos:[...info],
 			filtros:[
-				{nombre:"Fecha de Inicio",tipo:"fecha",funcion:fechaLimiteIzq,campo:'',columna:'fecha_inicio'},
-				{nombre:"Fecha Final",tipo:"fecha",funcion:fechaLimiteDer,campo:'',columna:'fecha_final'},],
+				{nombre:"Fecha de Inicio",tipo:"date",funcion:fechaLimiteIzqRep1,campo:'',columna:'fecha_inicioRepEmpleador1'},
+				{nombre:"Fecha Final",tipo:"date",funcion:fechaLimiteDerRep1,campo:'',columna:'fecha_finalRepEmpleador1'},],
 			columnas:[
 				{nombre:"Política", id:"titulo_politica"},
 				{nombre:"Dias gastados", id:"dias_gastados"},
@@ -110,8 +121,8 @@ export default function ReportesEmpleador () {
 	    		datos:[...respuesta.data],
 	    		filtros:[
                     {nombre:"Politica",tipo:"texto",funcion:NombreEscogido,campo:'',columna:'politica'},
-	    			{nombre:"Fecha de Inicio",tipo:"fecha",funcion:fechaLimiteIzq,campo:'',columna:'fecha_inicio'},
-	    			{nombre:"Fecha Final",tipo:"fecha",funcion:fechaLimiteDer,campo:'',columna:'fecha_final'},],
+	    			{nombre:"Fecha de Inicio",tipo:"fecha",funcion:fechaLimiteIzqRep1,campo:'',columna:'fecha_inicio'},
+	    			{nombre:"Fecha Final",tipo:"fecha",funcion:fechaLimiteDerRep1,campo:'',columna:'fecha_final'},],
 	    		columnas:[
                     {nombre:"Empleado", id:"nombre_empleado"},
 	    			{nombre:"Política", id:"titulo_politica"},
@@ -126,38 +137,50 @@ export default function ReportesEmpleador () {
 	  }
 	};
 
-    async function cargarDiasGeneradosPorPolitica() {
+    async function cargarDiasGeneradosPorPolitica(fecha_inicio=0, fecha_final=0) {
 		setRep({...predeterminado, cargando:true});
 	  try {
-	    const respuesta = await axios.get(`${URLApi}empleados/allByEmpresa/${empresa}`);
-	    	setRep({
-	    		cargando:false,
-	    		titulo:'Dias solicitados por política',
-	    		pagAct:1,
-	    		originales:[...respuesta.data],
-	    		datos:[...respuesta.data],
-	    		filtros:[
-	    			{nombre:"Fecha de Inicio",tipo:"fecha",funcion:fechaLimiteIzq,campo:'',columna:'fecha_inicio'},
-	    			{nombre:"Fecha Final",tipo:"fecha",funcion:fechaLimiteDer,campo:'',columna:'fecha_final'},],
-	    		columnas:[
-	    			{nombre:"Política", id:"titulo_politica"},
-                    {nombre:"Dias generados", id:"dias_generados"},
-                    {nombre:"Numero de empleados que recibieron", id:"empleados_beneficio"},
-                    {nombre:"Fecha de Inicio", id:"fecha_inicio"},
-                    {nombre:"Fecha Final", id:"fecha_final"}
-                ]
-	    	})
+		const respuesta = await axios.get(`${URLReporteDiasGeneradosPorPolitica}${empresa}`);
+		let BitacoraLibres = respuesta.data;
+		let info = []
+
+		if (fecha_inicio!==0 && fecha_final===0) {
+			info = construirDatosDiasGeneradosPorPolitica(BitacoraLibres, fecha_inicio, 0);
+		} else if (fecha_inicio===0 && fecha_final!==0) {
+			info = construirDatosDiasGeneradosPorPolitica(BitacoraLibres, 0, fecha_final);
+		} else if (fecha_inicio!==0 && fecha_final!==0) {
+			info = construirDatosDiasGeneradosPorPolitica(BitacoraLibres, fecha_inicio, fecha_final);
+		} else {
+			info = construirDatosDiasGeneradosPorPolitica(BitacoraLibres);
+		}
+		setRep({
+			cargando:false,
+			titulo:'Dias generados por política',
+			pagAct:1,
+			originales:[...info],
+			datos:[...info],
+			filtros:[
+				{nombre:"Fecha de Inicio",tipo:"date",funcion:fechaLimiteIzqRep3,campo:'',columna:'fecha_inicioRepEmpleador3'},
+				{nombre:"Fecha Final",tipo:"date",funcion:fechaLimiteDerRep3,campo:'',columna:'fecha_finalRepEmpleador3'},],
+			columnas:[
+				{nombre:"Política", id:"titulo_politica"},
+				{nombre:"Dias generados", id:"dias_generados"},
+				{nombre:"Numero de empleados que recibieron", id:"empleados_beneficio"}
+			]
+		})
 	  } catch (error) {
 	  	console.error('500')
 	  }
 	};
 
-	function construirDatosDiasSolicitadosPorPolitica(DiasLibresPorPolitica, LibresEmpresa, SolicitudesAprobadas, limiteFechaInicio=0, limiteFechaFinal=0) {
-		if (limiteFechaInicio!==0) {
-			let limiteFechaInicio = new Date(limiteFechaInicio);
+	function construirDatosDiasSolicitadosPorPolitica(DiasLibresPorPolitica, SolicitudesAprobadas, fecha_inicio=0, fecha_final=0) {
+		let limiteFechaInicio = 0;
+		let limiteFechaFinal = 0;
+		if (fecha_inicio!==0) {
+			limiteFechaInicio = new Date(fecha_inicio);
 		}
-		if (limiteFechaFinal!==0) {
-			let limiteFechaFinal = new Date(limiteFechaFinal);
+		if (fecha_final!==0) {
+			limiteFechaFinal = new Date(fecha_final);
 		}
 		let infoTabla = [];
 		DiasLibresPorPolitica.forEach(element => {
@@ -166,15 +189,15 @@ export default function ReportesEmpleador () {
 		infoTabla.forEach(element => {
 			element.dias_gastados = 0;
 		})
-		let today = new Date();
-
+		let hoy = new Date();
+		console.log(limiteFechaInicio)
+		console.log(limiteFechaFinal)
 		//Se agregan al total de dias por gastar aquellos dias que esten aprobados que empiezan en el futuro y los pendientes
 		SolicitudesAprobadas.forEach(solicitud => {
 			let inicio_fechas_solicitadas = new Date(solicitud.inicio_fechas_solicitadas);
 			let indicePolitica = infoTabla.findIndex((punto) => punto.titulo_politica===solicitud.titulo_politica);
 			if(indicePolitica!==-1){
-				// console.log(solicitud)
-				if(inicio_fechas_solicitadas > today && (solicitud.estado === 'Aprobada' || solicitud.estado === 'Pendiente')) {
+				if(inicio_fechas_solicitadas > hoy && (solicitud.estado === 'Aprobada' || solicitud.estado === 'Pendiente')) {
 					let diasLibresDisponibles = 0;
 					if(solicitud.dias_libres_solicitados === 1) {
 						if(solicitud.horas_solicitadas === 2) {
@@ -190,27 +213,81 @@ export default function ReportesEmpleador () {
 					}
 					infoTabla[indicePolitica].total_dias_libres_disponibles += diasLibresDisponibles;
 				}
-				calcularDiasGastados(inicio_fechas_solicitadas, today, solicitud, limiteFechaInicio, limiteFechaFinal, infoTabla, indicePolitica);
+				calcularDiasGastados(inicio_fechas_solicitadas, hoy, solicitud, limiteFechaInicio, limiteFechaFinal, infoTabla, indicePolitica);
 			}
 		});
 
 		return infoTabla;
 	}
 
+	function construirDatosDiasGeneradosPorPolitica(BitacoraLibres, fecha_inicio=0, fecha_final=0) {
+		console.log(fecha_inicio)
+		console.log(fecha_final)
+		let limiteFechaInicio = 0;
+		let limiteFechaFinal = 0;
+		if (fecha_inicio!==0) {
+			limiteFechaInicio = new Date(fecha_inicio);
+		}
+		if (fecha_final!==0) {
+			limiteFechaFinal = new Date(fecha_final);
+		}
+		console.log("aaaa")
+		let infoTabla = [];
+		let elementosEnRango = [];
+
+		if(limiteFechaInicio!==0 && limiteFechaFinal===0) {
+			elementosEnRango = BitacoraLibres.filter(elemBitacora => new Date(elemBitacora.fecha) >= limiteFechaInicio);
+		} else if (limiteFechaInicio===0 && limiteFechaFinal!==0) {
+			elementosEnRango = BitacoraLibres.filter(elemBitacora => new Date(elemBitacora.fecha) <= limiteFechaFinal);
+		} else if (limiteFechaInicio!==0 && limiteFechaFinal!==0) {
+			elementosEnRango = BitacoraLibres.filter(elemBitacora => new Date(elemBitacora.fecha) <= limiteFechaFinal && new Date(elemBitacora.fecha) >= limiteFechaInicio);
+		} else {
+			elementosEnRango = BitacoraLibres;
+		}
+
+		let datosDivididos = dividirArreglo(elementosEnRango);
+		const arregloDatos = Object.values(datosDivididos)
+
+		arregloDatos.forEach(politicas => {
+			let suma = 0;
+			politicas.forEach(politica => {
+				suma += politica.dias;
+			});
+			console.log(suma);
+			let empleadosDiferentes = []
+			politicas.forEach(politica => {
+				let indiceEmpleado = empleadosDiferentes.findIndex((punto) => punto.cedula_empleado===politica.cedula_empleado);
+				if (indiceEmpleado===-1) {
+					empleadosDiferentes.push(politica);
+				}
+			});
+			infoTabla.push({titulo_politica: politicas[0].titulo_politica, empleados_beneficio: empleadosDiferentes.length, dias_generados: suma})
+		})
+
+		return infoTabla;
+	}
+
+	const dividirArreglo = (arreglo) => {
+		return arreglo.reduce((acc, bitacora) => {
+		  if (!acc[bitacora.titulo_politica]) {
+			acc[bitacora.titulo_politica] = [];
+		  }
+		  acc[bitacora.titulo_politica].push(bitacora);
+		  return acc;
+		}, {});
+	  };
+
 	function calcularDiasGastados(inicio_fechas_solicitadas, today, solicitud, limiteFechaInicio, limiteFechaFinal, infoTabla, indicePolitica) {
 		if(inicio_fechas_solicitadas <= today && solicitud.estado === 'Aprobada' && limiteFechaInicio===0 && limiteFechaFinal===0) {
-			// let diasCalculados = calcularDiasAntesDeLimiteSuperior(solicitud.inicio_fechas_solicitadas, solicitud.dias_libres_solicitados, new Date());
 			let diasCalculados = calcularDiasEntreLimites(solicitud.inicio_fechas_solicitadas, solicitud.dias_libres_solicitados, new Date(0), today);
 			infoTabla[indicePolitica].dias_gastados += diasCalculados.diasAAgregar;
 			infoTabla[indicePolitica].total_dias_libres_disponibles += diasCalculados.dias_libres_restantes;
 		} else if (limiteFechaInicio!==0 && limiteFechaFinal===0 && solicitud.estado === 'Aprobada') {
-			// let diasAAgregar = calcularDiasDespuesDeLimiteInferior(solicitud.inicio_fechas_solicitadas, solicitud.dias_libres_solicitados, limiteFechaInicio);
 			let diasCalculados = calcularDiasEntreLimites(solicitud.inicio_fechas_solicitadas, solicitud.dias_libres_solicitados, limiteFechaInicio, today);
 			infoTabla[indicePolitica].dias_gastados += diasCalculados.diasAAgregar;
 			infoTabla[indicePolitica].total_dias_libres_disponibles += diasCalculados.dias_libres_restantes;
 		} else if (limiteFechaInicio===0 && limiteFechaFinal!==0 && solicitud.estado === 'Aprobada') {
 			let diasCalculados = calcularDiasEntreLimites(solicitud.inicio_fechas_solicitadas, solicitud.dias_libres_solicitados, new Date(0), limiteFechaFinal);
-			// let diasCalculados = calcularDiasAntesDeLimiteSuperior(solicitud.inicio_fechas_solicitadas, solicitud.dias_libres_solicitados, limiteFechaFinal);
 			infoTabla[indicePolitica].dias_gastados += diasCalculados.diasAAgregar;
 			infoTabla[indicePolitica].total_dias_libres_disponibles += diasCalculados.dias_libres_restantes;
 		} else if (limiteFechaInicio!==0 && limiteFechaFinal!==0 && solicitud.estado === 'Aprobada') {
@@ -240,15 +317,15 @@ export default function ReportesEmpleador () {
 	const opciones = [
 		{
 			nombre:"Dias solicitados por política",
-			cargarDatos:cargarDiasSolicitadosPorPolitica
+			cargarDatos:cargarDiasSolicitadosPorPolitica,
 		},
         {
 			nombre:"Dias gastados por empleado por política",
-            cargarDatos:cargarDiasGastadosPorEmpleadoPorPolitica
+            cargarDatos:cargarDiasGastadosPorEmpleadoPorPolitica,
 		},
         {
 			nombre:"Dias generados por política",
-            cargarDatos:cargarDiasGeneradosPorPolitica
+            cargarDatos:cargarDiasGeneradosPorPolitica,
 		}
 	];
 

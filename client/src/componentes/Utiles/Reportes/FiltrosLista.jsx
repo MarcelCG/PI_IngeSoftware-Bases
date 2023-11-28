@@ -5,7 +5,7 @@ import {FiltroPlantilla, AplicarFiltros} from './Filtro'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faBroom } from '@fortawesome/free-solid-svg-icons'
 
-export default function FiltrosLista ({rep, filtros, setRep, cargando, originales}) {
+export default function FiltrosLista ({rep, filtros, setRep, opciones, cargando, originales}) {
 
 	const [filtroCampo, setFiltroCampo] = useState({});
 
@@ -20,7 +20,27 @@ export default function FiltrosLista ({rep, filtros, setRep, cargando, originale
 	}, [filtros]);
 
 	const filtrar = () => {
+		console.log(filtros)
 		actualizarCampo();
+		if (filtros[0].columna==="fecha_inicioRepEmpleador1") {
+			let fechaInicio = filtroCampo['Fecha de Inicio'];
+			let fechaFinal = filtroCampo['Fecha Final'];
+			// Llamar a cargarDiasSolicitadosPorPolitica si alguna fecha es seleccionada
+			if (fechaInicio || fechaFinal) {
+				if (fechaInicio === "") {fechaInicio=0}
+				if (fechaFinal === "") {fechaFinal=0}
+				opciones[0].cargarDatos(fechaInicio, fechaFinal);
+			}
+		} else if (filtros[0].columna==="fecha_inicioRepEmpleador3") {
+			let fechaInicio = filtroCampo['Fecha de Inicio'];
+			let fechaFinal = filtroCampo['Fecha Final'];
+			// Llamar a cargarDiasSolicitadosPorPolitica si alguna fecha es seleccionada
+			if (fechaInicio || fechaFinal) {
+				if (fechaInicio === "") {fechaInicio=0}
+				if (fechaFinal === "") {fechaFinal=0}
+				opciones[2].cargarDatos(fechaInicio, fechaFinal);
+			}
+		}
 		AplicarFiltros(rep, filtros, originales, setRep);
 	};
 
@@ -29,6 +49,11 @@ export default function FiltrosLista ({rep, filtros, setRep, cargando, originale
 			document.getElementById(`${filtro.nombre}`).value = '';
 			filtro['campo'] = '';
 		});
+		if (filtros[0].columna==="fecha_inicioRepEmpleador1") {
+			opciones[0].cargarDatos();
+		} else if (filtros[0].columna==="fecha_inicioRepEmpleador3") {
+			opciones[2].cargarDatos();
+		}
 		AplicarFiltros(rep, filtros, originales, setRep);
 	};
 
