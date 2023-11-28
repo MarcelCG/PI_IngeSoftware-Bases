@@ -14,17 +14,18 @@ async function agregarBitacorasLIB(nuevosLibres, cedula_empresa) {
       '${Lib.titulo_politica}',
       '${cedula_empresa}',
       '${Lib.nuevos_libres}',
-      '${hoy.toISOString().slice(0, 10)}'
+      '${hoy.toISOString().slice(0, 10)}',
+      '${Lib.dias_libres_disponibles}'
     )`
     );
-    console.log(valores);
     const query = `
       INSERT INTO bitacora_libres (
         cedula_empleado,
         titulo_politica,
         cedula_empresa,
         dias,
-        fecha
+        fecha,
+        total_actual
       )
       VALUES
         ${valores.join(', ')}
@@ -39,3 +40,4 @@ async function agregarBitacorasLIB(nuevosLibres, cedula_empresa) {
 module.exports = {
     agregarBitacorasLIB
 };
+ 
