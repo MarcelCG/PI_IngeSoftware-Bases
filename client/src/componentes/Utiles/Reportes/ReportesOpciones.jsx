@@ -3,8 +3,16 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter, faPrint } from '@fortawesome/free-solid-svg-icons'
+import ReportePDF from '../../Reportes/ReportePDF';
+import { PDFDownloadLink } from "@react-pdf/renderer"
 
-export default function ReportesOpciones ({titulo, cargando, filtros, opciones, setState, state}) {
+export default function ReportesOpciones ({titulo, cargando, filtros, datos, columnas, opciones, datosEmpresa, setState, state}) {
+	let props = {
+		datos,
+		columnas,
+		cargando,
+		datosEmpresa
+	};
 
 	return (
 	<div className='text-center mb-1 p-1 row '>
@@ -24,16 +32,24 @@ export default function ReportesOpciones ({titulo, cargando, filtros, opciones, 
 					))}
 				</ul>
 				<button className={`btn btn-primary btn-lg ms-3 ${!cargando?'':'disabled'}`}
-				 data-bs-toggle='collapse' data-bs-target='#flush-collapseOne' aria-expanded='false'
-				  aria-controls='flush-collapseOne'>
+				data-bs-toggle='collapse' data-bs-target='#flush-collapseOne' aria-expanded='false'
+				aria-controls='flush-collapseOne'>
 					Filtros<FontAwesomeIcon className="ms-1" icon={faFilter} />
 				</button>
 			</div>
 	  	</div>
 		<div className='col-4'>
-			<button className={`btn btn-secondary btn-lg ${!cargando?'': 'disabled'}`}>
-				Imprimir<FontAwesomeIcon className="ms-1" icon={faPrint} />
-			</button>
+			{!cargando? (
+				<PDFDownloadLink document={<ReportePDF {...props} />} fileName='Reporte.pdf'>
+					<button className={`btn btn-secondary btn-lg ${!cargando?'': 'disabled'}`}>
+						Imprimir<FontAwesomeIcon className="ms-1" icon={faPrint} />
+					</button>
+				</PDFDownloadLink>
+			) : (
+				<button className={`btn btn-secondary btn-lg disabled`}>
+					Imprimir<FontAwesomeIcon className="ms-1" icon={faPrint} />
+				</button>
+			)}
 		</div>
 	</div>
 	);
