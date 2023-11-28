@@ -15,6 +15,7 @@ on:
       - Servicio-Correos
       - Editar-Politica
       - Calendario
+      - Reportes-Empleado
 
 jobs:
   client-tests:

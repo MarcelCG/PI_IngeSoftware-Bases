@@ -2,8 +2,8 @@ const Solicitud = require('../../../models/solicitudModel/solicitudModel');
 const BitacoraLibres = require('../../../models/bitacoraModelo/bitacoraLibresModelo');
 const Servicio = require('../../../servicios/reportesServicios/reportesEmpleadoServicios/reportesEmpleadoServicios');
 
-const {datosPruebaRepAcumulados, datosEsperadosRepAcumulados,
-    datosPruebaRepUsados, datosEsperadosRepUsados} = require('./datosPruebas');
+const {datosPruebaBitacora, datosPruebaSolicitudes, datosEsperadosRepAcumulados,
+ datosEsperadosRepUsados, datosEsperadosRepDashboard} = require('./datosPruebas');
 
 jest.mock('../../../models/bitacoraModelo/bitacoraLibresModelo');
 jest.mock('../../../models/solicitudModel/solicitudModel');
@@ -22,7 +22,7 @@ describe('Reportes Empleado', () => {
         it('Se reciben los datos del reporte de forma correcta', async () => {
             // Preparar
             // Se hacen mocks de las funciones utilizadas
-            Solicitud.getSolicitudByCedula.mockResolvedValue(datosPruebaRepUsados);
+            Solicitud.getSolicitudByCedula.mockResolvedValue(datosPruebaSolicitudes);
     
             const fechaMock = new Date('2023-11-27T12:00:00');
             jest.spyOn(global, 'Date').mockImplementation(() => fechaMock);
@@ -54,7 +54,7 @@ describe('Reportes Empleado', () => {
         it('Se reciben los datos del reporte de forma correcta', async () => {
             // Preparar
             // Se hacen mocks de las funciones utilizadas
-            BitacoraLibres.obtenerTodosPorEmpleado.mockResolvedValue(datosPruebaRepAcumulados);
+            BitacoraLibres.obtenerTodosPorEmpleado.mockResolvedValue(datosPruebaBitacora);
     
             // Actuar
             const respuesta = await Servicio.reporteDiasAcumulados('cedula_empleado');
@@ -74,5 +74,26 @@ describe('Reportes Empleado', () => {
             // Afirmar
             expect(respuesta).toStrictEqual([]);
         });
+    });
+
+    describe('Reporte de dashboard', () => {
+        it('Se reciben los datos del reporte de forma correcta', async () => {
+            // Preparar
+            // Se hacen los mocks
+            Solicitud.getSolicitudByCedula.mockResolvedValue(datosPruebaSolicitudes);
+            BitacoraLibres.obtenerTodosPorEmpleado.mockResolvedValue(datosPruebaBitacora);
+
+            const fechaMock = new Date('2023-11-27T12:00:00');
+            jest.spyOn(global, 'Date').mockImplementation(() => fechaMock);
+
+            // Actuar
+            const respuesta = await Servicio.reporteDashboard('cedula_empleado');
+
+            // Afirmar
+            expect(respuesta).toStrictEqual(datosEsperadosRepDashboard);
+
+            // Restaura el mock para evitar riesgos
+            global.Date.mockRestore();
+        })
     })
 })
