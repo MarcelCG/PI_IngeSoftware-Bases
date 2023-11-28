@@ -88,33 +88,29 @@ export const VerSolicitudesHTML = (props) => {
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
 		<div className="col-12">
-            <div className="row mb-4 col-12 d-flex p-1 align-items-end">
                 { esEmpleador === true ? (
-                    <>
-                        <div className="col-6"> 
+                    <div className="row mb-4 col-12 d-flex p-1 align-items-center">
+                        <div className="col-10"> 
                             <BuscarSolicitud {...buscarSolicitudProps} />
                         </div>
-                        <div className="col-6">
                             <FiltrarSolicitudes {...filtrarSolicitudesProps} />
-                        </div>
-                    </>
+                    </div>
                 ) : (
                     <>
-                        <div className="col-md-3">
-                            <Link to="/app/solicitudes/agregarSolicitud" className="btn btn-primary">
+                        <div className="row col-12 d-flex p-1 align-items-center">
+                            <div className="col-10"> 
+                                <BuscarSolicitud {...buscarSolicitudProps} />
+                            </div>
+                            <Link to="/app/solicitudes/agregarSolicitud" className="btn-primary col-2 continuar">
                                 <FontAwesomeIcon icon={faPlus} /> Agregar
                             </Link>
                         </div>
-
-                        <div className="col-6"> 
-                            <BuscarSolicitud {...buscarSolicitudProps} />
-                        </div>
-                        <div className="col-6">
+                        <div className="row mb-4 col-12 d-flex p-1 align-items-end">
+                            <div className="col-10"></div>
                             <FiltrarSolicitudes {...filtrarSolicitudesProps} />
                         </div>
                     </>
                 )}
-            </div>
             <hr></hr>
             <div className="table-responsive mb-4">
                     <table className="table">
