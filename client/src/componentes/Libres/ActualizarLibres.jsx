@@ -21,8 +21,7 @@ export const ActualizarTiempoLibre = () => {
   const datosEmpresa = empresa;
 	const titulo = "titulo"
 	const columnas = [{nombre:"Cedula",id:"cedula"},{nombre:"Dias",id:"dias"}];
-
-	// eslint-disable-next-line 
+	 
 	const generarReporte = (libresNuevos) => {
     let datosArrayAcomodacion = {};
     libresNuevos.forEach(lib => {
