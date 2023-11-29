@@ -2,10 +2,11 @@ import {Modal} from '../Utiles/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faTrash, faPenToSquare, faPlus, faEye, faChevronLeft, faChevronRight }
- from '@fortawesome/free-solid-svg-icons'
-import React, {useState} from "react";
-import FiltrarSolicitudes from './filtrarSolicitudes.js'
+import {faTrash, faPenToSquare, faPlus, faEye, faChevronLeft, faChevronRight } 
+from '@fortawesome/free-solid-svg-icons';
+import React, {useState, useEffect} from "react";
+import FiltrarSolicitudes from './filtrarSolicitudes.js';
+import BuscarSolicitud from './buscarSolicitud';
 import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
@@ -19,16 +20,19 @@ export const VerSolicitudesHTML = (props) => {
         esEmpleador
 	} = props;
 
-    const [solicitudesFiltradas, filtrarSolicitudes] = useState([])
-
+    const [solicitudesFiltradas, filtrarSolicitudes] = useState([]);
     const [paginaActual, setPaginaActual] = useState(1);
     const solicitudesPorPagina = 5;
     const ultimoIndice = paginaActual * solicitudesPorPagina;
     const primerIndice = ultimoIndice - solicitudesPorPagina;
     const solicitudesPagina = solicitudesFiltradas.slice(primerIndice, ultimoIndice);
     const numPag = Math.ceil(solicitudesFiltradas.length/solicitudesPorPagina);
-    const numeros = [...Array(numPag +1).keys()].slice(1)
-  
+    const numeros = [...Array(numPag +1).keys()].slice(1);
+
+    const [busqueda, buscar] = useState('');
+    const [filtro, filtrarPor] = useState('nombre_completo');
+    const [filtroEstado, setFiltroEstado] = useState('Todos');
+
     function paginaAtras() {
         if(paginaActual !== 1) {
             setPaginaActual(paginaActual-1)
@@ -42,6 +46,40 @@ export const VerSolicitudesHTML = (props) => {
             setPaginaActual(paginaActual+1)
         }
     }
+    useEffect(() => {
+        filtrarSolicitudes(solicitudes);
+        buscar('');
+        if(esEmpleador == true){
+            filtrarPor('nombre_completo');
+        }else{
+            filtrarPor('politica');
+        }
+        setFiltroEstado('Todos');
+    }, [solicitudes]);
+
+    const buscarSolicitudProps = {
+        solicitud: solicitudes,
+        filtrarsolicitudes: filtrarSolicitudes,
+        esEmpleador: esEmpleador,
+        busqueda: busqueda,
+        buscar: buscar,
+        filtro: filtro,
+        filtrarPor: filtrarPor,
+        estado: filtroEstado,
+        solicitudesFiltradas: solicitudesFiltradas
+    };
+    
+    const filtrarSolicitudesProps = {
+        cambiarPagina: cambiarPagina,
+        solicitudes: solicitudesFiltradas,
+        filtrarSolicitudes: filtrarSolicitudes,
+        busqueda: busqueda,
+        filtro: filtro,
+        solicitudesGlob: solicitudes,
+        filtroEstado: filtroEstado,
+        setFiltroEstado: setFiltroEstado
+    };
+
 
 	return (
         <div>
@@ -50,24 +88,29 @@ export const VerSolicitudesHTML = (props) => {
 	      data-bs-toggle="modal" data-bs-target={`#${modalID}`}/>
 	      <style>{`.table th { width: 25%;}`}</style>
 		<div className="col-12">
-            <div className="row mb-4 col-12 d-flex p-1 align-items-end">
                 { esEmpleador === true ? (
-                    <>
-                        <div className="col-10"></div>
-                        <FiltrarSolicitudes cambiarPagina={cambiarPagina} solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
-                    </>
+                    <div className="row mb-4 col-12 d-flex p-1 align-items-center">
+                        <div className="col-10"> 
+                            <BuscarSolicitud {...buscarSolicitudProps} />
+                        </div>
+                            <FiltrarSolicitudes {...filtrarSolicitudesProps} />
+                    </div>
                 ) : (
                     <>
-                        <div className="col-8"></div>
-                        <FiltrarSolicitudes cambiarPagina={cambiarPagina} solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudes}/>
-                        <div className=' col-2'>
-                            <Link to="/app/solicitudes/agregarSolicitud" className="btn-primary continuar">
-                                <FontAwesomeIcon icon={faPlus} />Agregar
+                        <div className="row col-12 d-flex p-1 align-items-center">
+                            <div className="col-10"> 
+                                <BuscarSolicitud {...buscarSolicitudProps} />
+                            </div>
+                            <Link to="/app/solicitudes/agregarSolicitud" className="btn-primary col-2 continuar">
+                                <FontAwesomeIcon icon={faPlus} /> Agregar
                             </Link>
+                        </div>
+                        <div className="row mb-4 col-12 d-flex p-1 align-items-end">
+                            <div className="col-10"></div>
+                            <FiltrarSolicitudes {...filtrarSolicitudesProps} />
                         </div>
                     </>
                 )}
-            </div>
             <hr></hr>
             <div className="table-responsive mb-4">
                     <table className="table">
