@@ -1,5 +1,7 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
 const Empleado = require('../../models/usuarioModel/Empleado/empleadoModel')
+const Empleador = require('../../models/usuarioModel/Empleador/empleadorModel')
+
 const Correo = require('../correoServicios/correoServicios');
 const {EXITO} = require('../../config/constantes');
 const {URLAPI} = require('../../config/constantes');
@@ -90,6 +92,60 @@ async function rechazarSolictud(id) {
     }
 }
 
+async function cancelarSolictud(id) {
+    try {
+        // Llama a la función getSolicitudById en el modelo de Solicitud
+        const solicitud = await Solicitud.getSolicitudById(id);
+
+        if (solicitud != null) {
+            const empleado = 
+                await Empleado.getByCedulaAndEmpresa(solicitud.cedula_empleado, solicitud.cedula_empresa);
+            
+            if (empleado == null) {
+                console.error('No se encontró el empleado');
+                return false;
+            }
+
+            const empleador = 
+            await Empleador.getByEmpresa(solicitud.cedula_empresa);
+        
+            if (empleador == null) {
+                console.error('No se encontró al empleador');
+                return false;
+            }
+
+            const datosEmpleado = {
+                nombre: empleado.nombre,
+                estado: 'Cancelada',
+                URLAPI,
+            }
+            Correo.enviarCorreo(plantilla, datosEmpleado, empleado.correo1, 'Solicitud Cancelada');
+
+            const datosEmpleador = {
+                nombre: empleador.nombre,
+                estado: 'Cancelada',
+                URLAPI,
+            }
+            Correo.enviarCorreo(plantilla, datosEmpleador, empleador.correo1, 'Solicitud Cancelada');
+
+            const accion = await Solicitud.cancelarSolicitud(id, 'Cancelada');
+
+            if (accion) {
+                return true;
+            } else {
+                console.error('Error Inesperado al actualizar el estado');
+                return false;
+            }
+        } else {
+            console.error('No se encontró la solicitud');
+            return false;
+        }
+    } catch (error) {
+        console.error('Error en cancelarSolicitud:', error);
+        throw new Error('Error al cancelar la solicitud: ' + error.message);
+    }
+}
+
 async function obtenerFechasSolicitudesAprobadas (cedula_empresa) {
     try {
 
@@ -145,5 +201,6 @@ async function obtenerFechasSolicitudesAprobadas (cedula_empresa) {
 module.exports = {
     aprobarSolicitud,
     rechazarSolictud,
+    cancelarSolictud,
     obtenerFechasSolicitudesAprobadas
 };

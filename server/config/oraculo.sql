@@ -270,14 +270,14 @@ END;
 CREATE PROC ActualizarEstadoSolicitud @id bigInt, @estado varchar(255)
 AS
 BEGIN
-	IF @estado = 'Rechazada'
-	BEGIN
-		DECLARE @cedulaEmpleado varchar(255)
-		DECLARE @cedulaEmpresa varchar(255)
-		DECLARE @diasSolicitados decimal(5,2)
-		DECLARE @politica varchar(255)
+    IF @estado = 'Rechazada' OR @estado = 'Cancelada'
+    BEGIN
+        DECLARE @cedulaEmpleado varchar(255)
+        DECLARE @cedulaEmpresa varchar(255)
+        DECLARE @diasSolicitados decimal(5,2)
+        DECLARE @politica varchar(255)
 
-		SELECT 
+        SELECT 
             @cedulaEmpleado = cedula_empleado, 
             @cedulaEmpresa = cedula_empresa, 
             @diasSolicitados = dias_libres_solicitados, 
@@ -285,18 +285,18 @@ BEGIN
         FROM Solicitud
         WHERE id = @id
 
-		UPDATE Libres
+        UPDATE Libres
         SET dias_libres_disponibles = dias_libres_disponibles + @diasSolicitados,
-		dias_libres_utilizados = dias_libres_utilizados - @diasSolicitados
+        dias_libres_utilizados = dias_libres_utilizados - @diasSolicitados
         WHERE cedula_empleado = @cedulaEmpleado 
             AND cedula_empresa = @cedulaEmpresa 
             AND titulo_politica = @politica
 
-	END
+    END
 
-	UPDATE Solicitud
-	SET estado = @estado
-	WHERE id = @id
+    UPDATE Solicitud
+    SET estado = @estado
+    WHERE id = @id
 END;
 
 CREATE PROCEDURE BorrarPolitica @titulo nvarchar(255), @cedula_empresa varchar(255)
@@ -423,6 +423,33 @@ BEGIN
         descripcion = @descripcion
     WHERE titulo = @titulo AND cedula_empresa = @cedula_empresa;
 END
+
+--Ulises
+CREATE PROCEDURE SolicitudesAprobadasEmpresa @cedula_empresa varchar(255)
+AS
+SELECT *
+FROM Solicitud s
+WHERE s.cedula_empresa=@cedula_empresa
+AND estado='Aprobada' OR estado='Pendiente'
+
+--Ulises
+CREATE PROCEDURE TotalLibresPorPoliticaEmpresa @cedula_empresa varchar(255)
+AS
+SELECT l.titulo_politica,
+SUM(l.dias_libres_disponibles) AS total_dias_libres_disponibles
+FROM Libres l
+WHERE l.cedula_empresa=@cedula_empresa
+GROUP BY l.titulo_politica
+
+--Ulises
+CREATE PROCEDURE LibresPorEmpresaReporte @cedula_empresa varchar(255)
+AS
+SELECT u.nombre, u.primer_apellido, l.cedula_empleado,
+u.telefono1, l.titulo_politica,
+l.dias_libres_disponibles
+FROM Libres l, Usuario u
+WHERE l.cedula_empresa='ABC123'
+AND l.cedula_empleado=u.cedula
 
 CREATE NONCLUSTERED INDEX IX_CedulaEmpresa_Empleado
 ON Empleado (cedula_empresa);

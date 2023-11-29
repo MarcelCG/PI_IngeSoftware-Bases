@@ -84,6 +84,23 @@ async function rechazarSolictud(req,res) {
   }
 }
 
+async function cancelarSolictud(req,res) {
+  try {
+    const { id } = req.params; // Obtiene el ID de los parámetros de la URL
+    // Llama al servicio de solicitudes
+    const accion = Servicio.cancelarSolictud(id);
+    if (accion) {
+      // Si se pudo cancelar la solicitud, mensaje de exito
+      res.status(200).json('Solicitud cancelada correctamente');
+    } else {
+      // Si no se cancelo una solicitud con ese ID, respondemos con un mensaje de error
+      res.status(404).json({ error: 'Error al cancelar solicitud, recargue la página e intente de nuevo' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 // Controlador para obtener una solicitud por su ID
 async function getSolicitudById(req, res) {
   try {
@@ -196,6 +213,7 @@ module.exports = {
   getSolicitudByEmpresa,
   getSolicitudByCedulaAndEmpresa,
   aprobarSolicitud,
+  cancelarSolictud,
   rechazarSolictud,
   obtenerLibresPorPolitica,
   obtenerFechasSolicitudesAprobadas

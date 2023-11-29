@@ -102,6 +102,20 @@ async function rechazarSolicitud (id, estado) {
   }
 }
 
+async function cancelarSolicitud (id, estado) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('id', sql.BigInt, id)
+      .input('estado', sql.NVarChar, estado)
+      .execute('ActualizarEstadoSolicitud')
+    return 1;;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Función para obtener solicitudes por cédula del empleado
 async function getSolicitudByCedula(cedula_empleado) {
     try {
@@ -171,6 +185,19 @@ async function obtenerLibresPorPolitica(cedula_empleado) {
   }
 }
 
+async function obtenerSolicitudesAprobadasPorEmpresa(cedula_empresa) {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input('cedula_empresa', sql.NVarChar, cedula_empresa)
+      .execute('SolicitudesAprobadasEmpresa')
+    return result.recordset;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Otras funciones relacionadas con las solicitudes pueden ser agregadas aquí
 
 // Exportar el modelo
@@ -182,7 +209,9 @@ module.exports = {
   getSolicitudByEmpresa,
   getSolicitudByCedulaAndEmpresa,
   aprobarSolicitud,
+  cancelarSolicitud,
   rechazarSolicitud,
-  obtenerLibresPorPolitica
+  obtenerLibresPorPolitica,
+  obtenerSolicitudesAprobadasPorEmpresa
   // Agregar otras funciones relacionadas con las solicitudes según sea necesario
 };

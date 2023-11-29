@@ -14,6 +14,7 @@ import AgregarSolicitud from '../componentes/Solicitudes/agregarSolicitud';
 import Dashboard from '../componentes/Dashboard/Dashboard';
 import { MenuEmpleador, MenuEmpleado } from './menu';
 import { useAutent } from '../contexto/ContextoAutenticacion';
+import ReportesEmpleador from '../componentes/Reportes/ReportesEmpleador/ReportesEmpleador'
 import ReportesEmpleado from '../componentes/Reportes/ReportesEmpleado/ReportesEmpleado';
 
 function App() {
@@ -69,7 +70,7 @@ function App() {
             <div className="container col-10">
               <Routes>
                 <Route path="/" element={<Dashboard/>} />
-                <Route path="/reportes" element={ esEmpleador ? '' : <ReportesEmpleado/>} />
+                <Route path="/reportes" element={ esEmpleador ? <ReportesEmpleador/> : <ReportesEmpleado/>} />
                 <Route path="/politicas" element={<VerPoliticas/>} />
                 <Route path="/politicas/addPoliticas" element={<AddPolicy/>}/>
                 <Route path="/empleados" element={<ListOfEmployees/>}/>

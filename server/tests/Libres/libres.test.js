@@ -55,10 +55,13 @@ test("Calculo correcto [Anual]", () => {
     cedula_empleado: Empleado2.cedula,
     titulo_politica: Anual.titulo,
     dias_libres_disponibles: '10.00',
-    ultima_actualizacion: "2023-12-31"
+    ultima_actualizacion: "2023-12-31",
+    nuevos_libres: '10.00'
   };
   // Act 
   const LibresNuevo = LibresServicios.calcularTiempos(Politicas, Libres, Empleados, fecha);
+  console.log(LibresNuevo);
+  console.log(LibreEsperado);
   // Assert
   expect(LibresNuevo[0]).toEqual(LibreEsperado);
 });
@@ -83,7 +86,9 @@ test("Calculo correcto [Mensual]", () => {
     cedula_empleado: Empleado2.cedula,
     titulo_politica: Mensual.titulo,
     dias_libres_disponibles: '1.00',
-    ultima_actualizacion: fechaStr
+    ultima_actualizacion: fechaStr,
+    nuevos_libres: '1.00'
+
   };
   // Act 
   const LibresNuevo = LibresServicios.calcularTiempos(Politicas, Libres, Empleados, fecha);
@@ -111,7 +116,8 @@ test("Calculo correcto [Trimestral]", () => {
     cedula_empleado: Empleado2.cedula,
     titulo_politica: Trimestral.titulo,
     dias_libres_disponibles: '5.00',
-    ultima_actualizacion: fechaStr
+    ultima_actualizacion: fechaStr,
+    nuevos_libres: '5.00'
   };
   // Act 
   const LibresNuevo = LibresServicios.calcularTiempos(Politicas, Libres, Empleados, fecha);
@@ -139,7 +145,8 @@ test("Calculo correcto [Incrementativo]", () => {
     cedula_empleado: Empleado2.cedula,
     titulo_politica: Incrementativo.titulo,
     dias_libres_disponibles: '42.00',
-    ultima_actualizacion: fechaStr
+    ultima_actualizacion: fechaStr,
+    nuevos_libres: '42.00'
   };
   // Act 
   const LibresNuevo = LibresServicios.calcularTiempos(Politicas, Libres, Empleados, fecha);

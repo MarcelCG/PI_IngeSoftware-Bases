@@ -1,12 +1,15 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
-const Empleado = require('../../models/usuarioModel/Empleado/empleadoModel')
-const Servicio = require('../../servicios/solicitudServicios/solicitudServicios')
+const Empleado = require('../../models/usuarioModel/Empleado/empleadoModel');
+const Empleador =  require('../../models/usuarioModel/Empleador/empleadorModel');
+const Servicio = require('../../servicios/solicitudServicios/solicitudServicios');
 const {datosPrueba, datosEsperados} = require('./datosPrueba');
 
 // Mock del módulo Solicitud
 jest.mock('../../models/solicitudModel/solicitudModel');
 
 jest.mock('../../models/usuarioModel/Empleado/empleadoModel');
+
+jest.mock('../../models/usuarioModel/Empleador/empleadorModel');
 
 describe('solicitudModel', () => {
   describe('aprobarSolicitud', () => {
@@ -78,7 +81,30 @@ describe('solicitudModel', () => {
       expect(result).toBe(false);
     });
   });
+
+  describe('cancelarSolicitud', () => {
+    it('Manejar cancelacion de una solicitud existente', async () => {
+
+      Solicitud.getSolicitudById.mockResolvedValue({ id: 1, estado: 'Pendiente' });
+
+      Solicitud.cancelarSolicitud.mockResolvedValue(true);
+
+      Empleado.getByCedulaAndEmpresa.mockResolvedValue({nombre: 'Jhon', correo1: 'jhon123@gmail.com'});
+
+      Empleador.getByEmpresa.mockResolvedValue({nombre: 'Jhon', correo1: 'jhon123@gmail.com'});
+
+      const id = 1;
+
+      //Actuar
+      const result = await Servicio.cancelarSolictud(id);
+
+      //Afirmar
+      expect(result).toBe(true);
+    });
+  });
 });
+
+
 
 describe('Obtener Fechas de Solicitudes Aprobadas', () => {
   it('Obtener las fechas correctamente', async () => {

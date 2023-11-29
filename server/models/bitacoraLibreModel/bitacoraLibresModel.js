@@ -24,7 +24,8 @@ async function agregarBitacorasLIB(nuevosLibres, cedula_empresa) {
         titulo_politica,
         cedula_empresa,
         dias,
-        fecha
+        fecha,
+        total_actual
       )
       VALUES
         ${valores.join(', ')}
