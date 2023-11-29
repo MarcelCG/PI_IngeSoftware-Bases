@@ -16,7 +16,7 @@ async function agregarBitacorasLIB(nuevosLibres, cedula_empresa) {
       '${Lib.nuevos_libres}',
       '${hoy.toISOString().slice(0, 10)}',
       '${Lib.dias_libres_disponibles}'
-    )`
+    )` 
     );
     const query = `
       INSERT INTO bitacora_libres (
@@ -40,4 +40,3 @@ async function agregarBitacorasLIB(nuevosLibres, cedula_empresa) {
 module.exports = {
     agregarBitacorasLIB
 };
- 
