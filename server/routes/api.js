@@ -47,4 +47,11 @@ router.use('/politicas', politicasRoutes);
 const reportesEmpleadorRutas = require('./reportesRutas/reportesEmpleadorRutas/reportesEmpleadorRutas');
 router.use('/reportesEmpleador', reportesEmpleadorRutas);
 
+const reportesEmpleadoRutas = require('./reportesRutas/reportesEmpleadoRutas/reportesEmpleadoRutas');
+router.use('/reportesEmpleado', reportesEmpleadoRutas);
+
+//-----perfil-----//
+const perfilRoutes = require('./perfilRoutes/perfilRoutes');
+router.use('/perfil', perfilRoutes);
+
 module.exports = router;

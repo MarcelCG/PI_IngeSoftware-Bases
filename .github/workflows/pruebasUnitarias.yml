@@ -16,6 +16,7 @@ on:
       - Editar-Politica
       - Reportes-Empleador
       - Calendario
+      - Reportes-Empleado
 
 jobs:
   client-tests:
