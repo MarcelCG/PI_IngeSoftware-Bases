@@ -16,8 +16,10 @@ async function getAllEmpleadosByEmpresa(req, res) {
   try {
     const { cedula_empresa } = req.params; // Obtiene la cedula de los parámetros de la URL
     const empleados = await Empleado.getAllByEmpresa(cedula_empresa);
+    console.log(empleados);
     res.status(200).json(empleados);
   } catch (error) {
+    console.log(empleados);
     res.status(500).json({ error: error.message });
   }
 }

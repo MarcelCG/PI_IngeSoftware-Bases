@@ -11,6 +11,34 @@ export const FiltroPlantilla = ({ filtro, filtroCampo, setFiltroCampo, originale
   );
 };
 
+export const fechaLimiteIzqRep1 = () => {
+	return true;
+};
+
+export const fechaLimiteDerRep1 = () => {
+	return true;
+};
+
+export const fechaLimiteIzqRep2 = () => {
+	return true;
+};
+
+export const fechaLimiteDerRep2 = () => {
+	return true;
+};
+
+export const fechaLimiteIzqRep3 = () => {
+	return true;
+};
+
+export const fechaLimiteDerRep3 = () => {
+	return true;
+};
+
+export const nombrePolitica = () => {
+	return true;
+};
+
 export const fechaLimiteIzq = (dato, fechaMenor) => {
 	return ((dato >= fechaMenor)||fechaMenor==='');
 };
@@ -24,11 +52,11 @@ export const NombreEscogido = (dato, texto) => {
 };
 
 export const AplicarFiltros = (state, listaFiltros, originales, setState) => {
-	let temporales = [...originales];
+  let temporales = [...originales];
   listaFiltros.forEach(filtro => {
-  	if(temporales !== undefined){
-	    temporales = temporales.filter(dato =>filtro.funcion(dato[filtro.columna], filtro.campo));
-	  }
+  if(temporales !== undefined){
+    temporales = temporales.filter(dato =>filtro.funcion(dato[filtro.columna], filtro.campo));
+  }
   });
   setState({...state, datos:temporales});
 };

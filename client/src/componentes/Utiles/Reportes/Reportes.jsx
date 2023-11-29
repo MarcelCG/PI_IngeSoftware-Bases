@@ -3,9 +3,9 @@ import FiltrosLista from './FiltrosLista'
 import ReportesTabla from './ReportesTabla'
 import ReportesOpciones from './ReportesOpciones'
 
-export default function Reportes ({rep, setRep, opciones}) {
+export default function Reportes ({rep, setRep, opciones, datosEmpresa}) {
 
-	const props = {...rep, rep, opciones, setRep}; 
+	const props = {...rep, rep, opciones, setRep, datosEmpresa}; 
 	return (
 		<div className='container p-1'>
 			<div className='row container shadow rounded mb-3'>		
@@ -15,7 +15,7 @@ export default function Reportes ({rep, setRep, opciones}) {
 				<FiltrosLista {...props}/>
 			</div>
 			<div className='row container shadow rounded mb-3'>
-			<ReportesTabla {...props}/>
+				<ReportesTabla {...props}/>
 			</div>
 		</div>
 	);
