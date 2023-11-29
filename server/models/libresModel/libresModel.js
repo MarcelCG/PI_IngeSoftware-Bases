@@ -143,6 +143,19 @@ async function obtenerLibresPorPoliticaPorEmpresa(cedula_empresa) {
     }
 }
 
+async function obtenerLibresPorEmpresaReporte(cedula_empresa) {
+    try {
+      const pool = await sql.connect(dbConfig);
+      const result = await pool
+        .request()
+        .input('cedula_empresa', sql.NVarChar, cedula_empresa)
+        .execute('LibresPorEmpresaReporte')
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+}
+
 module.exports = {
     getAll,
     getByEmpleado,
@@ -151,5 +164,6 @@ module.exports = {
     createLibre,
     obtenerPorEmpresa,
     actualizarTodos,
-    obtenerLibresPorPoliticaPorEmpresa
+    obtenerLibresPorPoliticaPorEmpresa,
+    obtenerLibresPorEmpresaReporte
 };

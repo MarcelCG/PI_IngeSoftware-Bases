@@ -11,7 +11,7 @@ async function obtenerInfoReporteDiasSolicitadosPorPolitica(req, res) {
     }
 }
 
-async function obtenerInfoReporteDiasGastadosPorPolitica(req, res) {
+async function obtenerInfoReporteDiasGeneradosPorPolitica(req, res) {
     try {
         const {cedula_empresa} = req.params;
         const bitacoraLibres =
@@ -22,7 +22,19 @@ async function obtenerInfoReporteDiasGastadosPorPolitica(req, res) {
     }
 }
 
+async function obtenerinfoReporteDiasGastadosPorEmpleadoPorPolitica(req, res) {
+    try {
+        const {cedula_empresa} = req.params;
+        const infoReporteDiasGastadosPorEmpleadoPorPolitica =
+         await ReporteServicios.obtenerSolicitudesPorEmpresaReporte(cedula_empresa)
+        res.status(200).json(infoReporteDiasGastadosPorEmpleadoPorPolitica);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     obtenerInfoReporteDiasSolicitadosPorPolitica,
-    obtenerInfoReporteDiasGastadosPorPolitica
+    obtenerInfoReporteDiasGeneradosPorPolitica,
+    obtenerinfoReporteDiasGastadosPorEmpleadoPorPolitica
 };

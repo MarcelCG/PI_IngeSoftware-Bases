@@ -407,3 +407,13 @@ SUM(l.dias_libres_disponibles) AS total_dias_libres_disponibles
 FROM Libres l
 WHERE l.cedula_empresa=@cedula_empresa
 GROUP BY l.titulo_politica
+
+--Ulises
+CREATE PROCEDURE LibresPorEmpresaReporte @cedula_empresa varchar(255)
+AS
+SELECT u.nombre, u.primer_apellido, l.cedula_empleado,
+u.telefono1, l.titulo_politica,
+l.dias_libres_disponibles
+FROM Libres l, Usuario u
+WHERE l.cedula_empresa='ABC123'
+AND l.cedula_empleado=u.cedula

@@ -4,6 +4,7 @@ const ReporteController = require('../../../controllers/reportesControlador/repo
 
 // Definir rutas para solicitudes
 router.get('/reporteDiasSolicitadosPorPolitica/:cedula_empresa', ReporteController.obtenerInfoReporteDiasSolicitadosPorPolitica);
-router.get('/reporteDiasGeneradosPorPolitica/:cedula_empresa', ReporteController.obtenerInfoReporteDiasGastadosPorPolitica);
+router.get('/reporteDiasGeneradosPorPolitica/:cedula_empresa', ReporteController.obtenerInfoReporteDiasGeneradosPorPolitica);
+router.get('/reporteDiasGastadosPorEmpleadoPorPolitica/:cedula_empresa', ReporteController.obtenerinfoReporteDiasGastadosPorEmpleadoPorPolitica);
 
 module.exports = router;
