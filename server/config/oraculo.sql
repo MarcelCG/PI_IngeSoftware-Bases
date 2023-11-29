@@ -82,10 +82,10 @@ CREATE TABLE Libres (
     FOREIGN KEY (cedula_empleado) REFERENCES Empleado(cedula_empleado),
     FOREIGN KEY (titulo_politica, cedula_empresa) REFERENCES Politica(titulo, cedula_empresa) ON UPDATE CASCADE
 );
-
 -- Jeremy
+
 DROP TRIGGER InsertarLibre
-GO;
+GO
 CREATE TRIGGER InsertarLibre 
 ON Libres
 INSTEAD OF INSERT
@@ -97,60 +97,36 @@ BEGIN
         DECLARE @DISPONIBLES DECIMAL(5,2);
         DECLARE @UTILIZADOS DECIMAL(5,2);
         DECLARE @ULTIMA DATE;
-        DECLARE @RC_ANTERIOR INT = 0;
+        DECLARE @RC_ANTERIOR INT;
 
     DECLARE libsInsertados CURSOR FOR
-    SELECT  cedula_empleado,
-            titulo_politica,
-            cedula_empresa,
-            dias_libres_disponibles,
-            dias_libres_utilizados,
-            ultima_actualizacion
-    FROM inserted;
+        SELECT cedula_empleado, titulo_politica, cedula_empresa, dias_libres_disponibles, dias_libres_utilizados, ultima_actualizacion
+        FROM inserted;
 
     OPEN libsInsertados;
-    FETCH NEXT FROM libsInsertados INTO 
-        @EMPLEADO,
-        @POLITICA,
-        @EMPRESA,
-        @DISPONIBLES,
-        @UTILIZADOS,
-        @ULTIMA;
-    
+    FETCH NEXT FROM libsInsertados INTO  @EMPLEADO, @POLITICA, @EMPRESA, @DISPONIBLES, @UTILIZADOS,@ULTIMA;
+
     WHILE @@FETCH_STATUS = 0
     BEGIN
-        SET @RC_ANTERIOR = @@ROWCOUNT;
-        UPDATE Libres
-            SET dias_libres_disponibles = @DISPONIBLES,
-                ultima_actualizacion = @ULTIMA
-            WHERE cedula_empleado = @EMPLEADO
-            AND cedula_empresa = @EMPRESA
-            AND titulo_politica = @POLITICA;
-
-        IF @RC_ANTERIOR = @@ROWCOUNT 
-            BEGIN
-                INSERT INTO Libres (cedula_empleado,
-                    titulo_politica, 
-                    cedula_empresa,
-                    dias_libres_disponibles,
-                    dias_libres_utilizados,
-                    ultima_actualizacion)
-                VALUES (@EMPLEADO, @POLITICA, @EMPRESA, @DISPONIBLES, @UTILIZADOS, @ULTIMA);
-            END
-        FETCH NEXT FROM libsInsertados INTO 
-            @EMPLEADO,
-            @POLITICA,
-            @EMPRESA,
-            @DISPONIBLES,
-            @UTILIZADOS,
-            @ULTIMA;
+        IF EXISTS (SELECT 1 FROM Libres WHERE cedula_empleado = @EMPLEADO AND titulo_politica = @POLITICA)
+        BEGIN
+            UPDATE Libres
+            SET dias_libres_disponibles = @DISPONIBLES, ultima_actualizacion = @ULTIMA
+            WHERE cedula_empleado = @EMPLEADO AND titulo_politica = @POLITICA;
+        END
+        ELSE
+        BEGIN
+            INSERT INTO Libres ( cedula_empleado, titulo_politica,  cedula_empresa, dias_libres_disponibles, dias_libres_utilizados, ultima_actualizacion )
+            VALUES ( @EMPLEADO, @POLITICA, @EMPRESA, @DISPONIBLES, @UTILIZADOS, @ULTIMA);
+        END
+        FETCH NEXT FROM libsInsertados INTO  @EMPLEADO, @POLITICA, @EMPRESA, @DISPONIBLES, @UTILIZADOS, @ULTIMA;
     END
-
     CLOSE libsInsertados;
     DEALLOCATE libsInsertados;
 END;
-GO;
 
+
+SELECT * FROM bitacora_libres
 -- Creados por Richard C03200
 CREATE PROC obtenerDatosEmpleador @cedula_empleador varchar(255)
 AS
@@ -462,3 +438,33 @@ ON Solicitud (cedula_empresa);
 
 CREATE NONCLUSTERED INDEX IX_CedulaEmpresa_Libres
 ON Libres (cedula_empresa);
+
+CREATE TRIGGER InsertarBitacoraLIB
+ON bitacora_libres
+INSTEAD OF INSERT
+AS
+BEGIN
+    DECLARE @EMPLEADO VARCHAR(255);
+    DECLARE @POLITICA VARCHAR(255);
+    DECLARE @EMPRESA VARCHAR(255);
+    DECLARE @DIAS DECIMAL(5,2);
+    DECLARE @FECHA DATE;
+    DECLARE @TOTAL DECIMAL(5,2);
+
+    DECLARE BitaInsertadas CURSOR FOR
+        SELECT cedula_empleado, titulo_politica, cedula_empresa, dias, fecha, total_actual FROM inserted;
+    
+    OPEN BitaInsertadas;
+    FETCH NEXT FROM BitaInsertadas INTO @EMPLEADO, @POLITICA, @EMPRESA, @DIAS, @FECHA, @TOTAL;
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        IF @DIAS != 0
+        BEGIN
+            INSERT INTO bitacora_libres (cedula_empleado, titulo_politica, cedula_empresa, dias, fecha, total_actual)
+            VALUES (@EMPLEADO, @POLITICA, @EMPRESA, @DIAS, @FECHA, @TOTAL)
+        END
+        FETCH NEXT FROM BitaInsertadas INTO @EMPLEADO, @POLITICA, @EMPRESA, @DIAS, @FECHA, @TOTAL;
+    END
+    CLOSE BitaInsertadas;
+    DEALLOCATE BitaInsertadas;
+END;
