@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import EditarEmpleadoHTML from './editarEmpleadoHTML';
+import sha256 from 'js-sha256';
 
 
 const EditarEmpleado = () => {
@@ -96,7 +97,8 @@ const obtenerInfoEmpleado = async () => {
 
     // Realiza la solicitud de actualización de datos del empleado con los nuevos valores.
     try {
-      
+        const hashedPassword = await sha256(data.contrasena);
+        data.contrasena = hashedPassword;
         data.cedula=cedula;
         const respuesta = await axios.post(URIActualizarDatos, data);
         console.log('Solicitud POST exitosa:', respuesta.data);

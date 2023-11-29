@@ -56,12 +56,11 @@ async function getByCedula(cedula_empleador) {
   // Función para obtener un empleado por su empresa
 async function getByEmpresa(cedula_empresa) {
     try {
-      console.log("---------> ", cedula_empresa);
       const pool = await sql.connect(dbConfig);
       const result = await pool
         .request()
         .input('cedula_empresa', sql.NVarChar, cedula_empresa)
-        .query('SELECT * FROM Empleado WHERE cedula_empresa = @cedula_empresa');
+        .query('EXEC obtenerDatosEmpleadorPorCedula @cedula_empresa');
       if (result.recordset.length > 0) {
         // Si se encontró un empleado, se retorna
         return result.recordset[0];

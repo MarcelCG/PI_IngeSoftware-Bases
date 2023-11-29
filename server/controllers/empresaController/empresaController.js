@@ -89,6 +89,21 @@ async function obtenerEmpresaPorCedulaEmpleado(req, res){
       res.status(500).json({error: error.message});
     }
   }
+  
+async function obtenerEmpresaPorCedulaEmpleado(req, res){
+  const {cedula_empleado} = req.params;
+
+    try {
+      const success = await Empresa.obtenerEmpresaPorCedulaEmpleado(cedula_empleado);
+      if(success != null){
+        res.status(200).json(success);
+      } else {
+        res.status(404).json({error: "Empresa no encontrada"});
+      }
+    } catch (error) {
+      res.status(500).json({error: error.message});
+    }
+  }
 
 async function getEmpresaInfo(req, res) {
   try {

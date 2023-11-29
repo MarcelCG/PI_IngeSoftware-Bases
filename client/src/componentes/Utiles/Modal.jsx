@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 /* ---------------------------------------------------------------------------------------------------------------------
   │Explicacion:                                                                                                          │
@@ -34,9 +34,7 @@ export const Modal = (props) => {
               </button>
             </div>
           )}
-          {tamanio === "modal-lg" ? 
-          ( <> {componente} </>) : 
-          ( <div className="modal-body">{componente}</div>)}
+          <div className="modal-body">{componente}</div>
           {footer && (
             <div className="modal-footer">
               {footer}

@@ -7,6 +7,7 @@ import { useAutent } from '../../contexto/ContextoAutenticacion';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { URLApi } from '../Compartido/Constantes';
+import sha256 from 'js-sha256';
 
 function Login() {
   const {
@@ -32,9 +33,12 @@ function Login() {
   const handleLogin = async () => {
     console.log('Botón de inicio de sesión presionado');
     try {
-      const response = await axios.post( `${URLApi}usuario/login`, {
+
+      const hashedPassword = await sha256(password);
+
+      const response = await axios.post(`${URLApi}usuario/login`, {
         username,
-        password
+        password: hashedPassword,
       });
   
       if (response.status === 200) {
@@ -42,7 +46,7 @@ function Login() {
         // Inicio de sesión exitoso, muestra un mensaje de éxito
         logear(true);
         // Redirigir al link indicado por el usuario
-        const from = loc.state?.from || { pathname: '/app' };
+        const from = loc.state?.from || { pathname: '/app/' };
         navigate(from);
       } else {
         // Otra respuesta del servidor, maneja según corresponda

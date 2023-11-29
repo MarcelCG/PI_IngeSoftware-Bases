@@ -1,14 +1,30 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { filtrarSolicitud } from "./buscarSolicitud";
 
-function FiltrarSolicitudes({solicitudes, filtrarSolicitudes}) {
-    const [filtroEstado, setFiltroEstado] = useState('Todos');
-    
+function FiltrarSolicitudes(props) {
+    const {
+        cambiarPagina,
+        solicitudes,
+        filtrarSolicitudes,
+        busqueda,
+        filtro,
+        solicitudesGlob,
+        filtroEstado,
+        setFiltroEstado
+    } = props;
+
     const manejarFiltroEstado = (nuevoEstado) => {
         setFiltroEstado(nuevoEstado);
+        cambiarPagina(1);
+        filtrarSolicitud({
+            solicitud: solicitudesGlob,
+            filtrarsolicitudes: filtrarSolicitudes,
+            busqueda: busqueda,
+            filtro: filtro
+        });
     };
-    
+
     useEffect(() => {
-        // Filtrar las solicitudes según el estado seleccionado
         const solicitudesFiltradas = solicitudes.filter(solicitud => {
             if (filtroEstado === 'Todos') {
                 return true;
@@ -17,7 +33,7 @@ function FiltrarSolicitudes({solicitudes, filtrarSolicitudes}) {
             }
         });
         filtrarSolicitudes(solicitudesFiltradas);
-    }, [filtroEstado, solicitudes]);
+    }, [filtroEstado]);
 
     return (
         <select className="col-2 mt-3 continuar"
@@ -27,8 +43,9 @@ function FiltrarSolicitudes({solicitudes, filtrarSolicitudes}) {
             <option value="Pendiente">Pendientes</option>
             <option value="Aprobada">Aprobadas</option>
             <option value="Rechazada">Rechazadas</option>
+            <option value="Cancelada">Cancelada</option>
         </select>
     )
 }
 
-export default FiltrarSolicitudes
+export default FiltrarSolicitudes;

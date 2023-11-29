@@ -61,6 +61,7 @@ const obtenerDatosUsuario = async (username, autenticarUsuario) => {
     }
     return '';
   };
+  
 
 export function ProveedorAutenticacion(props){
     // Obtener el valor almacenado en sessionStorage, si existe

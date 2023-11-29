@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { useAutent } from '../../contexto/ContextoAutenticacion';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { URLApi } from '../Compartido/Constantes';
+import { Modal } from '../Utiles/Modal';
+import {ModalEditarPerfil} from '../Perfil/editarPerfil'
 
 function VisualizarEmpleado() {
   const {usuarioAutenticado} = useAutent();
@@ -20,6 +22,14 @@ function VisualizarEmpleado() {
     fecha_contratacion: "",
     jornadaLaboral: "",
     rol: ""
+  });
+  const botonRef = useRef(null);
+  const [modal, setModal] = useState({modalID:"modalEditarPerfil"});
+
+  const [PerfilValores, setPerfilValores] = useState({
+    titulo: "",
+    componente: "",
+    modalID:"modalEditarPerfil"
   });
 
   // Función para cargar los datos del empleado
@@ -48,8 +58,16 @@ function VisualizarEmpleado() {
     cargarDatosDelEmpleado();
   }, [cedulaEmpleado, cedulaEmpresa]);
 
+  let props = {
+    ...PerfilValores,
+    botonRef,
+    setPerfilValores
+  };
+
   return (
     <div className="container mt-2 card-body p-2">
+      <Modal{...props}/>
+      <div ref={botonRef} data-bs-toggle="modal" data-bs-target={`#${props.modalID}`}/>
       <div className="mb-3">
         <p><strong>Nombre: </strong>{datosEmpleado.nombre}</p>
         <p><strong>Primer Apellido: </strong>{datosEmpleado.primer_apellido}</p>
@@ -64,7 +82,7 @@ function VisualizarEmpleado() {
         <p><strong>Fecha de Contratación:</strong> {datosEmpleado.fecha_contratacion}</p>
         <p><strong>Rol:</strong> {datosEmpleado.rol}</p>
         <div className="text-center">
-          <Link to={`editarEmpleado/${datosEmpleado.cedula}`} className="btn btn-primary">Editar</Link>
+          <ModalEditarPerfil botonRef={botonRef} setModalValores={setPerfilValores} />
         </div>
       </div>
     </div>

@@ -1,10 +1,12 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { URLApi } from '../Compartido/Constantes';
 import { toast } from 'react-toastify';
 import { ActualizarLibresHTML } from './ActualizarLibresHTML';
 import { useAutent } from "../../contexto/ContextoAutenticacion";
+import ReportePDF  from "../Reportes/ReportePDF"
+import { PDFDownloadLink } from "@react-pdf/renderer"
 
 export const ActualizarTiempoLibre = () => {
 
@@ -12,7 +14,33 @@ export const ActualizarTiempoLibre = () => {
   const {usuarioAutenticado} = useAutent();
   const empresa = usuarioAutenticado.cedula_empresa; 
   const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
-  const esPrimeroDelMes = new Date().getDate() === 1;
+  const botonRef = useRef(null);
+  const esPrimeroDelMes = true;//new Date().getDate() === 1;
+
+  const [datos, setdatos] = useState([]);
+  const datosEmpresa = empresa;
+	const titulo = "titulo"
+	const columnas = [{nombre:"homo",id:"cedula"},{nombre:"sexal",id:"dias"}];
+
+	// eslint-disable-next-line 
+	const generarReporte = (libresNuevos) => {
+    let datosArrayAcomodacion = {};
+    libresNuevos.forEach(lib => {
+      const { cedula_empleado, nuevos_libres } = lib;
+      if (!datosArrayAcomodacion[cedula_empleado]) {
+          datosArrayAcomodacion[cedula_empleado] = 0;
+      }
+      datosArrayAcomodacion[cedula_empleado] += parseFloat(nuevos_libres);
+    });
+
+    let datosArray = Object.entries(datosArrayAcomodacion).map(([cedula, dias]) => {
+       return { cedula, dias: dias.toFixed(2) };
+    });
+
+    setdatos(datosArray);
+    console.log(datosArray);
+};
+
 
 	const cargarDatos = async() => {
 		setCargando(true);
@@ -20,26 +48,21 @@ export const ActualizarTiempoLibre = () => {
 	  try {
 	    const respuesta = await axios.get
 	    (`${URLApi}libres/actualizarTodos/${empresa}`,);
-	    if(respuesta.data >= 0){
+	    const cantEmpleados = new Set(respuesta.data.map(lib => lib.cedula_empleado)).size;
+	    if(respuesta.data !== undefined){
 	   		toast.success(
-   		   	<span>
-   		      Se ha actualizado: <strong>{respuesta.data}</strong>
-   		      {respuesta.data === 1 ? " empleado" : " empleados"}
-   		   	</span>,{position: toast.POSITION.TOP_CENTER}
-	   		);
+   		   	<> Se ha actualizado: <b>{cantEmpleados} </b>
+   		      {cantEmpleados === 1 ? "empleado":"empleados"}
+   		   	</>,{position: toast.POSITION.TOP_CENTER});
+	   		generarReporte(respuesta.data);
 	   	} else {
-	   		toast.error(
-	   			errorDescrib,{position: toast.POSITION.TOP_CENTER,
-	   			className:"alert alert-danger"}
-	   		);
+	   		toast.error(errorDescrib,{position: toast.POSITION.TOP_CENTER,className:"alert alert-danger"});
 	   	}
 	   	setCargando(false);
+	   	botonRef.current.click();
 	  } catch (error) {
-	  	toast.error(
-	  		errorDescrib,{position:
-	  		toast.POSITION.TOP_CENTER, className:"alert alert-danger"}
-	  	);
-	  	setCargando(false);
+	  	toast.error(errorDescrib,{position:toast.POSITION.TOP_CENTER, className:"alert alert-danger"});
+	  	//setCargando(false);
 	  }
 	};
 
@@ -47,7 +70,12 @@ export const ActualizarTiempoLibre = () => {
   	esEmpleador,
 		esPrimeroDelMes,
 		cargarDatos,
-		cargando
+		cargando,
+		datos,
+		columnas,
+		datosEmpresa,
+		titulo,
+		botonRef
 	};
 
 	return (

@@ -4,8 +4,9 @@ import {useForm} from 'react-hook-form'
 import { useAutent } from "../../contexto/ContextoAutenticacion";
 import { ToastContainer, toast } from 'react-toastify';
 import { URLApi } from '../Compartido/Constantes';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import sha256 from 'js-sha256';
 
 const URI = URLApi+'registrarEmpleado/';
 
@@ -21,7 +22,9 @@ const AddEmployee = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
+      const hashedPassword = await sha256(data.contrasena);
       data.empresa = empresa;
+      data.contrasena = hashedPassword;
       const response = await axios.post(URI, data);
       console.log('Solicitud POST exitosa:', response.data);
       toast.success('Empleado agregado con éxito', {
@@ -51,10 +54,6 @@ const AddEmployee = () => {
 
     return (
       <>
-        
-              <div className='card-header titulo-ventana'>
-                  <h3 className='mt-2'>Registrar Empleado</h3>
-              </div>
               <div className='card-body'>
                   <form className='px-4 row py-3' onSubmit={onSubmit}>
                       <div className='col-6'>
@@ -290,6 +289,8 @@ export const ModalAgregarEmpleado = ({botonRef, setModalValores }) => {
     setModalValores({
       componente: <AddEmployee/ >,
       modalID:"modalEmpleados",
+      titulo: <h3 className='mt-2'>Registrar Empleado</h3>,
+      tituloEstilos: 'titulo-ventana',
       tamanio:"modal-lg"});
     botonRef.current.click();
   };
@@ -301,4 +302,4 @@ export const ModalAgregarEmpleado = ({botonRef, setModalValores }) => {
   );
 };
 
-export default AddEmployee
+export default AddEmployee;

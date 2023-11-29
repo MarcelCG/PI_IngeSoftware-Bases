@@ -2,7 +2,7 @@ import axios from 'axios';
 import {VerSolicitudesHTML} from './VerSolicitudesHTML.js'
 import {ModalSolicitud} from './modalSolicitud.js';
 import { FooterModalSolicitudEmpleador } from './footerModalSolicitud.js';
-import { ModalConfirmar, GestionarSolicitudes } from './gestionarSolicitudes.js';
+import { ModalConfirmar, GestionarSolicitudes, CancelarSolicitud } from './gestionarSolicitudes.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useAutent } from '../../contexto/ContextoAutenticacion.js';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -49,6 +49,17 @@ const Solicitudes = () => {
         footer: ""
     });
 
+    const abrirModalCancelar = (solicitud) => {
+        setSolicitudValores({
+            titulo: "Cancelar",
+            componente: <ModalConfirmar/>,
+            footer:<CancelarSolicitud solicitud={solicitud}/>
+        })
+        botonRef.current.click();
+    }
+  
+    
+
     const abrirModalConfirmar = (accion, solicitud) => {
         setSolicitudValores({
             titulo: "Confirmar",
@@ -58,6 +69,7 @@ const Solicitudes = () => {
     }
 
     const abrirModalSolicitud = (solicitud) => {
+        console.log(solicitud);
         solicitud["esEmpleador"] = esEmpleador;
         setSolicitudValores({
             ...solicitudValores,
@@ -125,14 +137,11 @@ const Solicitudes = () => {
         --dias;
         let fechaFinal = new Date(fecha);
 		while (dias > 0) {
-			fechaFinal.setDate(fechaFinal.getDate() + 1);
-			if (fechaFinal.getDay() !== 0) {
+			fechaFinal.setUTCDate(fechaFinal.getUTCDate() + 1);
+			if (fechaFinal.getUTCDay() !== 0 && fechaFinal.getUTCDay() !== 6) {
 			    dias--;
 			}
 		}
-        if (fechaFinal.getDay() == 6) {
-            fechaFinal.setDate(fechaFinal.getDate() + 1);
-        }
 		return fechaFinal;
 	}
 
@@ -156,7 +165,7 @@ const Solicitudes = () => {
 		    case 'Rechazada':
 			    return 'bg-danger';
 		    case 'Cancelada':
-			    return 'bg-dark';
+			    return 'bg-secondary';
 		    default:
 			    return 'bg-primary';
 		}
@@ -166,6 +175,7 @@ const Solicitudes = () => {
         ...solicitudValores,
         solicitudes,
         abrirModalSolicitud,
+        abrirModalCancelar,
         modalID,
         botonRef,
         obtenerEstiloPorEstado,

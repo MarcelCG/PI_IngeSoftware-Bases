@@ -22,7 +22,7 @@ class EditarEmpresaHTML extends Component {
     const { formulario, errores } = this.state;
     return (
       <div>
-        <div className="card-body">
+        <div className="card-body pt-0">
           <form className="px-4 row py-3">
             {campos.map((campo, index) => (
               <div className={campo.style} key={index}>

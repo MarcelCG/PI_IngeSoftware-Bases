@@ -28,10 +28,11 @@ function MenuContenido({ enlaces }) {
 export function MenuEmpleador() {
 
   const enlaces = [
-    { to: '/app', label: 'Inicio' },
+    { to: '/app/', label: 'Inicio' },
     { to: '/app/empleados', label: 'Empleados' },
     { to: '/app/politicas', label: 'Políticas' },
-    { to: '/app/solicitudes', label: 'Solicitudes'}
+    { to: '/app/solicitudes', label: 'Solicitudes'},
+    { to: '/app/reportes', label: 'Reportes'}
   ];
 
   return (
@@ -42,9 +43,10 @@ export function MenuEmpleador() {
 export function MenuEmpleado() {
 
   const enlaces = [
-    { to: '/app', label: 'Inicio' },
+    { to: '/app/', label: 'Inicio' },
     { to: '/app/politicas', label: 'Políticas' },
     { to: '/app/solicitudes', label: 'Solicitudes'},
+    { to: '/app/reportes', label: 'Reportes'}
   ];
 
   return (

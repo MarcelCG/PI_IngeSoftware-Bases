@@ -1,5 +1,6 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
 const Servicio = require('../../servicios/solicitudServicios/solicitudServicios')
+const {ERROR_INTERNO, EXITO, NO_ENCONTRADO} = require('../../config/constantes')
 
 // Obtener todas las solicitudes
 async function getAllSolicitudes(req, res) {
@@ -77,6 +78,23 @@ async function rechazarSolictud(req,res) {
     } else {
       // Si no se aprobó una solicitud con ese ID, respondemos con un mensaje de error
       res.status(404).json({ error: 'Error al rechazar solicitud, recargue la página e intente de nuevo' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function cancelarSolictud(req,res) {
+  try {
+    const { id } = req.params; // Obtiene el ID de los parámetros de la URL
+    // Llama al servicio de solicitudes
+    const accion = Servicio.cancelarSolictud(id);
+    if (accion) {
+      // Si se pudo cancelar la solicitud, mensaje de exito
+      res.status(200).json('Solicitud cancelada correctamente');
+    } else {
+      // Si no se cancelo una solicitud con ese ID, respondemos con un mensaje de error
+      res.status(404).json({ error: 'Error al cancelar solicitud, recargue la página e intente de nuevo' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -172,6 +190,21 @@ async function getSolicitudByCedulaAndEmpresa(req, res) {
     }
   }
 
+  async function obtenerFechasSolicitudesAprobadas(req, res) {
+    try {
+      const { cedula_empresa } = req.params;
+
+      const respuesta = await Servicio.obtenerFechasSolicitudesAprobadas(cedula_empresa);
+      if (respuesta.length > 0) {
+        res.status(EXITO).json(respuesta);
+      } else {
+        res.status(NO_ENCONTRADO).json({message: 'No se encontraron solicitudes aprobadas en la empresa'})
+      }
+    } catch (error) {
+      res.status(ERROR_INTERNO).json({ error: error.message });
+    }
+  }
+
 module.exports = {
   getAllSolicitudes,
   createSolicitud,
@@ -180,6 +213,8 @@ module.exports = {
   getSolicitudByEmpresa,
   getSolicitudByCedulaAndEmpresa,
   aprobarSolicitud,
+  cancelarSolictud,
   rechazarSolictud,
-  obtenerLibresPorPolitica
+  obtenerLibresPorPolitica,
+  obtenerFechasSolicitudesAprobadas
 };
