@@ -156,6 +156,20 @@ async function obtenerLibresPorEmpresaReporte(cedula_empresa) {
     }
 }
 
+// Obtener informacion de los libres que tiene un empleado por politica
+async function obtenerInfoLibresPorPolitica(cedula) {
+    try {
+        const pool = await sql.connect(dbConfig);
+        const result = await pool
+            .request()
+            .input('cedula', sql.NVarChar, cedula)
+            .execute('ObtenerInfoLibresPorPolitica')
+        return result.recordset;
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getAll,
     getByEmpleado,
@@ -165,5 +179,6 @@ module.exports = {
     obtenerPorEmpresa,
     actualizarTodos,
     obtenerLibresPorPoliticaPorEmpresa,
-    obtenerLibresPorEmpresaReporte
+    obtenerLibresPorEmpresaReporte,
+    obtenerInfoLibresPorPolitica
 };

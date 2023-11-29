@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
 
-function FiltrarSolicitudes({solicitudes, filtrarSolicitudes}) {
+function FiltrarSolicitudes({cambiarPagina, solicitudes, filtrarSolicitudes}) {
     const [filtroEstado, setFiltroEstado] = useState('Todos');
     
     const manejarFiltroEstado = (nuevoEstado) => {
         setFiltroEstado(nuevoEstado);
+        cambiarPagina(1)
     };
     
     useEffect(() => {

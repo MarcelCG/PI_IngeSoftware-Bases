@@ -226,7 +226,7 @@ class PoliticasFormularioHTML extends Component {
                 {/* Botones de Cancelar y Agregar */}
                 <div className='d-flex justify-content-end mt-3'>
                   <section className="align-items-right text-align-right float-right">
-                      <input className="btn-danger me-2" type="button" value="Cancelar" onClick={handleCancel}/>
+                      <input className="btn-danger me-2" type="button" value="Cancelar" data-bs-dismiss="modal" aria-label="Close" onClick={handleCancel}/>
                       <input className="btn-primary" type="submit" value={accion}/>
                   </section>
                 </div>

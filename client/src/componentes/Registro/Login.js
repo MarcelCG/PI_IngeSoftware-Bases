@@ -42,7 +42,7 @@ function Login() {
         // Inicio de sesión exitoso, muestra un mensaje de éxito
         logear(true);
         // Redirigir al link indicado por el usuario
-        const from = loc.state?.from || { pathname: '/app' };
+        const from = loc.state?.from || { pathname: '/app/' };
         navigate(from);
       } else {
         // Otra respuesta del servidor, maneja según corresponda

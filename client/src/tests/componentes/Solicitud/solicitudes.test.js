@@ -1,7 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect"; 
-import VerSolicitudesHTML from "../../../componentes/Solicitudes/VerSolicitudesHTML"
 import FiltrarSolicitudes from "../../../componentes/Solicitudes/filtrarSolicitudes";
 import {ModalSolicitud} from "../../../componentes/Solicitudes/modalSolicitud";
 
@@ -49,8 +48,10 @@ test("FiltrarSolicitudes filtra las solicitudes correctamente", async() => {
     solicitudesFiltradasSimulado = solicitudes;
   }
 
+  const cambiarPaginaSimulado = () => {};
+
   //Preparar
-  render(<FiltrarSolicitudes solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudesSimulado} />);
+  render(<FiltrarSolicitudes cambiarPagina={cambiarPaginaSimulado} solicitudes={solicitudes} filtrarSolicitudes={filtrarSolicitudesSimulado} />);
 
   const opciones = screen.getAllByRole("option");
   expect(opciones.length).toBe(4);

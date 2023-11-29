@@ -54,7 +54,7 @@ async function createPolitica(
           @acumulativo, @activo, @descripcion
         )`
       );
-    return result.rowsAffected > 0;
+    return result.rowsAffected.some(count => count > 0);
   } catch (error) {
     throw error;
   }

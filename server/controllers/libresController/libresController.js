@@ -98,6 +98,18 @@ async function actualizarTodos(req, res) {
     }
 }
 
+// Obtener informacion de dias libres por politica de un empleado
+async function obtenerInfoLibresPorPolitica(req, res) {
+    try {
+        const {cedula_empleado} = req.params;
+        const politicas =
+             await LibresServicio.obtenerInfoLibresPorPolitica(cedula_empleado);
+        res.status(200).json(politicas);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     getAllLibres,
     getLibresByEmpleado,
@@ -105,5 +117,6 @@ module.exports = {
     getLibresByEmpleadoAndPolitica,
     createLibre,
     actualizarTodos,
-    obtenerPorEmpresa
+    obtenerPorEmpresa,
+    obtenerInfoLibresPorPolitica
 };

@@ -1,6 +1,7 @@
 const Solicitud = require('../../models/solicitudModel/solicitudModel');
 const Empleado = require('../../models/usuarioModel/Empleado/empleadoModel')
 const Correo = require('../correoServicios/correoServicios');
+const {EXITO} = require('../../config/constantes');
 const {URLAPI} = require('../../config/constantes');
 
 const fs = require('fs');
@@ -89,7 +90,60 @@ async function rechazarSolictud(id) {
     }
 }
 
+async function obtenerFechasSolicitudesAprobadas (cedula_empresa) {
+    try {
+
+        var solicitudes = await Solicitud.getSolicitudByEmpresa(cedula_empresa);
+
+        if (!solicitudes) {
+            return solicitudes;
+        }
+
+        solicitudes = solicitudes.filter(solicitud => solicitud.estado === 'Aprobada');
+
+        return solicitudes.map(solicitud => {
+            const { inicio_fechas_solicitadas,
+                dias_libres_solicitados, horas_solicitadas,
+                hora_de_inicio, nombre_completo, comentarios } = solicitud;
+            
+            var fecha_inicio = new Date(inicio_fechas_solicitadas);
+            var fecha_final = new Date(inicio_fechas_solicitadas);
+            // Si se piden horas y no días
+            if(dias_libres_solicitados === 1 && horas_solicitadas) {
+                fecha_inicio.setUTCHours(hora_de_inicio.getUTCHours());
+                fecha_inicio.setUTCMinutes(hora_de_inicio.getUTCMinutes());
+
+                fecha_final.setUTCHours(fecha_inicio.getUTCHours() + horas_solicitadas);
+                fecha_final.setUTCMinutes(fecha_inicio.getUTCMinutes());
+            } else {
+                // Calcula la fecha final en dias habiles
+                var diasSumados = 0;
+                fecha_final.setUTCDate(fecha_final.getUTCDate() - 1);
+                while (diasSumados < dias_libres_solicitados) {
+                    fecha_final.setUTCDate(fecha_final.getUTCDate() + 1);
+                    if ((fecha_final.getUTCDay() !== 0) && (fecha_final.getUTCDay() !== 6)) {
+                        diasSumados++;
+                    }
+                }
+                fecha_final.setUTCDate(fecha_final.getUTCDate() + 1);
+            }
+
+            return {
+                nombre_empleado: nombre_completo,
+                fecha_inicio,
+                fecha_final,
+                comentarios,
+            };
+        });
+        
+    } catch (error) {
+        console.error('Error en el servicio Solicitud, ObtenerSolicitudesAprobadasPorEmpleado:', error);
+        throw new Error('Error en el servicio Solicitud, ObtenerSolicitudesAprobadasPorEmpleado: ' + error.message);
+    }
+}
+
 module.exports = {
     aprobarSolicitud,
     rechazarSolictud,
+    obtenerFechasSolicitudesAprobadas
 };
