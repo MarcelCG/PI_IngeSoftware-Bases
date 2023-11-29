@@ -43,6 +43,7 @@ function FiltrarSolicitudes(props) {
             <option value="Pendiente">Pendientes</option>
             <option value="Aprobada">Aprobadas</option>
             <option value="Rechazada">Rechazadas</option>
+            <option value="Cancelada">Cancelada</option>
         </select>
     )
 }

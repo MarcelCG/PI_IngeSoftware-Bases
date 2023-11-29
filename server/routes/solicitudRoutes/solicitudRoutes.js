@@ -13,5 +13,5 @@ router.get('/libresPorPolitica/:cedula_empleado', SolicitudController.obtenerLib
 router.get('/fechasAprobadas/:cedula_empresa', SolicitudController.obtenerFechasSolicitudesAprobadas);
 router.post('/aprobar/:id', SolicitudController.aprobarSolicitud);
 router.post('/rechazar/:id', SolicitudController.rechazarSolictud);
-
+router.post('/cancelar/:id', SolicitudController.cancelarSolictud);
 module.exports = router;
