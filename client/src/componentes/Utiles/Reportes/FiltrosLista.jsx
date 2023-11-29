@@ -31,6 +31,17 @@ export default function FiltrosLista ({rep, filtros, setRep, opciones, cargando,
 				if (fechaFinal === "") {fechaFinal=0}
 				opciones[0].cargarDatos(fechaInicio, fechaFinal);
 			}
+		} else if(filtros[1].columna==="fecha_inicioRepEmpleador2") {
+			let fechaInicio = filtroCampo['Fecha de Inicio'];
+			let fechaFinal = filtroCampo['Fecha Final'];
+			let politica = filtroCampo['Politica'];
+
+			if (politica) {} else {politica=0};
+			if (fechaInicio || fechaFinal || politica) {
+				if (fechaInicio === "") {fechaInicio=0}
+				if (fechaFinal === "") {fechaFinal=0}
+				opciones[1].cargarDatos(politica, fechaInicio, fechaFinal);
+			}
 		} else if (filtros[0].columna==="fecha_inicioRepEmpleador3") {
 			let fechaInicio = filtroCampo['Fecha de Inicio'];
 			let fechaFinal = filtroCampo['Fecha Final'];
@@ -51,6 +62,8 @@ export default function FiltrosLista ({rep, filtros, setRep, opciones, cargando,
 		});
 		if (filtros[0].columna==="fecha_inicioRepEmpleador1") {
 			opciones[0].cargarDatos();
+		} else if (filtros[1].columna==="fecha_inicioRepEmpleador2") {
+			opciones[1].cargarDatos();
 		} else if (filtros[0].columna==="fecha_inicioRepEmpleador3") {
 			opciones[2].cargarDatos();
 		}

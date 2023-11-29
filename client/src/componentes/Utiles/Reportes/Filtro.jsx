@@ -12,19 +12,31 @@ export const FiltroPlantilla = ({ filtro, filtroCampo, setFiltroCampo, originale
 };
 
 export const fechaLimiteIzqRep1 = () => {
-	return 1;
+	return true;
 };
 
 export const fechaLimiteDerRep1 = () => {
-	return 1;
+	return true;
+};
+
+export const fechaLimiteIzqRep2 = () => {
+	return true;
+};
+
+export const fechaLimiteDerRep2 = () => {
+	return true;
 };
 
 export const fechaLimiteIzqRep3 = () => {
-	return 1;
+	return true;
 };
 
 export const fechaLimiteDerRep3 = () => {
-	return 1;
+	return true;
+};
+
+export const nombrePolitica = () => {
+	return true;
 };
 
 export const fechaLimiteIzq = (dato, fechaMenor) => {
