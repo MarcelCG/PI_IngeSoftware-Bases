@@ -20,7 +20,7 @@ export const ActualizarTiempoLibre = () => {
   const [datos, setdatos] = useState([]);
   const datosEmpresa = empresa;
 	const titulo = "titulo"
-	const columnas = [{nombre:"homo",id:"cedula"},{nombre:"sexal",id:"dias"}];
+	const columnas = [{nombre:"Cedula empleado",id:"cedula"},{nombre:"Dias",id:"dias"}];
 
 	// eslint-disable-next-line 
 	const generarReporte = (libresNuevos) => {
