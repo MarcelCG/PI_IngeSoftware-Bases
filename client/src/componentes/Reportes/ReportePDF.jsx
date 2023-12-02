@@ -2,7 +2,7 @@ import React from "react";
 import { Document, Page, View, Text, Image, StyleSheet } from  "@react-pdf/renderer"
 
 const ReportePDF = (props) => {
-    console.log("soy un mero playo:", props);
+    console.log("props:", props);
 
     let datos = props.datos;
     const columnas = props.columnas;
