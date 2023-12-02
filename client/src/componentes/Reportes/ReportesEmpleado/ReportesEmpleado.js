@@ -1,9 +1,13 @@
 import axios from 'axios';
 import Reportes from '../../Utiles/Reportes/Reportes';
-import React, { useState, useRef } from 'react';
+
+import React, { useState, useRef, useEffect } from 'react';
 import { NombreEscogido, fechaLimiteIzq, fechaLimiteDer } from '../../Utiles/Reportes/Filtro';
 import { URLApi } from '../../Compartido/Constantes';
 import { useAutent } from "../../../contexto/ContextoAutenticacion";
+
+
+const URLEmpresa = URLApi + 'empresa/getEmpresaInfo/';
 
 const URLReportesEmpleado = URLApi + 'reportesEmpleado/';
 const URLReporteDiasUsados = URLReportesEmpleado + 'diasUsados/';
@@ -89,6 +93,9 @@ export default function ReportesEmpleado () {
 	const {usuarioAutenticado} = useAutent();
 	const cedula = usuarioAutenticado.cedula;
 
+	const empresa = usuarioAutenticado.cedula_empresa; 
+
+
 	/* Datos por defecto*/
 	const predeterminado = {
 		originales: [],
@@ -99,6 +106,47 @@ export default function ReportesEmpleado () {
 		pagAct:1,
 		titulo:'Elegir'
 	}
+
+	const [datosEmpresa, setDatosDeEmpresa] = useState({
+		nombre: "",
+		cedula_juridica: "",
+		telefono1: "",
+		telefono2: "",
+		correo1: "",
+		correo2: "",
+	});
+	
+	useEffect(() => {
+		async function cargarDatosEmpresa() {
+			try {
+			const response = await axios.get(`${URLEmpresa}${empresa}`);
+			if (response.status === 200) {
+	
+				const data = response.data.data;
+				// Actualiza el estado con los datos específicos del JSON de respuesta
+				setDatosDeEmpresa({
+				nombre: data.nombre,
+				cedula_juridica: data.cedula_juridica,
+				telefono1: data.telefono1,
+				telefono2: data.telefono2,
+				correo1: data.correo1,
+				correo2: data.correo2
+				});
+			} else if (response.status === 404) {
+				throw new Error('Empresa no encontrada');
+			} else {
+				throw new Error('Error en el servidor');
+			}
+		} catch (error) {
+			if (error.message === 'Empresa no encontrada') {
+			setDatosDeEmpresa({ error: 'Empresa no encontrada' });
+			} else {
+			setDatosDeEmpresa({ error: 'Error en el servidor' });
+			}
+		}
+		}
+		cargarDatosEmpresa(); 
+	}, [empresa]);
 
 	const [reporte, actualizarReporte] = useState({ ...predeterminado });
 	const actualizarFormateadoReporte = useRef();
@@ -174,7 +222,8 @@ export default function ReportesEmpleado () {
 		}
 	];
 
-	const props = {rep: reporte, setRep: actualizarFormateadoReporte.current, opciones};
+	const props = {rep: reporte, setRep: actualizarFormateadoReporte.current, opciones, datosEmpresa};
+
 	return(
 		<>
 			<div>
