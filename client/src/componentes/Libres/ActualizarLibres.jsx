@@ -11,16 +11,22 @@ import { PDFDownloadLink } from "@react-pdf/renderer"
 export const ActualizarTiempoLibre = () => {
 
   const [cargando, setCargando] = useState(false);
+	
   const {usuarioAutenticado} = useAutent();
+	
   const empresa = usuarioAutenticado.cedula_empresa; 
+	
   const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
+	
   const botonRef = useRef(null);
-  const esPrimeroDelMes = true;//new Date().getDate() === 1;
+	
+  const esPrimeroDelMes = new Date().getDate() === 1;
 
   const [datos, setdatos] = useState([]);
+	
   const datosEmpresa = empresa;
 	const titulo = "titulo"
-	const columnas = [{nombre:"homo",id:"cedula"},{nombre:"sexal",id:"dias"}];
+	const columnas = [{nombre:"Cedula",id:"cedula"},{nombre:"Dias solicitados",id:"dias"}];
 
 	// eslint-disable-next-line 
 	const generarReporte = (libresNuevos) => {
