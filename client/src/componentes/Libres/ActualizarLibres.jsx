@@ -11,9 +11,13 @@ import { PDFDownloadLink } from "@react-pdf/renderer"
 export const ActualizarTiempoLibre = () => {
 
   const [cargando, setCargando] = useState(false);
+	
   const {usuarioAutenticado} = useAutent();
+	
   const empresa = usuarioAutenticado.cedula_empresa; 
+	
   const esEmpleador = usuarioAutenticado?.esEmpleador ? true : false;
+
   const botonRef = useRef(null);
   const esPrimeroDelMes = true;//new Date().getDate() === 1;
 
@@ -22,6 +26,31 @@ export const ActualizarTiempoLibre = () => {
 	const titulo = "titulo"
 	const columnas = [{nombre:"Cedula",id:"cedula"},{nombre:"Dias",id:"dias"}];
 	 
+	const generarReporte = (libresNuevos) => {
+    let datosArrayAcomodacion = {};
+    libresNuevos.forEach(lib => {
+      const { cedula_empleado, nuevos_libres } = lib;
+      if (!datosArrayAcomodacion[cedula_empleado]) {
+          datosArrayAcomodacion[cedula_empleado] = 0;
+      }
+      datosArrayAcomodacion[cedula_empleado] += parseFloat(nuevos_libres);
+    });
+
+    let datosArray = Object.entries(datosArrayAcomodacion).map(([cedula, dias]) => {
+       return { cedula, dias: dias.toFixed(2) };
+    });
+
+    setdatos(datosArray);
+    console.log(datosArray);
+};
+
+  const [datos, setdatos] = useState([]);
+	
+  const datosEmpresa = empresa;
+	const titulo = "titulo"
+	const columnas = [{nombre:"Cedula",id:"cedula"},{nombre:"Dias solicitados",id:"dias"}];
+
+	// eslint-disable-next-line 
 	const generarReporte = (libresNuevos) => {
     let datosArrayAcomodacion = {};
     libresNuevos.forEach(lib => {

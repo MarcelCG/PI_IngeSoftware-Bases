@@ -1,11 +1,14 @@
 import axios from 'axios';
 import Reportes from '../../Utiles/Reportes/Reportes';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { NombreEscogido, fechaLimiteIzq, fechaLimiteDer } from '../../Utiles/Reportes/Filtro';
 import { URLApi } from '../../Compartido/Constantes';
 import { useAutent } from "../../../contexto/ContextoAutenticacion";
 
+
 const URLEmpresa = URLApi + 'empresa/getEmpresaInfo/';
+
 const URLReportesEmpleado = URLApi + 'reportesEmpleado/';
 const URLReporteDiasUsados = URLReportesEmpleado + 'diasUsados/';
 const URLReporteDiasAcumulados = URLReportesEmpleado + 'diasAcumulados/';
@@ -89,7 +92,9 @@ const formatearDatosDiasAcumulados = (nuevosDatos) => {
 export default function ReportesEmpleado () {
 	const {usuarioAutenticado} = useAutent();
 	const cedula = usuarioAutenticado.cedula;
+
 	const empresa = usuarioAutenticado.cedula_empresa; 
+
 
 	/* Datos por defecto*/
 	const predeterminado = {
@@ -218,6 +223,7 @@ export default function ReportesEmpleado () {
 	];
 
 	const props = {rep: reporte, setRep: actualizarFormateadoReporte.current, opciones, datosEmpresa};
+
 	return(
 		<>
 			<div>

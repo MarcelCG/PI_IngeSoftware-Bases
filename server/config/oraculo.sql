@@ -120,6 +120,7 @@ BEGIN
             VALUES ( @EMPLEADO, @POLITICA, @EMPRESA, @DISPONIBLES, @UTILIZADOS, @ULTIMA);
         END
         FETCH NEXT FROM libsInsertados INTO  @EMPLEADO, @POLITICA, @EMPRESA, @DISPONIBLES, @UTILIZADOS, @ULTIMA;
+
     END
     CLOSE libsInsertados;
     DEALLOCATE libsInsertados;
@@ -468,3 +469,4 @@ BEGIN
     CLOSE BitaInsertadas;
     DEALLOCATE BitaInsertadas;
 END;
+
